@@ -73,3 +73,13 @@ We will use these variables to keep the colors consistent:
     --danger: #FF365F;
     --transfer: #6C4DFF;
 }
+```
+
+### Links
+
+Link to the Word document: [Google Docs](https://docs.google.com/document/d/1pyRA6YuwZK1SaWb1bkdlGWtTWEpu4AP8qtnOMch0xHQ/edit?tab=t.0)
+
+Link to the slides: [Canva Slides](https://www.canva.com/design/DAHWhy3arOo/M2PHs0C4pbdk5MspKkQXGQ/edit)
+
+
+
