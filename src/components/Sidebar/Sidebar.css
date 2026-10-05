@@ -1,0 +1,231 @@
+.sidebar {
+    width: var(--sidebar-width);
+    min-height: 100vh;
+    background-color: #020b1d;
+    color: white;
+    padding: 20px 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+
+/* Logo */
+
+.sidebar-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    margin-bottom: 20px;
+    padding-bottom: 29px;
+    border-bottom: 1px solid #142039;
+}
+
+.sidebar-logo img {
+    width: 50px;
+    height: 50px;
+}
+
+.sidebar-logo h2 {
+    font-size: 2rem;
+    margin: 0;
+}
+
+/* Menu Principal */
+
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    padding-right: 20px;
+}
+
+.sidebar-menu > li {
+    list-style: none;
+}
+
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+    height: 30px;
+
+    padding: 12px;
+    margin-bottom: 5px;
+
+    border-radius: 8px;
+
+    font-size: 1.2rem;
+
+    color: white;
+    text-decoration: none;
+
+    cursor: pointer;
+}
+
+
+/* Main icons */
+
+.menu-item svg {
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+}
+
+
+/* Active link */
+
+.menu-item.active {
+    background-color: #0b327e;
+}
+
+
+/* Opcional: efecto al pasar mouse */
+
+.menu-item:hover {
+    background-color: #0a1d3d;
+}
+
+
+/* Transactions */
+
+.transaction-section {
+    list-style: none;
+}
+
+.transaction-title {
+    margin-bottom: 5px;
+}
+
+.transaction-title .chevron {
+    margin-left: auto;
+    width: 18px;
+    height: 18px;
+}
+
+
+/* Submenu */
+
+.transaction-submenu {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 10px 28px;
+}
+
+.transaction-submenu li {
+    list-style: none;
+}
+
+
+/* Navlinks */
+
+.transaction-submenu li a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 10px;
+    font-size: 1rem;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+
+/* Submenu icons */
+
+.transaction-submenu li a svg {
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+}
+
+/* Hover submenu */
+.transaction-submenu li a:hover {
+    background-color: #0a1d3d;
+}
+
+/* Sub menu active link */
+
+.transaction-submenu li a.active {
+    background-color: #0b327e;
+}
+
+
+/* Transactions */
+
+.transactions {
+    border-top: 1px solid #142039;
+    margin-top: 10px;
+    padding-top: 18px;
+    list-style: none;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        min-height: 0;
+        height: auto;
+        padding: 8px 6px calc(8px + env(safe-area-inset-bottom));
+        border-top: 1px solid #142039;
+    }
+
+    .sidebar-logo {
+        display: none;
+    }
+
+    .sidebar nav {
+        width: 100%;
+    }
+
+    .sidebar-menu {
+        flex-direction: row;
+        align-items: stretch;
+        justify-content: space-between;
+        gap: 2px;
+        width: 100%;
+        padding: 0;
+    }
+
+    .transaction-section,
+    .transaction-submenu {
+        display: contents;
+    }
+
+    .transaction-title {
+        display: none;
+    }
+
+    .transactions {
+        border: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .menu-item,
+    .transaction-submenu li a {
+        flex-direction: column;
+        justify-content: center;
+        gap: 4px;
+        width: auto;
+        height: auto;
+        margin: 0;
+        padding: 6px 2px;
+        font-size: 0.68rem;
+        line-height: 1.1;
+        text-align: center;
+    }
+
+    .menu-item svg,
+    .transaction-submenu li a svg {
+        width: 22px;
+        height: 22px;
+    }
+}
