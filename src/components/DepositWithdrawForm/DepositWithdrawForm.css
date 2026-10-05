@@ -1,0 +1,187 @@
+.dw-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 24px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    color: var(--text-primary);
+}
+
+.dw-title {
+    margin: 0;
+    font-size: 20px;
+}
+
+.dw-label {
+    color: var(--text-secondary);
+    font-size: 15px;
+}
+
+.dw-select,
+.dw-amount {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: var(--bg-card-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+}
+
+.dw-select {
+    gap: 16px;
+    padding: 12px;
+}
+
+.dw-select-icon {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    background: var(--primary-blue);
+    border-radius: 10px;
+}
+
+.dw-select-info {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.dw-select-name {
+    font-weight: 600;
+}
+
+.dw-select-number {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.dw-select-balance {
+    font-weight: 600;
+}
+
+.dw-select-chevron {
+    color: var(--highlight-blue);
+}
+
+.dw-select select {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.dw-amount-symbol {
+    padding: 14px 18px;
+    border-right: 1px solid var(--border-color);
+    color: var(--text-secondary);
+}
+
+.dw-amount input {
+    flex: 1;
+    padding: 14px 16px;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text-primary);
+    font-size: 16px;
+}
+
+.dw-amount:focus-within {
+    border-color: var(--highlight-blue);
+}
+
+.dw-quick {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+.dw-quick button {
+    padding: 14px;
+    background: var(--bg-card-secondary);
+    border: 1px solid transparent;
+    border-radius: 10px;
+    color: var(--text-primary);
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.dw-quick button:hover {
+    border-color: var(--highlight-blue);
+}
+
+.dw-methods {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.dw-method {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    background: var(--bg-card-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+.dw-method.selected {
+    border-color: var(--highlight-blue);
+    background: rgba(22, 119, 255, 0.12);
+}
+
+.dw-method input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.dw-radio {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--border-color);
+    border-radius: 50%;
+}
+
+.dw-method.selected .dw-radio {
+    border: 7px solid var(--primary-blue);
+    background: #fff;
+}
+
+.dw-method-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.dw-method-text small {
+    color: var(--text-secondary);
+}
+
+.dw-error {
+    margin: 0;
+    color: var(--danger);
+    font-size: 14px;
+}
+
+.dw-submit {
+    padding: 16px;
+    background: linear-gradient(90deg, var(--primary-blue), var(--highlight-blue));
+    border: none;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.dw-submit:hover {
+    filter: brightness(1.1);
+}
