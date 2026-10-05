@@ -1,0 +1,129 @@
+.topbar {
+    width: 100%;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 30px;
+    background-color: var(--bg-card-secondary);
+    border-bottom: 2px solid var(--border-color);
+    box-sizing: border-box;
+}
+
+/* Search bar */
+
+.search-bar {
+    width: 600px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 14px;
+    background-color: var(--bg-card-secondary);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+}
+
+
+.search-bar svg {
+    width: 20px;
+    height: 20px;
+    color: #6b7280;
+}
+
+
+.search-bar input {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 1rem;
+    color: #111827;
+}
+
+
+.search-bar input::placeholder {
+    color: #9ca3af;
+}
+
+
+/* Profile */
+
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+}
+
+
+/* Profile picture */
+
+.profile-picture {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: #0b327e;
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 1.7rem;
+}
+
+/* Profile text */
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-name {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.profile-role {
+    margin-top: 2px;
+    font-size: 0.75rem;
+    color: #6b7280;
+}
+
+/* Profile arrow*/
+
+.profile-arrow {
+    width: 18px;
+    height: 18px;
+    color: #6b7280;
+}
+
+@media (max-width: 768px) {
+    .topbar {
+        height: 70px;
+        gap: 10px;
+        padding: 0 12px;
+    }
+
+    .search-bar {
+        width: auto;
+        flex: 1;
+        min-width: 0;
+        height: 42px;
+    }
+
+    .profile-picture {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+
+    .profile-name {
+        font-size: 0.95rem;
+    }
+
+    .profile-role {
+        display: none;
+    }
+}

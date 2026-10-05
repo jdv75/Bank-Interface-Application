@@ -1,0 +1,27 @@
+:root {
+    --bg-primary: #06101F;
+    --bg-sidebar: #071225;
+    --bg-card: #0B1930;
+    --bg-card-secondary: #10213D;
+
+    --primary-blue: #1677FF;
+    --highlight-blue: #2F80FF;
+
+    --text-primary: #F5F7FF;
+    --text-secondary: #9CAED0;
+
+    --border-color: #1B3559;
+
+    --success: #00D69A;
+    --danger: #FF365F;
+    --transfer: #6C4DFF;
+
+    --font-family: "Inter", sans-serif;
+    font-family: var(--font-family);
+
+    --sidebar-width: 320px;
+    --topbar-height: 100px;
+
+    background-color: var(--bg-primary);
+    box-sizing: border-box;
+}

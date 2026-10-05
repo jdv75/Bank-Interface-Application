@@ -1,0 +1,548 @@
+.home {
+    color: var(--text-primary);
+    padding: 40px 32px;
+}
+
+.home-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.home-header h1 {
+    margin: 0;
+    font-size: 45px;
+    font-weight: 700;
+}
+
+.home-header h1 span {
+    color: var(--highlight-blue);
+}
+
+.home-header p {
+    margin-top: 6px;
+    color: var(--text-secondary);
+    font-size: 20px;
+}
+
+.home-date {
+    display: flex;
+    align-items: center;
+    gap: 26px;
+    color: var(--text-secondary);
+}
+
+.home-date button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: var(--bg-card);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 0.9rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 10px 16px;
+    cursor: pointer;
+}
+
+.home-date button svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* Cards */
+
+.accounts-overview,
+.quick-actions-grid,
+.recent-grid {
+    display: grid;
+    gap: 16px;
+}
+
+.accounts-overview {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.quick-actions-grid,
+.recent-grid {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.dash-account,
+.quick-action,
+.recent {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+}
+
+.dash-account.new-account {
+    justify-content: flex-start;
+    gap: 16px;
+    padding: 20px 24px;
+    background: var(--bg-card);
+    border: 1px dashed #2a4a73;
+    cursor: pointer;
+}
+
+.new-account-icon {
+    width: 52px;
+    height: 52px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 1px solid var(--highlight-blue);
+    color: var(--highlight-blue);
+}
+
+.new-account-icon svg {
+    width: 22px;
+    height: 22px;
+}
+
+.dash-account.new-account .info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.dash-account.new-account h3 {
+    color: var(--highlight-blue);
+    font-size: 1.05rem;
+}
+
+.dash-account.new-account span {
+    margin-top: 0;
+    letter-spacing: 0;
+    line-height: 1.4;
+}
+
+
+.dash-account,
+.quick-action {
+    padding: 18px 16px;
+    min-height: 148px;
+}
+
+.dash-account {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.dash-account.checking,
+.dash-account.savings,
+.dash-account.investment {
+    padding: 0 30px;
+}
+
+.dash-account.checking {
+    background:
+        linear-gradient(180deg, rgba(22, 119, 255, 0) 50%, rgba(22, 119, 255, 0.28) 100%),
+        var(--bg-card);
+    border-color: #1d4e89;
+}
+
+.dash-account.savings {
+    background:
+        linear-gradient(180deg, rgba(0, 214, 154, 0) 50%, rgba(0, 214, 154, 0.28) 100%),
+        var(--bg-card);
+    border-color: #0f6b52;
+}
+
+.dash-account.investment {
+    background:
+        linear-gradient(180deg, rgba(108, 77, 255, 0) 50%, rgba(108, 77, 255, 0.28) 100%),
+        var(--bg-card);
+    border-color: #4a3d8a;
+}
+
+.dash-account-main {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+    min-width: 0;
+}
+
+.recent-section {
+    margin-top: 28px;
+}
+
+.recent-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.recent-header h2 {
+    margin: 0;
+    font-size: 1.25rem;
+}
+
+.recent-header a,
+.recent-column-header a {
+    color: var(--highlight-blue);
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.recent {
+    padding: 0;
+    overflow: hidden;
+}
+
+.recent .recent-grid {
+    gap: 0;
+}
+
+.recent-column {
+    padding: 0 0 12px;
+}
+
+.recent-column + .recent-column {
+    border-left: 2px solid #3a6494;
+}
+
+.recent-column ul {
+    list-style: none;
+    margin: 0;
+    padding: 0 20px;
+}
+
+.recent-column-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    padding: 16px 20px;
+    background-color: #163056;
+}
+
+.recent-column-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.recent-column-title h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.column-icon,
+.transaction-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.column-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+}
+
+.column-icon svg {
+    width: 16px;
+    height: 16px;
+}
+
+.recent-column.deposits .column-icon {
+    background-color: #0d3b30;
+    color: var(--success);
+}
+
+.recent-column.withdrawals .column-icon {
+    background-color: #3b1520;
+    color: var(--danger);
+}
+
+.recent-column.transfers .column-icon {
+    background-color: #2a2158;
+    color: var(--transfer);
+}
+
+.transaction {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+}
+
+.transaction-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background-color: var(--bg-card-secondary);
+    color: var(--text-secondary);
+}
+
+.transaction-icon svg {
+    width: 18px;
+    height: 18px;
+}
+
+.transaction-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.transaction-info strong,
+.transaction-info span {
+    display: block;
+}
+
+.transaction-info strong {
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.transaction-info span {
+    margin-top: 2px;
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+}
+
+.transaction > .positive,
+.transaction > .negative {
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.transaction > .positive {
+    color: var(--success);
+}
+
+.transaction > .negative {
+    color: var(--danger);
+}
+
+.dash-account-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.dash-account-top .info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.dash-account-icon {
+    width: 74px;
+    height: 74px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+}
+
+.dash-account-icon.checking {
+    background-color: #12315f;
+    color: var(--highlight-blue);
+}
+
+.dash-account-icon.savings {
+    background-color: #0d3b30;
+    color: var(--success);
+}
+
+.dash-account-icon.investment {
+    background-color: #2a2158;
+    color: var(--transfer);
+}
+
+.dash-account-icon svg {
+    width: 42px;
+    height: 42px;
+}
+
+.dash-account h3,
+.dash-account span,
+.dash-account strong {
+    margin: 0;
+}
+
+.dash-account h3 {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.dash-account span {
+    display: block;
+    margin-top: 4px;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+}
+
+.dash-account strong {
+    font-size: 1.6rem;
+    font-weight: 700;
+}
+
+.dash-account-arrow {
+    width: 56px;
+    height: 56px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* border-radius: 50%; */
+    border-radius: 20%;
+    border: 2px solid var(--border-color);
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+}
+
+.dash-account-arrow svg {
+    width: 28px;
+    height: 28px;
+}
+
+.quick-actions h2 {
+    margin: 28px 0 16px;
+    font-size: 1.25rem;
+}
+
+.quick-action {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-height: 88px;
+    padding: 10px 18px;
+}
+
+.quick-action .info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
+
+.quick-action h3,
+.quick-action span {
+    margin: 0;
+}
+
+.quick-action h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.quick-action span {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+
+.quick-action-icon {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+}
+
+.quick-action-icon svg {
+    width: 22px;
+    height: 22px;
+}
+
+.quick-action.deposit {
+    background:
+        linear-gradient(180deg, rgba(0, 214, 154, 0) 40%, rgba(0, 214, 154, 0.22) 100%),
+        var(--bg-card);
+    border-color: #0f6b52;
+}
+
+.quick-action.deposit .quick-action-icon {
+    background-color: #0d3b30;
+    color: var(--success);
+}
+
+.quick-action.withdraw {
+    background:
+        linear-gradient(180deg, rgba(22, 119, 255, 0) 40%, rgba(22, 119, 255, 0.22) 100%),
+        var(--bg-card);
+    border-color: #1d4e89;
+}
+
+.quick-action.withdraw .quick-action-icon {
+    background-color: #12315f;
+    color: var(--highlight-blue);
+}
+
+.quick-action.transfer {
+    background:
+        linear-gradient(180deg, rgba(108, 77, 255, 0) 40%, rgba(108, 77, 255, 0.22) 100%),
+        var(--bg-card);
+    border-color: #4a3d8a;
+}
+
+.quick-action.transfer .quick-action-icon {
+    background-color: #2a2158;
+    color: var(--transfer);
+}
+
+@media (max-width: 768px) {
+    .home {
+        padding: 16px 0 8px;
+    }
+
+    .home-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .home-header h1 {
+        font-size: 28px;
+    }
+
+    .home-header p {
+        font-size: 16px;
+    }
+
+    .home-date {
+        width: 100%;
+        justify-content: space-between;
+        gap: 12px;
+    }
+
+    .accounts-overview,
+    .quick-actions-grid,
+    .recent .recent-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .dash-account.checking,
+    .dash-account.savings,
+    .dash-account.investment {
+        padding: 16px;
+    }
+
+    .quick-action h3 {
+        font-size: 1.15rem;
+    }
+
+    .recent-column + .recent-column {
+        border-left: none;
+        border-top: 2px solid #3a6494;
+    }
+}

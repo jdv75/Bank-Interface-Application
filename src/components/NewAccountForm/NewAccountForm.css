@@ -1,0 +1,125 @@
+.new-account-form {
+    display: grid;
+    gap: 16px;
+    box-sizing: border-box;
+    margin-bottom: 24px;
+    padding: 0 0 32px;
+    overflow: hidden;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    color: var(--text-primary);
+}
+
+.new-account-form-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    background-color: #163056;
+}
+
+.new-account-form h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.new-account-form > label,
+.new-account-form > .account-type-picker,
+.new-account-form > .new-account-form-actions {
+    padding-left: 32px;
+    padding-right: 32px;
+}
+
+.new-account-form label {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    color: var(--text-secondary);
+    font-size: 1.15rem;
+}
+
+.new-account-form input {
+    padding: 14px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--bg-card-secondary);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 1.15rem;
+}
+
+.new-account-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.new-account-form button {
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    background-color: var(--primary-blue);
+    color: white;
+    font-family: inherit;
+    font-size: 1.05rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.new-account-form-header button,
+.new-account-form button.cancel {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+}
+
+.account-type-picker span {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-secondary);
+    font-size: 1.15rem;
+}
+
+.account-type-picker div {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.account-type-picker button {
+    background-color: var(--bg-card-secondary);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+}
+
+.account-type-picker button.selected.checking {
+    border-color: var(--highlight-blue);
+    background-color: #12315f;
+}
+
+.account-type-picker button.selected.savings {
+    border-color: var(--success);
+    background-color: #0d3b30;
+}
+
+.account-type-picker button.selected.investment {
+    border-color: var(--transfer);
+    background-color: #2a2158;
+}
+
+@media (max-width: 768px) {
+    .new-account-form > label,
+    .new-account-form > .account-type-picker,
+    .new-account-form > .new-account-form-actions {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .account-type-picker button {
+        padding: 10px 6px;
+        font-size: 0.9rem;
+    }
+}
