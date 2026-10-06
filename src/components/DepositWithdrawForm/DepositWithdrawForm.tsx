@@ -55,7 +55,6 @@ function DepositWithdrawForm({ type }: DepositWithdrawFormProps) {
     const config = CONFIG[type];
     const [amount, setAmount] = useState("");
     const [method, setMethod] = useState<string>(config.methods[0].id);
-    const [error, setError] = useState("");
 
 
     const handleSubmit = (e: FormEvent) => {
@@ -64,8 +63,8 @@ function DepositWithdrawForm({ type }: DepositWithdrawFormProps) {
             const parsedAmount = Number.parseFloat(amount);
 
             if (Number.isNaN(parsedAmount) || parsedAmount <= 0) {
-                setError("Please enter a valid amount greater than zero.");
-                return;
+                throw Error("Please enter a valid numerical amount greater than zero.");
+                
             }
 
             if (type === "deposit") {
@@ -81,8 +80,6 @@ function DepositWithdrawForm({ type }: DepositWithdrawFormProps) {
 
         }
        
-
-        setError("");
         setAmount("");
     };
 
@@ -93,38 +90,50 @@ function DepositWithdrawForm({ type }: DepositWithdrawFormProps) {
             <label className="dw-label" htmlFor="dw-account">Select Account</label>
             <div className="dw-select">
                 <div className="dw-select-icon"><CreditCard size={20} /></div>
-                
+
+                <div className="dw-select-summary" aria-hidden="true">
+                    <span className="dw-account-details">
+                        <strong>{accounts.find((account) => account.id === accountId)?.name}</strong>
+                        <small>
+                            {accounts.find((account) => account.id === accountId)?.type} Account
+                        </small>
+                    </span>
+                    <strong className="dw-account-balance">
+                        {formatCurrency(accounts.find((account) => account.id === accountId)?.balance ?? 0)}
+                    </strong>
+                </div>
+
                 <ChevronDown size={18} className="dw-select-chevron" />
                 <select
                     id="dw-account"
                     value={accountId}
-                    onChange={(e) => setAccountId(e.target.value)}>
+                    onChange={(e) => setAccountId(e.target.value)}
+                    aria-label="Select account"
+                >
                     {accounts.map((account) => (
                         <option key={account.id} value={account.id}>
                             {account.name} — {formatCurrency(account.balance)}
                         </option>
                     ))}
-
                 </select>
-                
             </div>
 
 
-            {config.amountLabel}
             <label className="dw-label" htmlFor="dw-amount">
-                
-                <div className="dw-amount input">
-                    <input
+                {config.amountLabel}
+            </label>
+            <div className="dw-amount input">
+                <input
+                    id="dw-amount"
                     type="text"
                     value={amount}
                     placeholder="0.00"
                     required
                     onChange={(e) => setAmount(e.target.value)}
-                    />
-                </div>
-            </label>
+                />
+            </div>
 
-            {config.methodLabel}
+            <p className="dw-label">{config.methodLabel}</p>
             <div className="dw-methods" role="radiogroup" aria-label={config.methodLabel}>
                 <label className={`dw-method ${method === "bank" ? "selected" : ""}`}>
                     <input

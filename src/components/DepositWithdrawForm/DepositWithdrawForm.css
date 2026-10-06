@@ -30,23 +30,41 @@
 }
 
 .dw-select {
+    position: relative;
+    display: flex;
+    align-items: center;
     gap: 16px;
-    padding: 12px;
+    min-height: 72px;
+    padding: 10px 14px;
+    border: 1px solid #1e3a5f;
+    border-radius: 12px;
+    background: #0c192d;
+    color: #f4f7ff;
+}
+
+.dw-select:focus-within {
+    outline: 2px solid #3984ff;
+    outline-offset: 2px;
 }
 
 .dw-select-icon {
     display: grid;
+    width: 52px;
+    height: 52px;
+    flex: 0 0 52px;
     place-items: center;
-    width: 48px;
-    height: 48px;
-    background: var(--primary-blue);
     border-radius: 10px;
+    background: #0754c7;
+    color: white;
 }
 
-.dw-select-info {
+.dw-select-summary {
     display: flex;
-    flex-direction: column;
     flex: 1;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    pointer-events: none;
 }
 
 .dw-select-name {
@@ -63,7 +81,9 @@
 }
 
 .dw-select-chevron {
-    color: var(--highlight-blue);
+    flex: 0 0 auto;
+    color: #a9bddb;
+    pointer-events: none;
 }
 
 .dw-select select {
@@ -73,6 +93,11 @@
     height: 100%;
     opacity: 0;
     cursor: pointer;
+}
+
+.dw-account-details small {
+    text-transform: capitalize;
+    display: block;
 }
 
 .dw-amount-symbol {
