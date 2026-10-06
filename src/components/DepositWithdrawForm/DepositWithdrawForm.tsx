@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { FormEvent } from "react";
 import { ChevronDown, CreditCard, Landmark } from "lucide-react";
 import "./DepositWithdrawForm.css";
+import { getAccounts, deposit, withdraw } from "../../services/transactionService";
 
 export type TransactionType = "deposit" | "withdraw";
 
@@ -21,8 +22,6 @@ export interface TransactionSubmission {
 interface DepositWithdrawFormProps {
     type: TransactionType;
 }
-
-const QUICK_AMOUNTS = [50, 100, 250, 500];
 
 const CONFIG = {
     deposit: {
@@ -51,6 +50,8 @@ const formatCurrency = (value: number) =>
     value.toLocaleString("en-US", { style: "currency", currency: "USD" });
 
 function DepositWithdrawForm({ type }: DepositWithdrawFormProps) {
+    const accounts = getAccounts("usr_01");
+    const [accountId, setAccountId] = useState(accounts[0]?.id ?? "");
     const config = CONFIG[type];
     const [amount, setAmount] = useState("");
     const [method, setMethod] = useState<string>(config.methods[0].id);
@@ -59,8 +60,27 @@ function DepositWithdrawForm({ type }: DepositWithdrawFormProps) {
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
-        const value = parseFloat(amount);
+        try {
+            const parsedAmount = Number.parseFloat(amount);
 
+            if (Number.isNaN(parsedAmount) || parsedAmount <= 0) {
+                setError("Please enter a valid amount greater than zero.");
+                return;
+            }
+
+            if (type === "deposit") {
+                deposit(accountId, parsedAmount);
+            } else {
+                withdraw(accountId, parsedAmount);
+            }
+        } catch (error) {
+            if (error instanceof Error) {
+                console.error("An error occurred:", error.message);
+                alert(`An error occurred: ${error.message}`);
+            }
+
+        }
+       
 
         setError("");
         setAmount("");
@@ -75,6 +95,17 @@ function DepositWithdrawForm({ type }: DepositWithdrawFormProps) {
                 <div className="dw-select-icon"><CreditCard size={20} /></div>
                 
                 <ChevronDown size={18} className="dw-select-chevron" />
+                <select
+                    id="dw-account"
+                    value={accountId}
+                    onChange={(e) => setAccountId(e.target.value)}>
+                    {accounts.map((account) => (
+                        <option key={account.id} value={account.id}>
+                            {account.name} — {formatCurrency(account.balance)}
+                        </option>
+                    ))}
+
+                </select>
                 
             </div>
 
@@ -85,8 +116,10 @@ function DepositWithdrawForm({ type }: DepositWithdrawFormProps) {
                 <div className="dw-amount input">
                     <input
                     type="text"
+                    value={amount}
                     placeholder="0.00"
                     required
+                    onChange={(e) => setAmount(e.target.value)}
                     />
                 </div>
             </label>
@@ -125,8 +158,8 @@ function DepositWithdrawForm({ type }: DepositWithdrawFormProps) {
         </div>
 
         <div>
-                <button type="button" className="dw-submit">
-                    Deposit Funds
+                <button type="button" className="dw-submit" onClick={handleSubmit}>
+                    {config.submitLabel}
                 </button>
             </div>
 
