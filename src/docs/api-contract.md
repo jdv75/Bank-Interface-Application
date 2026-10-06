@@ -1,4 +1,4 @@
-## GET / api/accounts/{accountId}/transactions
+## GET /api/accounts/{accountId}/transactions
 Response: 200. Array of transactions, newest first.
 ```
 [
