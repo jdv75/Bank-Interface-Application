@@ -6,7 +6,7 @@ Response: 200. Array of transactions, newest first.
         "id": string,
         "type": "deposit" | "withdrawal" | "transfer",
         "amount": number,           // positive, 2 decimals
-        "datetime": string,
+        "created_at": string,
         "account_id: string,
         "to_account_id": string,    //transfers only
     }

@@ -1,6 +1,6 @@
 interface BaseTransaction {
   amount: number;
-  datetime: string;
+  created_at: string;
   id: string;
   account_id: string;
 }
