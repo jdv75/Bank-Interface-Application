@@ -3,7 +3,7 @@
     gap: 16px;
     box-sizing: border-box;
     margin-bottom: 24px;
-    padding: 0 0 32px;
+    padding: 0 0 20px;
     overflow: hidden;
     background-color: var(--bg-card);
     border: 1px solid var(--border-color);

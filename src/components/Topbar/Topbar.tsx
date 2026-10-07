@@ -79,10 +79,6 @@ function Topbar() {
 
             <div className="profile">
 
-                <div className="profile-picture">
-                    <span>JD</span>
-                </div>
-
                 <div className="profile-info">
                     <span className="profile-name">
                         Juan David
@@ -93,7 +89,11 @@ function Topbar() {
                     </span>
                 </div>
 
-                <ChevronDown className="profile-arrow" />
+                <div className="profile-picture">
+                    <span>JD</span>
+                </div>
+                
+                {/* <ChevronDown className="profile-arrow" /> */}
 
             </div>
 
