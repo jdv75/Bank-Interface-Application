@@ -3,29 +3,45 @@ import Search from "lucide-react";
 import { NavLink } from "react-router-dom";
 import "./LandingHeader.css";
 
+interface NavLinkItem {
+    label: string;
+    to: string;
+}
+
+const NAV_LINKS: NavLinkItem[] = [
+    { label: "Dashboard", to: "/" },
+    { label: "Features", to: "/features" },
+    { label: "Security", to: "/security" },
+    { label: "About", to: "/about" },
+    { label: "Contact", to: "/contact" },
+];
+
 function LandingHeader() {
     return (
-        <header className="landing-header"><nav>
-            <div className="logo" aria-label="NeuroBank Logo">
+        <header className="landing-header">
+            <nav className="logo" aria-label="NeuroBank Home">
                 <NavLink to="/">
                     <img src={logo} alt="NeuroBank Logo" />
-                    <h1>NeuroBank</h1>
-                </NavLink>
-            </div>
-            <div className="pages" aria-label="Navigation Links">
-                <ul>
-                    <li><NavLink to="/">Dashboard</NavLink></li>
-                    <li><NavLink to="/features">Features</NavLink></li>
-                    <li><NavLink to="/security">Security</NavLink></li>
-                    <li><NavLink to="/about">About</NavLink></li>
-                    <li><NavLink to="/contact">Contact</NavLink></li>
-                </ul>
-            </div>
-            <div className="user-actions">
-                <button className="btn header-login-btn"><NavLink to="/login">Login</NavLink></button>
-                <button className="btn header-signup-btn"><NavLink to="/signup">Sign Up</NavLink></button>
-            </div>
-        </nav>
+                    <h2 className="logo-text" aria-hidden="true">NeuroBank</h2>
+                </NavLink>                
+            </nav>
+
+            <nav className="nav-links" aria-label="Main Navigation">
+                {NAV_LINKS.map((link) => (
+                    <NavLink
+                        key={link.to}
+                        to={link.to}
+                        className="nav-link"
+                    >
+                        {link.label}
+                    </NavLink>
+                ))}
+            </nav>
+
+            <nav className="user-actions">
+                <NavLink to="/login" className="btn login large">Login</NavLink>
+                <NavLink to="/signup" className="btn signup large">Sign Up</NavLink>             
+            </nav>
         </header>
     );
 }

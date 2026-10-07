@@ -5,39 +5,37 @@ import FeatureCards from "../../components/FeatureCards/FeatureCards";
 import "./Landing.css";
 
 function Landing() {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-    const handleLogin = () => {
-        // Simulate a login action
-        setIsLoggedIn(true);
-    }  
-
-    const handleLogout = () => {
-        // Simulate a logout action
-        setIsLoggedIn(false);
-    }
-
     return (
-        <section className="landing-page">
-            <div className="landing-blurb">
-                <p className="tagline">SECURE • MODERN • BUILT FOR YOU</p>
-                <h1 className="title">NeuroBank</h1>
-                <h1 className="slogan">Where Smarter<br />
-                    Banking Begins</h1>
-                <p className="description">
-                    Manage your money, track your goals, and take control of your financial 
-                    future with NeuroBank. A simple, secure, and modern banking experience.
-                </p>
-            </div>
-            <nav>
-                <div className="landing-actions">
-                    <button className="landing-signup-button"><NavLink to="/signup">Get Started <MoveRight /></NavLink></button>
-                    <button className="landing-login-button"><NavLink to="/login">Login</NavLink></button>
+        <div className="landing-page">
+            <section className="landing-hero">
+                <div className="landing-container">
+                    <div className="landing-blurb">
+                        <p className="tagline">SECURE • MODERN • BUILT FOR YOU</p>
+                        <h1 className="title">NeuroBank</h1>
+                        <h1 className="slogan">Where Smarter<br />
+                            Banking Begins</h1>
+                        <p className="description">
+                            Manage your money, track your goals, and take control of your financial 
+                            future with NeuroBank. A simple, secure, and modern banking experience.
+                        </p>
+                    
+                        <nav className="landing-actions">
+                            <NavLink to="/signup" className="btn signup large">
+                                Get Started  <MoveRight aria-hidden="true" />
+                            </NavLink>
+                            <NavLink to="/login" className="btn login large">Login</NavLink>                
+                        </nav>
+                    </div>
+
+                    <div className="landing-visual">
+                        <div className="glow-effect" aria-hiden="true" />          
+                    </div>
+
                 </div>
-            </nav>
+            </section>
 
             <FeatureCards />
-        </section>
+        </div>
     );
 }
 

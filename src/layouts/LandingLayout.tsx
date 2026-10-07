@@ -11,9 +11,8 @@ function LandingLayout({ children }: LandingLayoutProps) {
     return (
         <div className="landing-layout">
             <div className="landing-background" aria-hidden="true" />
-            <header className="landing-header">
-                <LandingHeader />
-            </header>
+            
+            <LandingHeader />
 
             <main className="landing-content">
                 {children}
