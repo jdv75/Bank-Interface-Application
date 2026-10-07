@@ -52,7 +52,7 @@
 
 .accounts-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 16px;
 }
 
@@ -376,11 +376,6 @@
     height: 250px;
     flex-shrink: 0;
     border-radius: 50%;
-    background: conic-gradient(
-        #2f80ff 0% 11.6%,
-        #00d69a 11.6% 41.2%,
-        #6c4dff 41.2% 100%
-    );
     display: grid;
     place-items: center;
 }

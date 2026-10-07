@@ -49,7 +49,6 @@ export interface ApiError {
 }
 
 // JSON form of the data
-
 export interface BankDatabase {
     users: UserRecord[];
     accounts: Account[];
