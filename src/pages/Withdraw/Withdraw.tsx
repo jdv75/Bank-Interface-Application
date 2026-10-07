@@ -14,7 +14,7 @@ function Withdraw() {
 
             </div>
 
-            <DepositWithdrawForm type="withdraw" />
+            <DepositWithdrawForm type="withdrawal" />
 
 
         </div>

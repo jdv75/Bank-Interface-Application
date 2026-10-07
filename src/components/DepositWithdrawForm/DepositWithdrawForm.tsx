@@ -3,58 +3,65 @@ import type { FormEvent } from "react";
 import { ChevronDown, CreditCard, Landmark } from "lucide-react";
 import "./DepositWithdrawForm.css";
 import { getAccounts, deposit, withdraw } from "../../services/transactionService";
+import { Transaction } from "../../types/transaction";
 
-export type TransactionType = "deposit" | "withdraw";
+export type TransactionType = "deposit" | "withdrawal";
 
-export interface Account {
-    id: string;
-    name: string;
-    last4: string;
-    balance: number;
-}
+// export interface Account {
+//     id: string;
+//     name: string;
+//     last4: string;
+//     balance: number;
+// }
 
-export interface TransactionSubmission {
-    accountId: string;
-    amount: number;
-    method: string;
-}
-
-interface DepositWithdrawFormProps {
-    type: TransactionType;
-}
+// interface DepositWithdrawFormProps {
+//     type: TransactionType;
+// }
 
 const CONFIG = {
     deposit: {
         title: "Deposit Details",
         amountLabel: "Deposit Amount",
         methodLabel: "Deposit Method",
-        submitLabel: "Deposit Funds",
-        methods: [
-            { id: "bank", label: "Bank Transfer", description: "From an external bank account", icon: Landmark },
-            { id: "card", label: "Debit Card", description: "Use a linked debit card", icon: CreditCard },
-        ],
+        submitLabel: "Deposit Funds"
+        // methods: [
+        //     { id: "bank", label: "Bank Transfer", description: "From an external bank account", icon: Landmark },
+        //     { id: "card", label: "Debit Card", description: "Use a linked debit card", icon: CreditCard },
+        // ],
     },
-    withdraw: {
+    withdrawal: {
         title: "Withdrawal Details",
         amountLabel: "Withdrawal Amount",
         methodLabel: "Withdrawal Method",
-        submitLabel: "Withdraw Funds",
-        methods: [
-            { id: "bank", label: "Bank Transfer", description: "To an external bank account", icon: Landmark },
-            { id: "card", label: "Debit Card", description: "To a linked debit card", icon: CreditCard },
-        ],
-    },
+        submitLabel: "Withdraw Funds"
+        // methods: [
+        //     { id: "bank", label: "Bank Transfer", description: "To an external bank account", icon: Landmark },
+        //     { id: "card", label: "Debit Card", description: "To a linked debit card", icon: CreditCard },
+        // ],
+    }
 } as const;
 
 const formatCurrency = (value: number) =>
     value.toLocaleString("en-US", { style: "currency", currency: "USD" });
 
-function DepositWithdrawForm({ type }: DepositWithdrawFormProps) {
-    const accounts = getAccounts("usr_01");
+function createTransaction(id: string, accountId: string, type: string, createdAt: string, amount: number): Transaction {
+    return {
+        id,
+        account_id: accountId,
+        type: type === "withdrawal" ? "withdrawal" : "deposit",
+        created_at: createdAt,
+        amount
+    };
+}
+
+
+
+function DepositWithdrawForm({ type }: { type: TransactionType }) {
+    const accounts = getAccounts();
     const [accountId, setAccountId] = useState(accounts[0]?.id ?? "");
     const config = CONFIG[type];
     const [amount, setAmount] = useState("");
-    const [method, setMethod] = useState<string>(config.methods[0].id);
+    // const [method, setMethod] = useState<string>(config.methods[0].id);
 
 
     const handleSubmit = (e: FormEvent) => {
@@ -67,6 +74,7 @@ function DepositWithdrawForm({ type }: DepositWithdrawFormProps) {
                 
             }
 
+ //           const transaction = createTransaction()
             if (type === "deposit") {
                 deposit(accountId, parsedAmount);
             } else {
@@ -95,7 +103,7 @@ function DepositWithdrawForm({ type }: DepositWithdrawFormProps) {
                     <span className="dw-account-details">
                         <strong>{accounts.find((account) => account.id === accountId)?.name}</strong>
                         <small>
-                            {accounts.find((account) => account.id === accountId)?.type} Account
+                            •••• {accounts.find((account) => account.id === accountId)?.last4} · {accounts.find((account) => account.id === accountId)?.type} Account
                         </small>
                     </span>
                     <strong className="dw-account-balance">
@@ -112,7 +120,7 @@ function DepositWithdrawForm({ type }: DepositWithdrawFormProps) {
                 >
                     {accounts.map((account) => (
                         <option key={account.id} value={account.id}>
-                            {account.name} — {formatCurrency(account.balance)}
+                            {account.name} •••• {account.last4} — {formatCurrency(account.balance)}
                         </option>
                     ))}
                 </select>
@@ -133,7 +141,7 @@ function DepositWithdrawForm({ type }: DepositWithdrawFormProps) {
                 />
             </div>
 
-            <p className="dw-label">{config.methodLabel}</p>
+            {/* <p className="dw-label">{config.methodLabel}</p>
             <div className="dw-methods" role="radiogroup" aria-label={config.methodLabel}>
                 <label className={`dw-method ${method === "bank" ? "selected" : ""}`}>
                     <input
@@ -164,7 +172,7 @@ function DepositWithdrawForm({ type }: DepositWithdrawFormProps) {
                         <small>{config.methods[1].description}</small>
                     </span>
                 </label>
-        </div>
+        </div> */}
 
         <div>
                 <button type="button" className="dw-submit" onClick={handleSubmit}>

@@ -1,7 +1,7 @@
 import transactionsData from "../data/transactions.json";
 import type { Transaction } from "../types/transaction";
-import accountsData from "../data/accounts.json";
-import type { Account } from "../types/account";
+import type { Account } from "../types/bank";
+import { db } from "./bankStore";
 
 
 export function getTransactions(accountId: string, limit?: number): Transaction[] {
@@ -13,10 +13,8 @@ export function getTransactions(accountId: string, limit?: number): Transaction[
     // TODO: refactor to fetch from api
 }
 
-export function getAccounts(userId: string): Account[] {
-    return (accountsData as Account[]).filter(
-        (account) => account.user_id === userId
-    );
+export function getAccounts(): Account[] {
+    return db.accounts;
 }
 
 function validateAccount(account: Account | undefined): asserts account is Account {
@@ -26,7 +24,7 @@ function validateAccount(account: Account | undefined): asserts account is Accou
 }
 
 export function deposit(accountId: string, amount: number): void {
-    const account = (accountsData as Account[]).find(
+    const account = db.accounts.find(
         (account) => account.id === accountId
     );
 
@@ -39,7 +37,7 @@ export function deposit(accountId: string, amount: number): void {
 }
 
 export function withdraw(accountId: string, amount: number): void {
-    const account = (accountsData as Account[]).find(
+    const account = db.accounts.find(
         (account) => account.id === accountId
     );
 
@@ -52,5 +50,9 @@ export function withdraw(accountId: string, amount: number): void {
     }
 
     account.balance -= amount;
+}
+
+export function addTransaction(transaction: Transaction): void {
+
 }
 
