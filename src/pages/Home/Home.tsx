@@ -167,10 +167,10 @@ function Home() {
                 </div>
 
                 <div className="home-date">
-                    <span>{today}</span>
+                    {/* <span>{today}</span> */}
                     <button type="button">
-                        This Month
-                        <ChevronDown />
+                        {today}
+                        {/* <ChevronDown /> */}
                     </button>
                 </div>
             </div>

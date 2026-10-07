@@ -1,4 +1,5 @@
 import { ChevronRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 import type { Account } from "../../types/bank";
 import { formatCurrency, maskAccount } from "../../utils/format";
@@ -10,6 +11,7 @@ interface AccountSummaryCardProps {
 
 function AccountSummaryCard({ account }: AccountSummaryCardProps) {
     const Icon = getAccountIcon(account.type);
+    const navigate = useNavigate();
 
     return (
         <article className={`dash-account ${account.type}`}>
@@ -32,6 +34,7 @@ function AccountSummaryCard({ account }: AccountSummaryCardProps) {
                 className="dash-account-arrow"
                 type="button"
                 aria-label={`Open ${account.name}`}
+                onClick={() => navigate("/accounts")}
             >
                 <ChevronRight />
             </button>
