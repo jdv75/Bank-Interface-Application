@@ -1,0 +1,158 @@
+{
+    "users": [
+      {
+        "id": "user-1",
+        "name": "George",
+        "email": "george@neurobank.com",
+        "password": "password123"
+      }
+    ],
+    "accounts": [
+      {
+        "id": "acc-checking",
+        "type": "checking",
+        "name": "Checking Account",
+        "last4": "0224",
+        "balance": 2431.89,
+        "routingNumber": "021000021"
+      },
+      {
+        "id": "acc-savings",
+        "type": "savings",
+        "name": "Savings Account",
+        "last4": "4432",
+        "balance": 6210.45,
+        "interestRate": 4
+      },
+      {
+        "id": "acc-investment",
+        "type": "investment",
+        "name": "Investment Account",
+        "last4": "7789",
+        "balance": 12340,
+        "ytdReturn": 8.25
+      }
+    ],
+    "transactions": [
+      {
+        "id": "txn-001",
+        "accountId": "acc-checking",
+        "type": "deposit",
+        "category": "payroll",
+        "name": "Direct Deposit",
+        "detail": "Payroll",
+        "amount": 1200,
+        "createdAt": "2024-03-24T09:00:00"
+      },
+      {
+        "id": "txn-002",
+        "accountId": "acc-checking",
+        "type": "deposit",
+        "category": "mobile-check",
+        "name": "Mobile Check Deposit",
+        "detail": "Mobile deposit",
+        "amount": 350,
+        "createdAt": "2024-03-20T14:15:00"
+      },
+      {
+        "id": "txn-003",
+        "accountId": "acc-checking",
+        "type": "deposit",
+        "category": "bank-transfer",
+        "name": "Bank Transfer",
+        "detail": "External bank",
+        "amount": 500,
+        "createdAt": "2024-03-18T11:32:00"
+      },
+      {
+        "id": "txn-004",
+        "accountId": "acc-checking",
+        "type": "deposit",
+        "category": "cash",
+        "name": "Cash Deposit",
+        "detail": "Branch deposit",
+        "amount": 200,
+        "createdAt": "2024-03-15T16:21:00"
+      },
+      {
+        "id": "txn-005",
+        "accountId": "acc-checking",
+        "type": "withdraw",
+        "category": "atm",
+        "name": "ATM Withdrawal",
+        "detail": "ATM",
+        "amount": -100,
+        "createdAt": "2024-03-22T18:45:00"
+      },
+      {
+        "id": "txn-006",
+        "accountId": "acc-checking",
+        "type": "withdraw",
+        "category": "groceries",
+        "name": "Grocery Store",
+        "detail": "Debit card",
+        "amount": -85.23,
+        "createdAt": "2024-03-19T13:12:00"
+      },
+      {
+        "id": "txn-007",
+        "accountId": "acc-checking",
+        "type": "withdraw",
+        "category": "dining",
+        "name": "Restaurant",
+        "detail": "Debit card",
+        "amount": -62.5,
+        "createdAt": "2024-03-17T19:30:00"
+      },
+      {
+        "id": "txn-008",
+        "accountId": "acc-checking",
+        "type": "withdraw",
+        "category": "shopping",
+        "name": "Online Purchase",
+        "detail": "Debit card",
+        "amount": -120,
+        "createdAt": "2024-03-14T10:05:00"
+      },
+      {
+        "id": "txn-009",
+        "accountId": "acc-checking",
+        "type": "transfer",
+        "category": "internal-transfer",
+        "name": "To Savings",
+        "detail": "From Checking",
+        "amount": -500,
+        "createdAt": "2024-03-23T11:00:00"
+      },
+      {
+        "id": "txn-010",
+        "accountId": "acc-checking",
+        "type": "transfer",
+        "category": "internal-transfer",
+        "name": "To Investment",
+        "detail": "From Checking",
+        "amount": -300,
+        "createdAt": "2024-03-20T10:30:00"
+      },
+      {
+        "id": "txn-011",
+        "accountId": "acc-checking",
+        "type": "transfer",
+        "category": "internal-transfer",
+        "name": "From Savings",
+        "detail": "To Checking",
+        "amount": 200,
+        "createdAt": "2024-03-16T15:40:00"
+      },
+      {
+        "id": "txn-012",
+        "accountId": "acc-checking",
+        "type": "transfer",
+        "category": "internal-transfer",
+        "name": "To Checking",
+        "detail": "From Investment",
+        "amount": 400,
+        "createdAt": "2024-03-12T09:15:00"
+      }
+    ]
+  }
