@@ -15,6 +15,7 @@ import TransactionItem from "../../components/TransactionItem/TransactionItem";
 import { bankService, type TransactionsByType } from "../../services/bankService";
 import type { Account, Transaction, TransactionType, User } from "../../types/bank";
 import "./Home.css";
+import TransactionList from "../../components/TransactionList/TransactionList";
 
 type HomeData = {
     user: User;
@@ -22,6 +23,7 @@ type HomeData = {
     transactionsByType: TransactionsByType;
 };
 
+<<<<<<< HEAD
 type RecentColumn = {
     title: string;
     tone: string;
@@ -41,6 +43,9 @@ const recentColumns: RecentColumn[] = [
     { title: "Withdrawals", tone: "withdrawals", icon: ArrowUpFromLine, type: "withdraw" },
     { title: "Transfers", tone: "transfers", icon: ArrowLeftRight, type: "transfer" }
 ];
+=======
+
+>>>>>>> 387215c (feat: add transactions list component)
 
 const quickActions: QuickAction[] = [
     { tone: "deposit", icon: ArrowDownToLine, title: "Deposit", detail: "Add money to your account" },
@@ -190,6 +195,7 @@ function Home() {
                     ))}
                 </div>
             </section>
+<<<<<<< HEAD
 
             <section className="recent-section">
                 <div className="recent-header">
@@ -209,6 +215,9 @@ function Home() {
                     </div>
                 </div>
             </section>
+=======
+            <TransactionList />
+>>>>>>> 387215c (feat: add transactions list component)
         </section>
     );
 }
