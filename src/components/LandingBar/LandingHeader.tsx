@@ -40,7 +40,7 @@ function LandingHeader() {
 
             <nav className="user-actions">
                 <NavLink to="/login" className="btn login large">Login</NavLink>
-                <NavLink to="/signup" className="btn signup large">Sign Up</NavLink>             
+                <NavLink to="/register" className="btn signup large">Sign Up</NavLink>             
             </nav>
         </header>
     );

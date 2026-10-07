@@ -24,4 +24,11 @@
 
     background-color: var(--bg-primary);
     box-sizing: border-box;
+
+    --auth-input-bg: #0A1528;             /* between --bg-card and --bg-card-secondary */
+    --auth-input-border: #1B3559;         /* same as --border-color */
+    --auth-glow: 0 8px 24px rgba(22, 119, 255, 0.35);
+    --auth-glow-strong: 0 12px 30px rgba(22, 119, 255, 0.45);
+    --auth-error-bg: rgba(255, 54, 95, 0.10);
+    --auth-success-bg: rgba(0, 214, 154, 0.12);
 }
