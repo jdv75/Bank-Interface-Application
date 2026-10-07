@@ -4,6 +4,7 @@ import LandingLayout from "./layouts/LandingLayout";
 import Accounts from "./pages/Accounts/Accounts";
 import Home from "./pages/Home/Home";
 import Landing from "./pages/Landing/Landing";
+import TransactionList from "./components/TransactionList/TransactionList";
 
 function App() {
     return (
@@ -30,6 +31,14 @@ function App() {
                     element={
                         <DashboardLayout>
                             <Accounts />
+                        </DashboardLayout>
+                    }
+                />
+                <Route
+                    path="/transactions"
+                    element={
+                        <DashboardLayout>
+                            <TransactionList limit={20}/>
                         </DashboardLayout>
                     }
                 />

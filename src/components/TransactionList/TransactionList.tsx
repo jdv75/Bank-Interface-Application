@@ -1,11 +1,17 @@
-import { ArrowDownToLine, Landmark, LucideIcon, Camera, Banknote, CreditCard, ArrowUpFromLine, ShoppingCart, ArrowRight, Utensils, ShoppingBag, ArrowLeftRight, ArrowLeft } from "lucide-react";
 import { getTransactions } from "../../services/transactionService";
 import { groupTransactionsByDate } from "../../utils/groupTransactionsByDate";
+import { useLocation } from "react-router-dom";
 import "./TransactionList.css";
 
-function TransactionList() {
-    const transactions = getTransactions("testId", 5);
+type Props = {
+    limit: number
+}
+
+function TransactionList({limit}: Props) {
+    const transactions = getTransactions("testId", limit);
     const transactionsByDate = groupTransactionsByDate(transactions);
+    const location = useLocation();
+
     return (
         <div className="transaction-list">
             <div className="transaction-filters">
@@ -16,6 +22,7 @@ function TransactionList() {
             </div>
             <div className="transaction-list-header">
                 <h2>Recent Transactions</h2>
+                {location.pathname === "/dashboard" && <a href="/transactions">See all transactions</a>}
             </div>
             <div className="transaction-table">
                 <div className="transaction-table-head">
