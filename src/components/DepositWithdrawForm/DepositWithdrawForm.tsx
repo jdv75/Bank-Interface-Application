@@ -44,15 +44,7 @@ const CONFIG = {
 const formatCurrency = (value: number) =>
     value.toLocaleString("en-US", { style: "currency", currency: "USD" });
 
-function createTransaction(id: string, accountId: string, type: string, createdAt: string, amount: number): Transaction {
-    return {
-        id,
-        account_id: accountId,
-        type: type === "withdrawal" ? "withdrawal" : "deposit",
-        created_at: createdAt,
-        amount
-    };
-}
+
 
 
 
@@ -61,12 +53,22 @@ function DepositWithdrawForm({ type }: { type: TransactionType }) {
     const [accountId, setAccountId] = useState(accounts[0]?.id ?? "");
     const config = CONFIG[type];
     const [amount, setAmount] = useState("");
+    const [submit, setSubmit] = useState(false);
+    const [result, setResult] = useState("");
+    const [showResult, setShowResult] = useState(false);
     // const [method, setMethod] = useState<string>(config.methods[0].id);
 
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
-        try {
+        if (submit) {
+            return;
+        }
+        
+        setSubmit(true);
+
+        setTimeout(() => { // delay to show off loading state
+            try {
             const parsedAmount = Number.parseFloat(amount);
 
             if (Number.isNaN(parsedAmount) || parsedAmount <= 0) {
@@ -74,19 +76,26 @@ function DepositWithdrawForm({ type }: { type: TransactionType }) {
                 
             }
 
- //           const transaction = createTransaction()
+        //    const transaction = createTransaction()
             if (type === "deposit") {
                 deposit(accountId, parsedAmount);
             } else {
                 withdraw(accountId, parsedAmount);
             }
+            setResult("success");
         } catch (error) {
             if (error instanceof Error) {
+                setResult("failed");
                 console.error("An error occurred:", error.message);
                 alert(`An error occurred: ${error.message}`);
             }
 
+        } finally {
+            setShowResult(true);
+            setSubmit(false);
         }
+        }, 1000);
+        
        
         setAmount("");
     };
@@ -175,9 +184,16 @@ function DepositWithdrawForm({ type }: { type: TransactionType }) {
         </div> */}
 
         <div>
-                <button type="button" className="dw-submit" onClick={handleSubmit}>
-                    {config.submitLabel}
+                <button type="button" className="dw-submit" onClick={handleSubmit} disabled={submit}>
+                    {submit ? 'Processing...' : config.submitLabel}
                 </button>
+
+                <span className="dw-submitResult">
+                    {
+                        showResult ? result == "success" ? <strong>Transaction Successful!</strong> : <strong>Transaction Failed</strong>
+                        : null
+                    }
+                </span>
             </div>
 
 

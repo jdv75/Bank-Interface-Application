@@ -52,7 +52,25 @@ export function withdraw(accountId: string, amount: number): void {
     account.balance -= amount;
 }
 
-export function addTransaction(transaction: Transaction): void {
+// function createTransactionId(transactions: Transaction[]): string {
+//     const highestId = transactions.reduce((highest, transaction) => {
+//         const match = /^txn_(\d+)$/.exec(transaction.id);
+//         return match ? Math.max(highest, Number(match[1])) : highest;
+//     }, 0);
 
-}
+//     return `txn_${String(highestId + 1).padStart(3, "0")}`;
+// }
+
+// export function addTransaction(userId: string, accountId: string, transactionType: Transaction["type"], createdAt: string, transactionAmount: number): void {
+//     const newId = createTransactionId(getTransactions(userId));
+//     const transaction: Transaction = {
+//         type: transactionType,
+//         amount: transactionAmount,
+//         created_at: createdAt,
+//         id: newId,
+//         account_id: accountId
+//     }
+
+
+// }
 

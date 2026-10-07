@@ -1,3 +1,7 @@
+.dw-submitResult {
+    padding: 24px;
+}
+
 .dw-form {
     display: flex;
     flex-direction: column;
