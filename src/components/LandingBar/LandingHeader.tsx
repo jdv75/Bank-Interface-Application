@@ -9,7 +9,7 @@ interface NavLinkItem {
 }
 
 const NAV_LINKS: NavLinkItem[] = [
-    { label: "Dashboard", to: "/" },
+    { label: "Home", to: "/" },
     { label: "Features", to: "/features" },
     { label: "Security", to: "/security" },
     { label: "About", to: "/about" },
