@@ -37,13 +37,13 @@ function AccountDetailCard({ account }: AccountDetailCardProps) {
                     </strong>
                 </div>
 
-                <button
+                {/* <button
                     className="account-arrow"
                     type="button"
                     aria-label={`Open ${account.name}`}
                 >
                     <ChevronRight />
-                </button>
+                </button> */}
             </div>
 
             <div className="account-details">

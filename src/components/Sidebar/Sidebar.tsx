@@ -1,6 +1,8 @@
 import "./Sidebar.css";
 import logo from "../../assets/images/NeuroBank.png";
 
+import { useState } from "react";
+
 import {
     LayoutDashboard,
     WalletCards,
@@ -14,6 +16,9 @@ import {
 import { NavLink } from "react-router-dom";
 
 function Sidebar() {
+
+    const [isTransactionOpen, setIsTransactionOpen] = useState(true);
+
     return (
         <aside className="sidebar">
 
@@ -41,13 +46,18 @@ function Sidebar() {
 
                     <li className="transaction-section">
 
-                        <div className="menu-item transaction-title">
+                        <button
+                            type="button"
+                            className="menu-item transaction-title"
+                            onClick={() => setIsTransactionOpen(!isTransactionOpen)}
+                            aria-expanded={isTransactionOpen}
+                        >
                             <ArrowRightLeft />
                             <span>Transaction Center</span>
-                            <ChevronUp className="chevron" />
-                        </div>
+                            <ChevronUp className={isTransactionOpen ? "chevron" : "chevron closed"} />
+                        </button>
 
-                        <ul className="transaction-submenu">
+                        <ul className={isTransactionOpen ? "transaction-submenu" : "transaction-submenu collapsed"}>
 
                             <li>
                                 <NavLink to="/deposit">
