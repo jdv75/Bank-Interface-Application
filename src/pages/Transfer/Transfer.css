@@ -82,13 +82,22 @@
     background: var(--bg-card-secondary);
 }
 
+.transfer-select-wrapper {
+    position: relative;
+}
+
 .transfer-select {
     position: relative;
     display: flex;
+    width: 100%;
     align-items: center;
     gap: 12px;
     min-height: 62px;
     padding: 10px 14px 10px 10px;
+    color: var(--text-primary);
+    cursor: pointer;
+    font: inherit;
+    text-align: left;
 }
 
 .transfer-select:focus-within,
@@ -139,14 +148,49 @@
 
 .transfer-select > svg {
     color: var(--text-secondary);
+    transition: transform 0.2s ease;
 }
 
-.transfer-select select {
+.transfer-select > svg.open {
+    transform: rotate(180deg);
+}
+
+.transfer-select-options {
     position: absolute;
-    inset: 0;
+    z-index: 5;
+    top: calc(100% + 6px);
+    right: 0;
+    left: 0;
+    overflow: hidden;
+    border: 1px solid var(--highlight-blue);
+    border-radius: 10px;
+    background: var(--bg-card);
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.35);
+}
+
+.transfer-select-options button {
+    display: flex;
     width: 100%;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    border: 0;
+    border-bottom: 1px solid var(--border-color);
+    background: var(--bg-card-secondary);
+    color: var(--text-primary);
     cursor: pointer;
-    opacity: 0;
+    font: inherit;
+    text-align: left;
+}
+
+.transfer-select-options button:last-child {
+    border-bottom: 0;
+}
+
+.transfer-select-options button:hover,
+.transfer-select-options button.selected {
+    background: var(--bg-card);
+    box-shadow: inset 4px 0 var(--highlight-blue);
 }
 
 .transfer-amount {

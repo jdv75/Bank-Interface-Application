@@ -323,6 +323,7 @@ function AccountSelect({
     onChange,
     showAvailableBalance = false
 }: AccountSelectProps) {
+    const [isOpen, setIsOpen] = useState(false);
     const selectedAccount = accounts.find((account) => account.id === accountId);
     const Icon = selectedAccount ? getAccountIcon(selectedAccount.type) : CreditCard;
     const balance = selectedAccount
@@ -333,22 +334,56 @@ function AccountSelect({
 
     return (
         <div className="transfer-account-field">
-            <label className="transfer-label" htmlFor={id}>{label}</label>
-            <div className="transfer-select">
-                <span className={`transfer-select-icon ${selectedAccount?.type ?? "checking"}`}><Icon /></span>
-                <span className="transfer-select-details">
-                    <strong>{selectedAccount?.name ?? "Select account"}</strong>
-                    {selectedAccount && <small>{maskAccount(selectedAccount.last4)}</small>}
-                </span>
-                <strong>{formatCurrency(balance)}</strong>
-                <ChevronDown />
-                <select id={id} value={accountId} onChange={(event) => onChange(event.target.value)}>
-                    {accounts.map((account) => (
-                        <option key={account.id} value={account.id}>
-                            {account.name} {maskAccount(account.last4)} — {formatCurrency(showAvailableBalance ? getAvailableBalance(account) : account.balance)}
-                        </option>
-                    ))}
-                </select>
+            <span className="transfer-label" id={`${id}-label`}>{label}</span>
+            <div className="transfer-select-wrapper">
+                <button
+                    className="transfer-select"
+                    type="button"
+                    aria-labelledby={`${id}-label`}
+                    aria-expanded={isOpen}
+                    aria-haspopup="listbox"
+                    onClick={() => setIsOpen(!isOpen)}
+                >
+                    <span className={`transfer-select-icon ${selectedAccount?.type ?? "checking"}`}><Icon /></span>
+                    <span className="transfer-select-details">
+                        <strong>{selectedAccount?.name ?? "Select account"}</strong>
+                        {selectedAccount && <small>{maskAccount(selectedAccount.last4)}</small>}
+                    </span>
+                    <strong>{formatCurrency(balance)}</strong>
+                    <ChevronDown className={isOpen ? "open" : ""} />
+                </button>
+
+                {isOpen && (
+                    <div className="transfer-select-options" id={id} role="listbox">
+                        {accounts.map((account) => {
+                            const OptionIcon = getAccountIcon(account.type);
+                            const optionBalance = showAvailableBalance
+                                ? getAvailableBalance(account)
+                                : account.balance;
+
+                            return (
+                                <button
+                                    className={account.id === accountId ? "selected" : ""}
+                                    key={account.id}
+                                    type="button"
+                                    role="option"
+                                    aria-selected={account.id === accountId}
+                                    onClick={() => {
+                                        onChange(account.id);
+                                        setIsOpen(false);
+                                    }}
+                                >
+                                    <span className={`transfer-select-icon ${account.type}`}><OptionIcon /></span>
+                                    <span className="transfer-select-details">
+                                        <strong>{account.name}</strong>
+                                        <small>{maskAccount(account.last4)}</small>
+                                    </span>
+                                    <strong>{formatCurrency(optionBalance)}</strong>
+                                </button>
+                            );
+                        })}
+                    </div>
+                )}
             </div>
         </div>
     );
