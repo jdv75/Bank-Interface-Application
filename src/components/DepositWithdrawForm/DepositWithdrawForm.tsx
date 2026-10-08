@@ -2,7 +2,7 @@ import { useState } from "react";
 import type { FormEvent } from "react";
 import { ChevronDown, CreditCard, Landmark } from "lucide-react";
 import "./DepositWithdrawForm.css";
-import { getAccounts, deposit, withdraw } from "../../services/transactionService";
+import { getAccounts, deposit, withdraw, addTransaction } from "../../services/transactionService";
 import { Transaction } from "../../types/transaction";
 
 export type TransactionType = "deposit" | "withdrawal";
@@ -45,9 +45,6 @@ const formatCurrency = (value: number) =>
     value.toLocaleString("en-US", { style: "currency", currency: "USD" });
 
 
-
-
-
 function DepositWithdrawForm({ type }: { type: TransactionType }) {
     const accounts = getAccounts();
     const [accountId, setAccountId] = useState(accounts[0]?.id ?? "");
@@ -69,19 +66,32 @@ function DepositWithdrawForm({ type }: { type: TransactionType }) {
 
         setTimeout(() => { // delay to show off loading state
             try {
+            
             const parsedAmount = Number.parseFloat(amount);
 
             if (Number.isNaN(parsedAmount) || parsedAmount <= 0) {
                 throw Error("Please enter a valid numerical amount greater than zero.");
-                
             }
 
-        //    const transaction = createTransaction()
+            // Check if amount contains more than two decimal points
+            const regex = /^\d+(\.\d{3,})$/;
+            if (regex.test(amount)) {
+                throw Error("Amount cannot have more than 2 decimals.");
+            }
+
+            if (parsedAmount >= 1000000) {
+                throw Error("Transaction amount cannot be $1,000,000 or greater");
+            }
+            
+
             if (type === "deposit") {
                 deposit(accountId, parsedAmount);
             } else {
                 withdraw(accountId, parsedAmount);
             }
+
+            const timestamp = new Date();
+            addTransaction(accountId, type, timestamp.toISOString(), Number(parsedAmount.toFixed(2)));
             setResult("success");
         } catch (error) {
             if (error instanceof Error) {
