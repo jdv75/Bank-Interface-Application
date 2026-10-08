@@ -181,6 +181,7 @@ function Register() {
                         {loading ? <span className="auth-spinner" /> : "Create Account"}
                     </button>
 
+                    {/*
                     <div className="auth-divider"><span>or</span></div>
 
                     <button type="button" className="auth-social-btn">
@@ -193,7 +194,7 @@ function Register() {
                     <div className="auth-secure-note">
                         <ShieldCheck size={14} />
                         Your information is encrypted and secure.
-                    </div>
+                    </div>*/}
                 </form>
             </div>
         </AuthLayout>
