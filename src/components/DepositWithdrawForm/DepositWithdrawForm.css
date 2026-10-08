@@ -143,6 +143,13 @@
     filter: brightness(1.1);
 }
 
+@media (max-width: 768px) {
+    .dw-quick,
+    .dw-methods {
+        grid-template-columns: 1fr;
+    }
+}
+
 @media (max-width: 560px) {
     .dw-form {
         box-sizing: border-box;

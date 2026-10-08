@@ -62,3 +62,23 @@
         grid-template-columns: 1fr;
     }
 }
+
+@media (max-width: 768px) {
+    .withdraw-page {
+        box-sizing: border-box;
+        padding: 16px 0 8px;
+    }
+
+    .withdraw-header {
+        width: 100%;
+        margin-bottom: 16px;
+    }
+
+    .withdraw-header h1 {
+        font-size: 30px;
+    }
+
+    .withdraw-information {
+        padding: 16px;
+    }
+}
