@@ -45,6 +45,8 @@
 .transfer-form-card,
 .transfer-information,
 .transfer-summary {
+    min-width: 0;
+    box-sizing: border-box;
     border: 1px solid var(--border-color);
     border-radius: 16px;
     background: var(--bg-card);
@@ -353,18 +355,18 @@
     background: var(--primary-blue);
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 1100px) {
     .transfer-layout {
         grid-template-columns: 1fr;
     }
 
     .transfer-side-panel {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 720px) {
     .transfer-page {
         padding: 16px 0 8px;
     }
@@ -377,10 +379,19 @@
         padding: 16px;
     }
 
-    .transfer-quick-amounts,
+    .transfer-quick-amounts {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
     .transfer-timing,
     .transfer-side-panel {
         grid-template-columns: 1fr;
     }
 
+}
+
+@media (max-width: 480px) {
+    .transfer-quick-amounts {
+        grid-template-columns: 1fr;
+    }
 }
