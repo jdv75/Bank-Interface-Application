@@ -4,11 +4,12 @@ body:has(.dashboard-layout) {
     color: var(--text-primary);
     font-family: var(--font-family);
     line-height: normal;
-    overflow-x: hidden;
+    overflow-x: auto;
 }
 
 .dashboard-layout {
     height: 100vh;
+    min-width: 390px;
     display: grid;
     grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
     grid-template-rows: var(--topbar-height) 1fr;
@@ -47,7 +48,7 @@ body:has(.dashboard-layout) {
     .dashboard-layout {
         --topbar-height: 70px;
         grid-template-columns: 1fr;
-        grid-template-rows: var(--topbar-height) 1fr auto;
+        grid-template-rows: var(--topbar-height) minmax(0, 1fr);
     }
 
     .dashboard-topbar {
@@ -58,16 +59,19 @@ body:has(.dashboard-layout) {
     .dashboard-content {
         grid-column: 1;
         grid-row: 2;
-        padding: 0 24px;
+        padding: 0 24px calc(88px + env(safe-area-inset-bottom));
     }
 
     .dashboard-sidebar {
-        grid-column: 1;
-        grid-row: 3;
+        position: fixed;
+        z-index: 10;
+        right: 12px;
+        bottom: max(12px, env(safe-area-inset-bottom));
+        left: 12px;
     }
 }
 @media (max-width: 600px) {
     .dashboard-content {
-        padding: 0 16px;
+        padding: 0 16px calc(88px + env(safe-area-inset-bottom));
     }
 }
