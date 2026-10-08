@@ -29,12 +29,13 @@ type QuickAction = {
     icon: LucideIcon;
     title: string;
     detail: string;
+    to: string;
 };
 
 const quickActions: QuickAction[] = [
-    { tone: "deposit", icon: ArrowDownToLine, title: "Deposit", detail: "Add money to your account" },
-    { tone: "withdraw", icon: ArrowUpFromLine, title: "Withdraw", detail: "Take money from your account" },
-    { tone: "transfer", icon: ArrowLeftRight, title: "Transfer", detail: "Send money between accounts" }
+    { tone: "deposit", icon: ArrowDownToLine, title: "Deposit", detail: "Add money to your account", to: "/deposit" },
+    { tone: "withdraw", icon: ArrowUpFromLine, title: "Withdraw", detail: "Take money from your account", to: "/withdraw" },
+    { tone: "transfer", icon: ArrowLeftRight, title: "Transfer", detail: "Send money between accounts", to: "/transfer" }
 ];
 
 function NewAccountCard({ onOpen }: { onOpen: () => void }) {
@@ -76,9 +77,9 @@ function QuickActionCard({ action }: { action: QuickAction }) {
                 <h3>{action.title}</h3>
                 <span>{action.detail}</span>
             </div>
-            <button className="dash-account-arrow" type="button" aria-label={action.title}>
+            <Link className="dash-account-arrow" to={action.to} aria-label={action.title}>
                 <ChevronRight />
-            </button>
+            </Link>
         </article>
     );
 }
