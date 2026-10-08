@@ -469,6 +469,20 @@
     font-weight: 500;
 }
 
+/* Delete */
+.account-delete {
+    margin-left: auto;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--danger);
+    border-radius: 8px;
+    padding: 8px;
+    cursor: pointer;
+}
+.account-delete:hover {
+    background: rgba(255, 54, 95, 0.12);
+}
+
 @media (max-width: 768px) {
     .accounts-page {
         padding: 16px 0 8px;

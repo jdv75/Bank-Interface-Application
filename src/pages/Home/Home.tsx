@@ -158,7 +158,19 @@ function Home() {
 
     return (
         <section className="home">
-            {showNewAccount && <NewAccountForm onClose={() => setShowNewAccount(false)} />}
+            {showNewAccount && (
+                <NewAccountForm 
+                    onClose={() => setShowNewAccount(false)} 
+                    onCreated={async () => {
+                        const [user, accounts, transactionsByType] = await Promise.all([
+                            bankService.getCurrentUser(),
+                            bankService.getAccounts(),
+                            bankService.getTransactionsByType()
+                        ]);
+                        setData({user, accounts, transactionsByType});
+                    }}
+                />
+            )}
 
             <div className="home-header">
                 <div>
