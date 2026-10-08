@@ -38,3 +38,27 @@ page numbers (`page_count = ceil(total / page_size)`).
 | Not logged in                         | 401    |
 | Account belongs to another user       | 403    |
 | Account doesn't exist                 | 404    |
+
+## POST /api/transfers
+
+Creates an immediate or scheduled transfer.
+
+```
+{
+    "fromAccountId": string,
+    "destination": {
+        "type": "internal",
+        "accountId": string
+    } | {
+        "type": "external",
+        "accountNumber": string,
+        "routingNumber": string
+    },
+    "amount": number,
+    "note": string?,
+    "scheduledFor": "YYYY-MM-DD"?
+}
+```
+
+The response includes an `id`, `createdAt`, and a `status` of `"completed"` or
+`"scheduled"`.

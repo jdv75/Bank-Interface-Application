@@ -1,9 +1,21 @@
+/* Undo landing body styles that leak into the whole app */
+body:has(.dashboard-layout) {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font-family);
+    line-height: normal;
+    overflow-x: auto;
+}
+
 .dashboard-layout {
     height: 100vh;
     display: grid;
     grid-template-columns: var(--sidebar-width) 1fr;
     grid-template-rows: var(--topbar-height) 1fr;
     background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font-family);
+    line-height: normal;
     overflow: hidden;
 }
 

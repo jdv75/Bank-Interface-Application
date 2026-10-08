@@ -293,6 +293,8 @@
 /* --- hero (right column) --- */
 .auth-hero {
     padding-left: 10px;
+    /* Align the text */
+    transform: translateY(-140px); 
 }
 
 .auth-hero-tagline {
@@ -514,6 +516,25 @@
 
 .auth-phone-tx .pos { color: var(--success); }
 .auth-phone-tx .neg { color: var(--danger); }
+
+/* Image */
+
+.auth-hero-title-wrap {
+    position: relative;
+}
+.auth-hero-image {
+    position: absolute;
+    top: 100px;
+    left: 30%;
+    width: 650px;
+    height: auto;
+    object-fit: contain;
+    pointer-events: none;
+}
+
+/* .auth-hero-col {
+    align-self: start;
+} */
 
 /* --- responsive --- */
 @media (max-width: 1024px) {

@@ -30,6 +30,32 @@ export interface Account {
     routingNumber?: string;
     interestRate?: number;
     ytdReturn?: number;
+    pendingTransferAmount?: number;
+}
+
+export type TransferDestination =
+    | {
+        type: "internal";
+        accountId: string;
+    }
+    | {
+        type: "external";
+        accountNumber: string;
+        routingNumber: string;
+    };
+
+export interface CreateTransferRequest {
+    fromAccountId: string;
+    destination: TransferDestination;
+    amount: number;
+    note?: string;
+    scheduledFor?: string;
+}
+
+export interface TransferResult extends CreateTransferRequest {
+    id: string;
+    status: "completed" | "scheduled";
+    createdAt: string;
 }
 
 export interface Transaction {
