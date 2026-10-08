@@ -66,7 +66,7 @@ body:has(.dashboard-layout) {
         position: fixed;
         z-index: 10;
         right: 12px;
-        bottom: max(12px, env(safe-area-inset-bottom));
+        bottom: 0;
         left: 12px;
     }
 }
