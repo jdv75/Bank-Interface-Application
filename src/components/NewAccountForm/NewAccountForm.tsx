@@ -1,17 +1,26 @@
 import { useState, type FormEvent } from "react";
 import "./NewAccountForm.css";
+import { bankService } from "../../services/bankService";
+import type { AccountType } from "../../types/bank";
 
 type NewAccountFormProps = {
     onClose: () => void;
+    onCreated?: () => void;
 };
 
-function NewAccountForm({ onClose }: NewAccountFormProps) {
+
+function NewAccountForm({ onClose, onCreated }: NewAccountFormProps) {
     const [accountType, setAccountType] = useState("Checking");
     const [accountName, setAccountName] = useState("");
     const [pin, setPin] = useState("");
 
-    function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    async function handleSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
+        await bankService.createAccount({
+            name: accountName,
+            type: accountType.toLowerCase() as AccountType
+        });
+        onCreated?.();
         onClose();
     }
 

@@ -1,5 +1,7 @@
+import TransactionItem from "../components/TransactionItem/TransactionItem";
 import type {
     Account,
+    AccountType,
     CreateTransferRequest,
     Transaction,
     TransactionType,
@@ -47,6 +49,31 @@ export const bankService = {
         }));
 
         return mockRequest(accounts);
+    },
+
+    deleteAccount(accountId: string): Promise<void> {
+        const index = db.accounts.findIndex((account) => account.id === accountId);
+        if(index === -1) {
+            return Promise.reject(new Error ("Account was not found."));
+        }
+        db.accounts.splice(index, 1);
+        db.transactions = db.transactions.filter(
+            (Transaction) => Transaction.accountId !== accountId
+        );
+        return mockRequest(undefined);
+    },
+
+    createAccount(input: {name: string; type: AccountType;}) : Promise<Account> {
+        const account: Account = {
+            id: `acc-${Date.now()}`,
+            name: input.name.trim(),
+            type: input.type,
+            last4: String(Math.floor(1000 + Math.random() * 9000)),
+            balance: 0
+        };
+
+        db.accounts.push(account);
+        return mockRequest(account);
     },
 
     getScheduledTransfers(): Promise<TransferResult[]> {
