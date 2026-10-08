@@ -483,6 +483,34 @@
     background: rgba(255, 54, 95, 0.12);
 }
 
+@media (max-width: 1200px) {
+    .summary-body {
+        flex-direction: column;
+        gap: 16px;
+        min-height: 0;
+        padding: 16px;
+    }
+
+    .donut {
+        width: 180px;
+        height: 180px;
+    }
+
+    .donut-hole {
+        width: 120px;
+        height: 120px;
+    }
+
+    .summary-legend {
+        width: 100%;
+        max-width: 260px;
+    }
+
+    .summary-legend li {
+        grid-template-columns: 12px minmax(0, 1fr) auto;
+    }
+}
+
 @media (max-width: 768px) {
     .accounts-page {
         padding: 16px 0 8px;
