@@ -236,6 +236,19 @@
     font-weight: 700;
 }
 
+.dash-account-available {
+    color: var(--transfer);
+    font-size: 0.75rem;
+}
+
+.home-accounts-state {
+    color: var(--text-secondary);
+}
+
+.home-accounts-error {
+    color: var(--danger);
+}
+
 .dash-account-arrow {
     width: 56px;
     height: 56px;
