@@ -4,6 +4,7 @@ import LandingLayout from "./layouts/LandingLayout";
 import Accounts from "./pages/Accounts/Accounts";
 import Home from "./pages/Home/Home";
 import Landing from "./pages/Landing/Landing";
+import Transactions from "./pages/Transactions/Transactions";
 import Deposit from "./pages/Deposit/Deposit";
 import Withdraw from "./pages/Withdraw/Withdraw";
 
@@ -36,6 +37,10 @@ function App() {
                     }
                 />
                 <Route
+                    path="/transactions"
+                    element={
+                        <DashboardLayout>
+                            <Transactions />
                     path="/deposit"
                     element={
                         <DashboardLayout>
