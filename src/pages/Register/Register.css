@@ -1,0 +1,97 @@
+.register-two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+@media (max-width: 520px) {
+    .register-two-col {
+        grid-template-columns: 1fr;
+    }
+}
+
+.register-pin-rules {
+    list-style: none;
+    padding: 0;
+    margin: 4px 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+}
+
+.register-pin-rules .rule {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.register-pin-rules .rule-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #4a5a78;
+    opacity: 0.7;
+    transition: background 0.15s;
+}
+
+.register-pin-rules .rule.passed {
+    color: var(--highlight-blue);
+}
+
+.register-pin-rules .rule.passed .rule-dot {
+    background: var(--highlight-blue);
+    opacity: 1;
+}
+
+.register-checkbox {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    user-select: none;
+}
+
+.register-checkbox input {
+    display: none;
+}
+
+.register-checkbox-box {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    border: 1.5px solid var(--border-color);
+    flex-shrink: 0;
+    margin-top: 2px;
+    position: relative;
+    transition: background 0.15s, border-color 0.15s;
+}
+
+.register-checkbox input:checked + .register-checkbox-box {
+    background: var(--primary-blue);
+    border-color: var(--primary-blue);
+}
+
+.register-checkbox input:checked + .register-checkbox-box::after {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 1px;
+    width: 5px;
+    height: 9px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.register-checkbox-text a {
+    color: var(--highlight-blue);
+    text-decoration: none;
+}
+
+.register-checkbox-text a:hover {
+    text-decoration: underline;
+}
