@@ -1,0 +1,129 @@
+.account-select-field {
+	margin-bottom: 18px;
+}
+
+.account-select-label {
+	display: block;
+	margin-bottom: 8px;
+	color: var(--text-secondary);
+	font-size: 15px;
+}
+
+.account-select-wrapper {
+	position: relative;
+}
+
+.account-select-button {
+	position: relative;
+	display: flex;
+	width: 100%;
+	min-height: 62px;
+	align-items: center;
+	gap: 12px;
+	padding: 10px 14px 10px 10px;
+	border: 1px solid var(--border-color);
+	border-radius: 10px;
+	background: var(--bg-card-secondary);
+	color: var(--text-primary);
+	cursor: pointer;
+	font: inherit;
+	text-align: left;
+}
+
+.account-select-button:focus-visible {
+	border-color: var(--highlight-blue);
+	outline: 2px solid var(--highlight-blue);
+	outline-offset: 2px;
+}
+
+.account-select-icon {
+	display: grid;
+	width: 46px;
+	height: 46px;
+	flex: 0 0 46px;
+	place-items: center;
+	border-radius: 10px;
+}
+
+.account-select-icon.checking {
+	background: var(--primary-blue);
+}
+
+.account-select-icon.savings {
+	background: var(--success);
+}
+
+.account-select-icon.investment {
+	background: var(--transfer);
+}
+
+.account-select-details {
+	display: flex;
+	min-width: 0;
+	flex: 1;
+	flex-direction: column;
+}
+
+.account-select-details strong {
+	overflow-wrap: anywhere;
+}
+
+.account-select-details small {
+	color: var(--text-secondary);
+	font-size: 13px;
+	text-transform: capitalize;
+}
+
+.account-select-button > svg {
+	flex: 0 0 auto;
+	color: var(--text-secondary);
+	transition: transform 0.2s ease;
+}
+
+.account-select-button > svg.open {
+	transform: rotate(180deg);
+}
+
+.account-select-options {
+	position: absolute;
+	z-index: 5;
+	top: calc(100% + 6px);
+	right: 0;
+	left: 0;
+	overflow: hidden;
+	border: 1px solid var(--highlight-blue);
+	border-radius: 10px;
+	background: var(--bg-card);
+	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.35);
+}
+
+.account-select-options button {
+	display: flex;
+	width: 100%;
+	align-items: center;
+	gap: 12px;
+	padding: 10px;
+	border: 0;
+	border-bottom: 1px solid var(--border-color);
+	background: var(--bg-card-secondary);
+	color: var(--text-primary);
+	cursor: pointer;
+	font: inherit;
+	text-align: left;
+}
+
+.account-select-options button:last-child {
+	border-bottom: 0;
+}
+
+.account-select-options button:hover,
+.account-select-options button.selected {
+	background: var(--bg-card);
+	box-shadow: inset 4px 0 var(--highlight-blue);
+}
+
+@media (max-width: 768px) {
+	.account-select-button.hide-balance-mobile > strong {
+		display: none;
+	}
+}

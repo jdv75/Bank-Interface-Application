@@ -2,13 +2,13 @@ import {
     ArrowLeftRight,
     CalendarDays,
     CheckCircle2,
-    ChevronDown,
     CreditCard,
     Send,
     WalletCards
 } from "lucide-react";
 import { useEffect, useState, type FormEvent } from "react";
 
+import AccountSelect from "../../components/AccountSelect/AccountSelect";
 import { bankService } from "../../services/bankService";
 import type { Account, TransferResult } from "../../types/bank";
 import { formatCurrency, maskAccount } from "../../utils/format";
@@ -175,6 +175,7 @@ function Transfer() {
                                 accountId={fromAccountId}
                                 onChange={handleFromAccountChange}
                                 showAvailableBalance
+                                hideBalanceOnMobile
                             />
 
                             <AccountSelect
@@ -183,6 +184,7 @@ function Transfer() {
                                 accounts={destinationAccounts}
                                 accountId={toAccountId}
                                 onChange={setToAccountId}
+                                hideBalanceOnMobile
                             />
 
                             <label className="transfer-label" htmlFor="transfer-amount">
@@ -303,89 +305,6 @@ function Transfer() {
                 </aside>
             </div>
         </main>
-    );
-}
-
-interface AccountSelectProps {
-    label: string;
-    id: string;
-    accounts: Account[];
-    accountId: string;
-    onChange: (accountId: string) => void;
-    showAvailableBalance?: boolean;
-}
-
-function AccountSelect({
-    label,
-    id,
-    accounts,
-    accountId,
-    onChange,
-    showAvailableBalance = false
-}: AccountSelectProps) {
-    const [isOpen, setIsOpen] = useState(false);
-    const selectedAccount = accounts.find((account) => account.id === accountId);
-    const Icon = selectedAccount ? getAccountIcon(selectedAccount.type) : CreditCard;
-    const balance = selectedAccount
-        ? showAvailableBalance
-            ? getAvailableBalance(selectedAccount)
-            : selectedAccount.balance
-        : 0;
-
-    return (
-        <div className="transfer-account-field">
-            <span className="transfer-label" id={`${id}-label`}>{label}</span>
-            <div className="transfer-select-wrapper">
-                <button
-                    className="transfer-select"
-                    type="button"
-                    aria-labelledby={`${id}-label`}
-                    aria-expanded={isOpen}
-                    aria-haspopup="listbox"
-                    onClick={() => setIsOpen(!isOpen)}
-                >
-                    <span className={`transfer-select-icon ${selectedAccount?.type ?? "checking"}`}><Icon /></span>
-                    <span className="transfer-select-details">
-                        <strong>{selectedAccount?.name ?? "Select account"}</strong>
-                        {selectedAccount && <small>{maskAccount(selectedAccount.last4)}</small>}
-                    </span>
-                    <strong>{formatCurrency(balance)}</strong>
-                    <ChevronDown className={isOpen ? "open" : ""} />
-                </button>
-
-                {isOpen && (
-                    <div className="transfer-select-options" id={id} role="listbox">
-                        {accounts.map((account) => {
-                            const OptionIcon = getAccountIcon(account.type);
-                            const optionBalance = showAvailableBalance
-                                ? getAvailableBalance(account)
-                                : account.balance;
-
-                            return (
-                                <button
-                                    className={account.id === accountId ? "selected" : ""}
-                                    key={account.id}
-                                    type="button"
-                                    role="option"
-                                    aria-selected={account.id === accountId}
-                                    onClick={() => {
-                                        onChange(account.id);
-                                        setIsOpen(false);
-                                    }}
-                                >
-                                    <span className={`transfer-select-icon ${account.type}`}><OptionIcon /></span>
-                                    <span className="transfer-select-details">
-                                        <strong>{account.name}</strong>
-                                        <small>{maskAccount(account.last4)}</small>
-                                    </span>
-                                    <strong>{formatCurrency(optionBalance)}</strong>
-                                </button>
-                            );
-                        })}
-                    </div>
-                )}
-            </div>
-        </div>
     );
 }
 

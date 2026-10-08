@@ -1,9 +1,8 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
-import { ChevronDown, CreditCard, Landmark } from "lucide-react";
 import "./DepositWithdrawForm.css";
+import AccountSelect from "../AccountSelect/AccountSelect";
 import { getAccounts, deposit, withdraw, addTransaction } from "../../services/transactionService";
-import { Transaction } from "../../types/transaction";
 
 export type TransactionType = "deposit" | "withdrawal";
 
@@ -41,10 +40,6 @@ const CONFIG = {
     }
 } as const;
 
-const formatCurrency = (value: number) =>
-    value.toLocaleString("en-US", { style: "currency", currency: "USD" });
-
-
 function DepositWithdrawForm({ type }: { type: TransactionType }) {
     const accounts = getAccounts();
     const [accountId, setAccountId] = useState(accounts[0]?.id ?? "");
@@ -64,7 +59,7 @@ function DepositWithdrawForm({ type }: { type: TransactionType }) {
         }
         
         setSubmit(true);
-
+        setShowResult(false);
         setTimeout(() => { // delay to show off loading state
             try {
             
@@ -98,7 +93,7 @@ function DepositWithdrawForm({ type }: { type: TransactionType }) {
             if (error instanceof Error) {
                 setResult("failed");
                 console.error("An error occurred:", error.message);
-                setError(error.message);
+                setError("Transaction Failed: " + error.message);
                 // alert(`An error occurred: ${error.message}`);
             }
 
@@ -116,36 +111,14 @@ function DepositWithdrawForm({ type }: { type: TransactionType }) {
         <form className="dw-form" onSubmit={handleSubmit}>
             <h2 className="dw-title">{config.title}</h2>
 
-            <label className="dw-label" htmlFor="dw-account">Select Account</label>
-            <div className="dw-select">
-                <div className="dw-select-icon"><CreditCard size={20} /></div>
-
-                <div className="dw-select-summary" aria-hidden="true">
-                    <span className="dw-account-details">
-                        <strong>{accounts.find((account) => account.id === accountId)?.name}</strong>
-                        <small>
-                            •••• {accounts.find((account) => account.id === accountId)?.last4} · {accounts.find((account) => account.id === accountId)?.type} Account
-                        </small>
-                    </span>
-                    <strong className="dw-account-balance">
-                        {formatCurrency(accounts.find((account) => account.id === accountId)?.balance ?? 0)}
-                    </strong>
-                </div>
-
-                <ChevronDown size={18} className="dw-select-chevron" />
-                <select
-                    id="dw-account"
-                    value={accountId}
-                    onChange={(e) => setAccountId(e.target.value)}
-                    aria-label="Select account"
-                >
-                    {accounts.map((account) => (
-                        <option key={account.id} value={account.id}>
-                            {account.name} •••• {account.last4} — {formatCurrency(account.balance)}
-                        </option>
-                    ))}
-                </select>
-            </div>
+            <AccountSelect
+                label="Select Account"
+                id="dw-account"
+                accounts={accounts}
+                accountId={accountId}
+                onChange={setAccountId}
+                showAccountType
+            />
 
 
             <label className="dw-label" htmlFor="dw-amount">
