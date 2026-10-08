@@ -138,7 +138,7 @@
 .dash-account.checking,
 .dash-account.savings,
 .dash-account.investment {
-    padding: 0 30px;
+    padding: 16px 20px;
 }
 
 .dash-account.checking {
