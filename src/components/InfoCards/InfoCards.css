@@ -1,0 +1,56 @@
+.info-card {
+  background: linear-gradient(160deg, rgba(10, 22, 52, 0.85) 0%, rgba(4, 10, 26, 0.92) 100%);
+  border: 1px solid rgba(120, 160, 255, 0.1);
+  border-radius: 14px;
+  padding: 1.75rem 1.75rem 2.25rem;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
+}
+ 
+.info-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(37, 99, 235, 0.45);
+}
+ 
+.info-icon {
+  width: 64px;
+  height: 64px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  border: 1px solid transparent;
+}
+ 
+.info-icon--blue {
+  background: linear-gradient(135deg, #123a8f 0%, #0c2565 100%);
+  border-color: rgba(80, 140, 255, 0.35);
+  color: #6cb4ff;
+}
+ 
+.info-icon--purple {
+  background: linear-gradient(135deg, #3a2aa8 0%, #2a1d7c 100%);
+  border-color: rgba(140, 120, 255, 0.4);
+  color: #b7b4ff;
+}
+ 
+.info-icon--green {
+  background: linear-gradient(135deg, #0b5a47 0%, #08392e 100%);
+  border-color: rgba(60, 220, 160, 0.3);
+  color: #3ddc9b;
+}
+ 
+.info-card h3 {
+  color: var(--text-main);
+  font-size: 1.4rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-bottom: 0.6rem;
+}
+ 
+.info-card p {
+  color: var(--text-body);
+  font-size: 1.1rem;
+  line-height: 1.5;
+  max-width: 28ch;
+}
+ 
