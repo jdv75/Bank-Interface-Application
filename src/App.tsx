@@ -37,10 +37,6 @@ function App() {
                     }
                 />
                 <Route
-                    path="/transactions"
-                    element={
-                        <DashboardLayout>
-                            <Transactions />
                     path="/deposit"
                     element={
                         <DashboardLayout>
@@ -56,6 +52,15 @@ function App() {
                         </DashboardLayout>
                     }
                 />
+                <Route
+                    path="/transactions"
+                    element={
+                        <DashboardLayout>
+                            <Transactions />
+                        </DashboardLayout>
+                    }
+                />
+                
             </Routes>
         </BrowserRouter>
     );
