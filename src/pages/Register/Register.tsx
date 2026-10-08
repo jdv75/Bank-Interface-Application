@@ -3,60 +3,61 @@ import { Link, useNavigate } from "react-router-dom";
 import { Mail, Lock, Eye, EyeOff, ShieldCheck } from "lucide-react";
 
 import AuthLayout from "../../layouts/AuthLayout";
-import { useAuth } from "../../context/AuthContext";
+//import { useAuth } from "../../context/AuthContext"; outdated (sends to login page on success)
 import { authService } from "../../services/authService";
-import { validateRegister, type FieldErrors } from "../../utils/validation";
+import {
+    validateRegister,
+    passwordRules,
+    type FieldErrors,
+} from "../../utils/validation";
 import { AuthPill, GoogleIcon, AppleIcon } from "../Login/Login";
 import "./Register.css";
-import register from "../../assets/images/SignUp.png";
 
 function Register() {
     const [accountId, setAccountId] = useState("");
-    const [pin, setPin] = useState("");
-    const [confirmPin, setConfirmPin] = useState("");
-    const [showPin, setShowPin] = useState(false);
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
     const [showConfirm, setShowConfirm] = useState(false);
     const [agree, setAgree] = useState(false);
     const [errors, setErrors] = useState<FieldErrors>({});
     const [loading, setLoading] = useState(false);
 
-    const { setAccount } = useAuth();
+    //const { setAccount } = useAuth(); outdated (sends to login page on success)
     const navigate = useNavigate();
-
-    const pinRules = [
-        { test: (v: string) => v.length === 6, label: "Exactly 6 digits" },
-        { test: (v: string) => /^\d+$/.test(v), label: "Numbers only" },
-    ];
 
     async function handleSubmit(e: FormEvent) {
         e.preventDefault();
         setErrors({});
 
-        const v = validateRegister(accountId, pin, confirmPin);
+        const v = validateRegister(accountId, password, confirmPassword);
         if (v) {
             setErrors(v);
             return;
         }
 
         if (!agree) {
-            setErrors({ form: "You must agree to the Terms of Service and Privacy Policy." });
+            setErrors({
+                form: "You must agree to the Terms of Service and Privacy Policy.",
+            });
             return;
         }
 
         setLoading(true);
-        const res = await authService.register(accountId, pin, confirmPin);
+        const res = await authService.register(accountId, password, confirmPassword);
         setLoading(false);
 
         if (!res.success) {
-            const field = res.error.field === "confirmPin" ? "confirmPin"
-                        : res.error.field === "accountId" ? "accountId"
-                        : "form";
-            setErrors({ [field]: res.error.message, form: field === "form" ? res.error.message : undefined });
+            const field =
+                res.error.field === "confirmPassword" ? "confirmPassword"
+                : res.error.field === "accountId"     ? "accountId"
+                : "form";
+            setErrors({ [field]: res.error.message });
             return;
         }
 
-        setAccount(res.data);
-        navigate("/dashboard");
+        // Success — send them to login with a one-shot flag
+        navigate("/login", { state: { registered: true, accountId } });
     }
 
     return (
@@ -99,67 +100,61 @@ function Register() {
 
                     <div className="register-two-col">
                         <div className="auth-field">
-                            <label htmlFor="reg-pin">PIN</label>
-                            <div className={`auth-field-control ${errors.pin ? "invalid" : ""}`}>
+                            <label htmlFor="reg-password">Password</label>
+                            <div className={`auth-field-control ${errors.password ? "invalid" : ""}`}>
                                 <Lock />
                                 <input
-                                    id="reg-pin"
-                                    type={showPin ? "text" : "password"}
-                                    inputMode="numeric"
-                                    maxLength={6}
+                                    id="reg-password"
+                                    type={showPassword ? "text" : "password"}
                                     autoComplete="new-password"
-                                    placeholder="6-digit PIN"
-                                    value={pin}
-                                    onChange={(e) =>
-                                        setPin(e.target.value.replace(/\D/g, "").slice(0, 6))
-                                    }
+                                    placeholder="Create a password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
                                 />
                                 <button
                                     type="button"
                                     className="auth-icon-button"
-                                    onClick={() => setShowPin((s) => !s)}
-                                    aria-label={showPin ? "Hide PIN" : "Show PIN"}
+                                    onClick={() => setShowPassword((s) => !s)}
+                                    aria-label={showPassword ? "Hide password" : "Show password"}
                                 >
-                                    {showPin ? <EyeOff /> : <Eye />}
+                                    {showPassword ? <EyeOff /> : <Eye />}
                                 </button>
                             </div>
-                            {errors.pin && <span className="auth-field-error">{errors.pin}</span>}
+                            {errors.password && (
+                                <span className="auth-field-error">{errors.password}</span>
+                            )}
                         </div>
 
                         <div className="auth-field">
-                            <label htmlFor="reg-confirm">Confirm PIN</label>
-                            <div className={`auth-field-control ${errors.confirmPin ? "invalid" : ""}`}>
+                            <label htmlFor="reg-confirm">Confirm Password</label>
+                            <div className={`auth-field-control ${errors.confirmPassword ? "invalid" : ""}`}>
                                 <Lock />
                                 <input
                                     id="reg-confirm"
                                     type={showConfirm ? "text" : "password"}
-                                    inputMode="numeric"
-                                    maxLength={6}
                                     autoComplete="new-password"
-                                    placeholder="Confirm PIN"
-                                    value={confirmPin}
-                                    onChange={(e) =>
-                                        setConfirmPin(e.target.value.replace(/\D/g, "").slice(0, 6))
-                                    }
+                                    placeholder="Confirm your password"
+                                    value={confirmPassword}
+                                    onChange={(e) => setConfirmPassword(e.target.value)}
                                 />
                                 <button
                                     type="button"
                                     className="auth-icon-button"
                                     onClick={() => setShowConfirm((s) => !s)}
-                                    aria-label={showConfirm ? "Hide PIN" : "Show PIN"}
+                                    aria-label={showConfirm ? "Hide password" : "Show password"}
                                 >
                                     {showConfirm ? <EyeOff /> : <Eye />}
                                 </button>
                             </div>
-                            {errors.confirmPin && (
-                                <span className="auth-field-error">{errors.confirmPin}</span>
+                            {errors.confirmPassword && (
+                                <span className="auth-field-error">{errors.confirmPassword}</span>
                             )}
                         </div>
                     </div>
 
-                    <ul className="register-pin-rules">
-                        {pinRules.map((rule, i) => {
-                            const passed = rule.test(pin);
+                    <ul className="register-password-rules">
+                        {passwordRules.map((rule, i) => {
+                            const passed = rule.test(password);
                             return (
                                 <li key={i} className={passed ? "rule passed" : "rule"}>
                                     <span className="rule-dot" />
@@ -214,25 +209,18 @@ function RegisterHero() {
                 <span>SMART</span>
             </div>
 
-            <div className="auth-hero-title-wrap register-hero-wrap">
-                <h2 className="auth-hero-title">
-                    A smarter way<br />
-                    to manage<br />
-                    <span className="accent">your money.</span>
-                </h2>
-                <img
-                    src={register}
-                    alt="NeuroBank sign up preview"
-                    className="auth-hero-image register-hero-image"
-                />
-            </div>
+            <h2 className="auth-hero-title">
+                A smarter way<br />
+                to manage<br />
+                <span className="accent">your money.</span>
+            </h2>
 
             <p className="auth-hero-sub">
                 Open an account in minutes and get access to powerful tools to
                 help you save, spend, and grow.
             </p>
 
-            {/* <div className="auth-hero-art">
+            <div className="auth-hero-art">
                 <div className="auth-credit-card">
                     <div className="auth-credit-card-top">NeuroBank</div>
                     <div className="auth-credit-card-chip" />
@@ -250,7 +238,7 @@ function RegisterHero() {
                     <AuthPill label="Bank with confidence" />
                     <AuthPill label="Reach your goals" />
                 </div>
-            </div> */}
+            </div>
         </div>
     );
 }

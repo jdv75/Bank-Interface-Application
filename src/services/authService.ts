@@ -7,7 +7,7 @@ export interface Account {
 export interface AuthError {
     code: "INVALID_CREDENTIALS" | "VALIDATION_ERROR" | "SERVER_ERROR";
     message: string;
-    field?: keyof Account | "pin" | "confirmPin";
+    field?: keyof Account | "password" | "confirmPassword";
 }
 
 export type AuthResponse<T> =
@@ -16,19 +16,18 @@ export type AuthResponse<T> =
 
 interface StoredAccount {
     account: Account;
-    pin: string;
+    password: string;   // was: pin
 }
 
 const accounts = new Map<string, StoredAccount>();
 
-// Seed one demo account so you can test immediately
 accounts.set("demo", {
     account: {
         accountId: "demo",
         balance: 1500,
         createdAt: new Date().toISOString(),
     },
-    pin: "123456",
+    password: "Password1!",   // was: "123456" when it was a pin
 });
 
 const SESSION_KEY = "neurobank.session";
@@ -38,16 +37,16 @@ function delay<T>(value: T, ms = 400): Promise<T> {
 }
 
 export const authService = {
-    async login(accountId: string, pin: string): Promise<AuthResponse<Account>> {
+    async login(accountId: string, password: string): Promise<AuthResponse<Account>> {
         const key = accountId.trim().toLowerCase();
         const rec = accounts.get(key);
 
-        if (!rec || rec.pin !== pin.trim()) {
+        if (!rec || rec.password !== password) {
             return delay({
                 success: false,
                 error: {
                     code: "INVALID_CREDENTIALS",
-                    message: "Incorrect account ID or PIN.",
+                    message: "Incorrect account ID or password.",
                 },
             });
         }
@@ -58,18 +57,18 @@ export const authService = {
 
     async register(
         accountId: string,
-        pin: string,
-        confirmPin: string,
+        password: string,
+        confirmPassword: string,
     ): Promise<AuthResponse<Account>> {
         const key = accountId.trim().toLowerCase();
 
-        if (pin !== confirmPin) {
+        if (password !== confirmPassword) {
             return delay({
                 success: false,
                 error: {
                     code: "VALIDATION_ERROR",
-                    message: "PINs do not match.",
-                    field: "confirmPin",
+                    message: "Passwords do not match.",
+                    field: "confirmPassword",
                 },
             });
         }
@@ -90,7 +89,7 @@ export const authService = {
             balance: 0,
             createdAt: new Date().toISOString(),
         };
-        accounts.set(key, { account, pin: pin.trim() });
+        accounts.set(key, { account, password });
         localStorage.setItem(SESSION_KEY, key);
         return delay({ success: true, data: account });
     },
