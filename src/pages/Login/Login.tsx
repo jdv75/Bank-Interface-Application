@@ -6,6 +6,9 @@ import { useAuth } from "../../context/AuthContext";
 import { authService } from "../../services/authService";
 import { validateLogin, type FieldErrors } from "../../utils/validation";
 
+// image
+import login from "../../assets/images/Login.png";
+
 function Login() {
     const [accountId, setAccountId] = useState("");
     const [pin, setPin] = useState("");
@@ -142,18 +145,25 @@ function LoginHero() {
                 <span>MODERN</span>
             </div>
 
-            <h2 className="auth-hero-title">
-                Banking<br />
-                for a smarter<br />
-                <span className="accent">tomorrow.</span>
-            </h2>
+            <div className="auth-hero-title-wrap">
+                <h2 className="auth-hero-title">
+                    Banking<br />
+                    for a smarter<br />
+                    <span className="accent">tomorrow.</span>
+                </h2>
+                <img
+                    src={login}
+                    alt="NeuroBank login preview"
+                    className="auth-hero-image"
+                />
+            </div>
 
             <p className="auth-hero-sub">
                 Manage your money, track your goals, and take control of your
                 financial future — all in one place.
             </p>
 
-            <div className="auth-hero-art">
+            {/* <div className="auth-hero-art">
                 <div className="auth-phone">
                     <div className="auth-phone-notch" />
                     <div className="auth-phone-label">Total Balance</div>
@@ -190,7 +200,7 @@ function LoginHero() {
                     <AuthPill label="Bank with confidence" />
                     <AuthPill label="Reach your goals" />
                 </div>
-            </div>
+            </div> */}
         </div>
     );
 }

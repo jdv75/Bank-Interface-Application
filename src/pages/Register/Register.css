@@ -95,3 +95,30 @@
 .register-checkbox-text a:hover {
     text-decoration: underline;
 }
+
+.register-hero-image {
+    top: 40px;
+    /* left: 15%; */
+    right: 15%;
+    width: 650px;
+}
+
+.register-hero-wrap .auth-hero-title {
+    margin-bottom: 12px;
+}
+
+/* To enclose the form */
+
+.register-two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    min-width: 0;
+}
+.register-two-col .auth-field,
+.register-two-col .auth-field-control {
+    min-width: 0;
+}
+.register-two-col .auth-field-control input {
+    min-width: 0;
+}
