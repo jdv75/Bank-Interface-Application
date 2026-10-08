@@ -64,15 +64,15 @@
 }
 
 .account-card.checking {
-    border-color: #1d4e89;
+    border-color: var(--primary-blue);
 }
 
 .account-card.savings {
-    border-color: #0f6b52;
+    border-color: var(--success);
 }
 
 .account-card.investment {
-    border-color: #4a3d8a;
+    border-color: var(--transfer);
 }
 
 .account-card-top {
@@ -147,17 +147,17 @@
 }
 
 .account-card.checking .account-icon {
-    background-color: #12315f;
+    background-color: var(--bg-card-secondary);
     color: var(--highlight-blue);
 }
 
 .account-card.savings .account-icon {
-    background-color: #0d3b30;
+    background-color: var(--bg-card-secondary);
     color: var(--success);
 }
 
 .account-card.investment .account-icon {
-    background-color: #2a2158;
+    background-color: var(--bg-card-secondary);
     color: var(--transfer);
 }
 
@@ -169,7 +169,7 @@
     align-items: center;
     justify-content: center;
     border-radius: 20%;
-    border: 2px solid #24497d;
+    border: 2px solid var(--border-color);
     background: transparent;
     color: var(--text-secondary);
     cursor: pointer;
@@ -222,6 +222,19 @@
 
 .account-details .positive {
     color: var(--success);
+}
+
+.account-details .available-balance strong {
+    color: var(--highlight-blue);
+    font-weight: 700;
+}
+
+.accounts-state {
+    color: var(--text-secondary);
+}
+
+.accounts-state-error {
+    color: var(--danger);
 }
 
 .accounts-bottom {

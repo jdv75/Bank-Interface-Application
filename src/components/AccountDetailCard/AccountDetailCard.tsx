@@ -16,6 +16,8 @@ interface AccountDetailCardProps {
 function AccountDetailCard({ account }: AccountDetailCardProps) {
     const Icon = getAccountIcon(account.type);
     const highlight = getHighlightRow(account);
+    const availableBalance = account.balance - (account.pendingTransferAmount ?? 0);
+    const hasScheduledTransfer = (account.pendingTransferAmount ?? 0) > 0;
 
     return (
         <article className={`account-card ${account.type}`}>
@@ -51,6 +53,13 @@ function AccountDetailCard({ account }: AccountDetailCardProps) {
                     <span>{getBalanceLabel(account.type)}</span>
                     <strong>{formatCurrency(account.balance)}</strong>
                 </div>
+
+                {hasScheduledTransfer && (
+                    <div className="available-balance">
+                        <span>Available After Scheduled Transfers</span>
+                        <strong>{formatCurrency(availableBalance)}</strong>
+                    </div>
+                )}
 
                 <div>
                     <span>Account Type</span>

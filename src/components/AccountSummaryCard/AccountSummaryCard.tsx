@@ -12,6 +12,8 @@ interface AccountSummaryCardProps {
 function AccountSummaryCard({ account }: AccountSummaryCardProps) {
     const Icon = getAccountIcon(account.type);
     const navigate = useNavigate();
+    const availableBalance = account.balance - (account.pendingTransferAmount ?? 0);
+    const hasScheduledTransfer = (account.pendingTransferAmount ?? 0) > 0;
 
     return (
         <article className={`dash-account ${account.type}`}>
@@ -28,6 +30,11 @@ function AccountSummaryCard({ account }: AccountSummaryCardProps) {
                 </div>
 
                 <strong>{formatCurrency(account.balance)}</strong>
+                {hasScheduledTransfer && (
+                    <small className="dash-account-available">
+                        Available: {formatCurrency(availableBalance)}
+                    </small>
+                )}
             </div>
 
             <button

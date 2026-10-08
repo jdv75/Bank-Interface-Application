@@ -1,0 +1,485 @@
+.transfer-page {
+    padding: 24px 0 36px;
+    color: var(--text-primary);
+}
+
+.transfer-breadcrumb {
+    display: flex;
+    gap: 12px;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.transfer-breadcrumb strong {
+    color: var(--text-primary);
+}
+
+.transfer-header {
+    margin: 10px 0 20px;
+}
+
+.transfer-header h1,
+.transfer-header p,
+.transfer-form-card h2,
+.transfer-side-panel h2 {
+    margin: 0;
+}
+
+.transfer-header h1 {
+    font-size: 40px;
+}
+
+.transfer-header p {
+    margin-top: 6px;
+    color: var(--text-secondary);
+    font-size: 18px;
+}
+
+.transfer-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.55fr) minmax(320px, 1fr);
+    gap: 20px;
+    max-width: 1400px;
+}
+
+.transfer-form-card,
+.transfer-information,
+.transfer-summary {
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    background: var(--bg-card);
+}
+
+.transfer-form-card {
+    padding: 24px;
+}
+
+.transfer-form-card h2 {
+    margin-bottom: 16px;
+    font-size: 20px;
+}
+
+.transfer-label,
+.transfer-date,
+.transfer-note,
+.transfer-timing legend {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-secondary);
+    font-size: 15px;
+}
+
+.transfer-account-field {
+    margin-bottom: 18px;
+}
+
+.transfer-select,
+.transfer-amount,
+.transfer-date input,
+.transfer-note textarea {
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    background: var(--bg-card-secondary);
+}
+
+.transfer-select-wrapper {
+    position: relative;
+}
+
+.transfer-select {
+    position: relative;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 12px;
+    min-height: 62px;
+    padding: 10px 14px 10px 10px;
+    color: var(--text-primary);
+    cursor: pointer;
+    font: inherit;
+    text-align: left;
+}
+
+.transfer-select:focus-within,
+.transfer-amount:focus-within,
+.transfer-date input:focus,
+.transfer-note textarea:focus {
+    border-color: var(--highlight-blue);
+    outline: none;
+}
+
+.transfer-select-icon,
+.transfer-summary-icon {
+    display: grid;
+    width: 46px;
+    height: 46px;
+    flex: 0 0 46px;
+    place-items: center;
+    border-radius: 10px;
+}
+
+.transfer-select-icon.checking,
+.transfer-summary-icon.checking {
+    background: var(--primary-blue);
+}
+
+.transfer-select-icon.savings,
+.transfer-summary-icon.savings {
+    background: var(--success);
+}
+
+.transfer-select-icon.investment,
+.transfer-summary-icon.investment {
+    background: var(--transfer);
+}
+
+.transfer-select-details {
+    display: flex;
+    min-width: 0;
+    flex: 1;
+    flex-direction: column;
+}
+
+.transfer-select-details small,
+.transfer-summary-account small {
+    color: var(--text-secondary);
+    font-size: 13px;
+}
+
+.transfer-select > svg {
+    color: var(--text-secondary);
+    transition: transform 0.2s ease;
+}
+
+.transfer-select > svg.open {
+    transform: rotate(180deg);
+}
+
+.transfer-select-options {
+    position: absolute;
+    z-index: 5;
+    top: calc(100% + 6px);
+    right: 0;
+    left: 0;
+    overflow: hidden;
+    border: 1px solid var(--highlight-blue);
+    border-radius: 10px;
+    background: var(--bg-card);
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.35);
+}
+
+.transfer-select-options button {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    border: 0;
+    border-bottom: 1px solid var(--border-color);
+    background: var(--bg-card-secondary);
+    color: var(--text-primary);
+    cursor: pointer;
+    font: inherit;
+    text-align: left;
+}
+
+.transfer-select-options button:last-child {
+    border-bottom: 0;
+}
+
+.transfer-select-options button:hover,
+.transfer-select-options button.selected {
+    background: var(--bg-card);
+    box-shadow: inset 4px 0 var(--highlight-blue);
+}
+
+.transfer-amount {
+    display: flex;
+    align-items: center;
+    height: 52px;
+}
+
+.transfer-amount span {
+    padding: 15px 18px;
+    border-right: 1px solid var(--border-color);
+}
+
+.transfer-amount input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--text-primary);
+    font: inherit;
+}
+
+.transfer-quick-amounts {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin: 12px 0 18px;
+}
+
+.transfer-quick-amounts button,
+.transfer-submit,
+.transfer-result button {
+    border: 0;
+    border-radius: 10px;
+    color: var(--text-primary);
+    cursor: pointer;
+    font: inherit;
+    font-weight: 600;
+}
+
+.transfer-quick-amounts button {
+    padding: 12px;
+    background: var(--bg-card-secondary);
+}
+
+.transfer-quick-amounts button:hover {
+    background: var(--primary-blue);
+}
+
+.transfer-timing {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 0 0 18px;
+    padding: 0;
+    border: 0;
+}
+
+.transfer-timing legend {
+    grid-column: 1 / -1;
+}
+
+.transfer-timing label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    background: var(--bg-card-secondary);
+    cursor: pointer;
+}
+
+.transfer-timing label.selected {
+    border-color: var(--highlight-blue);
+}
+
+.transfer-timing input {
+    accent-color: var(--primary-blue);
+}
+
+.transfer-timing label span {
+    display: flex;
+    flex-direction: column;
+}
+
+.transfer-timing small {
+    color: var(--text-secondary);
+}
+
+.transfer-date {
+    margin-bottom: 18px;
+}
+
+.transfer-date input {
+    display: block;
+    width: 100%;
+    margin-top: 8px;
+    padding: 12px;
+    box-sizing: border-box;
+    color: var(--text-primary);
+    color-scheme: dark;
+    font: inherit;
+}
+
+.transfer-note {
+    position: relative;
+    margin-bottom: 18px;
+}
+
+.transfer-note textarea {
+    display: block;
+    width: 100%;
+    min-height: 58px;
+    padding: 12px 48px 12px 12px;
+    box-sizing: border-box;
+    color: var(--text-primary);
+    font: inherit;
+    resize: vertical;
+}
+
+.transfer-note small {
+    position: absolute;
+    right: 12px;
+    bottom: 10px;
+    color: var(--text-secondary);
+}
+
+.transfer-error {
+    margin: -4px 0 14px;
+    color: var(--danger);
+}
+
+.transfer-submit {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(90deg, var(--primary-blue), var(--highlight-blue));
+}
+
+.transfer-submit:disabled {
+    cursor: wait;
+    opacity: 0.6;
+}
+
+.transfer-side-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.transfer-information {
+    padding: 24px;
+    text-align: center;
+}
+
+.transfer-graphic {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    min-height: 150px;
+    color: var(--highlight-blue);
+}
+
+.transfer-graphic svg:first-child,
+.transfer-graphic svg:last-child {
+    width: 96px;
+    height: 68px;
+    padding: 14px;
+    border-radius: 12px;
+}
+
+.transfer-graphic svg:first-child {
+    background: var(--primary-blue);
+}
+
+.transfer-graphic svg:last-child {
+    background: var(--success);
+}
+
+.transfer-information p {
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.transfer-summary {
+    padding: 18px 20px;
+}
+
+.transfer-summary h2 {
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.transfer-summary-account {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.transfer-summary-account:last-child {
+    border-bottom: 0;
+}
+
+.transfer-summary-account > span:nth-child(2) {
+    display: flex;
+    min-width: 0;
+    flex: 1;
+    flex-direction: column;
+}
+
+.transfer-summary-balance {
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+    gap: 3px;
+    text-align: right;
+}
+
+.transfer-result {
+    display: flex;
+    min-height: 430px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+.transfer-result > svg {
+    width: 56px;
+    height: 56px;
+    color: var(--success);
+}
+
+.transfer-result p {
+    margin: 16px 0 4px;
+    color: var(--success);
+    font-weight: 600;
+}
+
+.transfer-result h2 {
+    font-size: 30px;
+}
+
+.transfer-result span {
+    margin-top: 8px;
+    color: var(--text-secondary);
+}
+
+.transfer-result button {
+    margin-top: 20px;
+    padding: 12px 16px;
+    background: var(--primary-blue);
+}
+
+@media (max-width: 1000px) {
+    .transfer-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .transfer-side-panel {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .transfer-page {
+        padding: 16px 0 8px;
+    }
+
+    .transfer-header h1 {
+        font-size: 30px;
+    }
+
+    .transfer-form-card {
+        padding: 16px;
+    }
+
+    .transfer-quick-amounts,
+    .transfer-timing,
+    .transfer-side-panel {
+        grid-template-columns: 1fr;
+    }
+
+    .transfer-select > strong {
+        display: none;
+    }
+}
