@@ -8,27 +8,20 @@ import {
     type LucideIcon
 } from "lucide-react";
 import { useEffect, useState, type KeyboardEvent } from "react";
+import { Link } from "react-router-dom";
 
 import AccountSummaryCard from "../../components/AccountSummaryCard/AccountSummaryCard";
 import NewAccountForm from "../../components/NewAccountForm/NewAccountForm";
-import TransactionItem from "../../components/TransactionItem/TransactionItem";
-import { bankService, type TransactionsByType } from "../../services/bankService";
-import type { Account, Transaction, TransactionType, User } from "../../types/bank";
-import "./Home.css";
 import TransactionList from "../../components/TransactionList/TransactionList";
+import { useTransactions } from "../../hooks/useTransactions";
+import { bankService } from "../../services/bankService";
+import { MOCK_ACCOUNT_ID } from "../../services/transactionService";
+import type { Account, User } from "../../types/bank";
+import "./Home.css";
 
 type HomeData = {
     user: User;
     accounts: Account[];
-    transactionsByType: TransactionsByType;
-};
-
-<<<<<<< HEAD
-type RecentColumn = {
-    title: string;
-    tone: string;
-    icon: LucideIcon;
-    type: TransactionType;
 };
 
 type QuickAction = {
@@ -37,15 +30,6 @@ type QuickAction = {
     title: string;
     detail: string;
 };
-
-const recentColumns: RecentColumn[] = [
-    { title: "Deposits", tone: "deposits", icon: ArrowDownToLine, type: "deposit" },
-    { title: "Withdrawals", tone: "withdrawals", icon: ArrowUpFromLine, type: "withdraw" },
-    { title: "Transfers", tone: "transfers", icon: ArrowLeftRight, type: "transfer" }
-];
-=======
-
->>>>>>> 387215c (feat: add transactions list component)
 
 const quickActions: QuickAction[] = [
     { tone: "deposit", icon: ArrowDownToLine, title: "Deposit", detail: "Add money to your account" },
@@ -99,46 +83,22 @@ function QuickActionCard({ action }: { action: QuickAction }) {
     );
 }
 
-function RecentColumnCard({ column, transactions }: { column: RecentColumn; transactions: Transaction[]; }) {
-    const ColumnIcon = column.icon;
-
-    return (
-        <div className={`recent-column ${column.tone}`}>
-            <div className="recent-column-header">
-                <div className="recent-column-title">
-                    <div className="column-icon">
-                        <ColumnIcon />
-                    </div>
-                    <h3>{column.title}</h3>
-                </div>
-                <a href="/transactions">See all</a>
-            </div>
-
-            <ul>
-                {transactions.map((transaction) => (
-                    <TransactionItem key={transaction.id} transaction={transaction} />
-                ))}
-            </ul>
-        </div>
-    );
-}
-
 function Home() {
     const [showNewAccount, setShowNewAccount] = useState(false);
     const [data, setData] = useState<HomeData | null>(null);
+    const recent = useTransactions(MOCK_ACCOUNT_ID, { pageSize: 5 });
 
     useEffect(() => {
         let cancelled = false;
 
         async function loadData() {
-            const [user, accounts, transactionsByType] = await Promise.all([
+            const [user, accounts] = await Promise.all([
                 bankService.getCurrentUser(),
-                bankService.getAccounts(),
-                bankService.getTransactionsByType()
+                bankService.getAccounts()
             ]);
 
             if (!cancelled) {
-                setData({ user, accounts, transactionsByType });
+                setData({ user, accounts });
             }
         }
 
@@ -195,29 +155,12 @@ function Home() {
                     ))}
                 </div>
             </section>
-<<<<<<< HEAD
-
-            <section className="recent-section">
-                <div className="recent-header">
-                    <h2>Recent Transactions</h2>
-                    <a href="/transactions">View All Transactions →</a>
-                </div>
-
-                <div className="recent">
-                    <div className="recent-grid">
-                        {recentColumns.map((column) => (
-                            <RecentColumnCard
-                                key={column.title}
-                                column={column}
-                                transactions={data.transactionsByType[column.type]}
-                            />
-                        ))}
-                    </div>
-                </div>
-            </section>
-=======
-            <TransactionList />
->>>>>>> 387215c (feat: add transactions list component)
+            <TransactionList
+                title="Recent Transactions"
+                accountId={MOCK_ACCOUNT_ID}
+                transactions={recent.transactions}
+                headerAction={<Link to="/transactions">View All Transactions →</Link>}
+            />
         </section>
     );
 }

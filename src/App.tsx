@@ -4,7 +4,7 @@ import LandingLayout from "./layouts/LandingLayout";
 import Accounts from "./pages/Accounts/Accounts";
 import Home from "./pages/Home/Home";
 import Landing from "./pages/Landing/Landing";
-import TransactionList from "./components/TransactionList/TransactionList";
+import Transactions from "./pages/Transactions/Transactions";
 
 function App() {
     return (
@@ -38,7 +38,7 @@ function App() {
                     path="/transactions"
                     element={
                         <DashboardLayout>
-                            <TransactionList limit={20}/>
+                            <Transactions />
                         </DashboardLayout>
                     }
                 />
