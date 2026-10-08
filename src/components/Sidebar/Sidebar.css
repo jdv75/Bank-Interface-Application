@@ -101,13 +101,27 @@
 }
 
 .transaction-title {
+    box-sizing: content-box;
     margin-bottom: 5px;
+    border: none;
+    background: transparent;
+    font-family: inherit;
+    text-align: left;
 }
 
 .transaction-title .chevron {
     margin-left: auto;
     width: 18px;
     height: 18px;
+    transition: transform 0.2s ease;
+}
+
+.transaction-title .chevron.closed {
+    transform: rotate(180deg);
+}
+
+.transaction-submenu.collapsed {
+    display: none;
 }
 
 
@@ -227,5 +241,9 @@
     .transaction-submenu li a svg {
         width: 22px;
         height: 22px;
+    }
+
+    .transaction-submenu.collapsed {
+        display: contents;
     }
 }
