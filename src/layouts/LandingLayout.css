@@ -33,6 +33,14 @@ body {
 }
 
 .landing-background {
+  background: #111;
+  border: 1px solid rgba(0, 255, 255, 0.4);
+  /* Layered box-shadow: intense inner radius transitioning to a soft outer aura 
+  box-shadow: 
+    0 0 5px rgba(0, 255, 255, 0.8),
+    0 0 20px rgba(0, 255, 255, 0.4),
+    0 0 60px rgba(0, 255, 255, 0.1);
+  transition: box-shadow 0.3s ease;*/
   /*position: absolute;
   top: -10%;
   right: -5%;
@@ -40,7 +48,7 @@ body {
   height: 700px;
   background: radial-gradient(circle, rgba(37, 99, 235, 0.12) 0%, transparent 70%);
   pointer-events: none;
-  z-index: 0;*/
+  z-index: 0;
   position: absolute;
   inset: 0;
   pointer-events: none;
@@ -48,7 +56,14 @@ body {
   background:
     radial-gradient(ellipse 55% 30% at 0% 52%, rgba(31, 94, 255, 0.30), transparent 70%),
     radial-gradient(ellipse 45% 40% at 78% 38%, rgba(31, 94, 255, 0.20), transparent 70%),
-    radial-gradient(ellipse 60% 20% at 80% 62%, rgba(56, 130, 255, 0.18), transparent 70%);
+    radial-gradient(ellipse 60% 20% at 80% 62%, rgba(56, 130, 255, 0.18), transparent 70%);*/
+}
+
+landing-background:hover {
+  box-shadow: 
+    0 0 10px rgba(0, 255, 255, 1),
+    0 0 30px rgba(0, 255, 255, 0.6),
+    0 0 80px rgba(0, 255, 255, 0.3);
 }
 
 .landing-content {

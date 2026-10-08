@@ -59,7 +59,7 @@ body {
 }*/
 
 .landing-hero {
-  padding: 5.5rem 6% 3rem 6%;
+  padding: 5.5rem 6% 5rem 6%;
   position: relative;
 }
 
@@ -79,33 +79,43 @@ body {
   letter-spacing: 0.4em;
   font-size: clamp(0.75rem, 0.95vw, 1.05rem);
   font-weight: 500;
-  margin-bottom: 1rem;
-}
-
-.title {
-  color: var(--text-main);
-  font-size: 4.5rem;
-  margin-bottom: auto;
+  margin-bottom: 0rem;
   margin-top: auto;
 }
 
-.sologan {
-  color: var(--text-main);
-  font-size: 4.2rem;
+.title {
+  color: var(--primary-blue);
+  font-size: 4.5rem;
+  letter-spacing: -0.02em;
   line-height: 1.1;
-  font-weight: 800;
+  margin-top: auto;
+  margin-bottom: 0.75rem;
+}
+
+.slogan {
+  color: var(--text-main);
+  font-size: clamp(2.6rem, 3.6vw, 4.5rem);
+  line-height: 1.1;
+  font-weight: 700;
+  margin-top: auto;
   margin-bottom: 1.5rem;
   letter-spacing: -1px;
 }
 
-/*.gradient-text {
-  color: #38bdf8;
-}*/
+.gradient-text {
+  background: var(--primary-cyan);/*linear-gradient(90deg, #1f9bff 0%, #2f6bff 100%);*/
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: #2f8bff; /* fallback */
+}
+
 
 .description {
   color: var(--text-muted);
   font-size: 1.15rem;
   max-width: 520px;
+  margin-top: auto;
   margin-bottom: 2.5rem;
 }
 
@@ -157,6 +167,66 @@ body {
   padding: 0.8rem 2.2rem;
   font-size: 1rem;
 }
+
+/*.wave-container {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wave {
+  position: absolute;
+  width: 200%;
+  height: 100px;
+  border-bottom: 4px solid #00ffff;
+  border-radius: 45%;
+  box-shadow: 
+    0 0 15px #00ffff,
+    0 0 30px #00ffff,
+    0 0 60px rgba(0, 255, 255, 0.6);
+  animation: waveMotion 6s infinite linear;
+}
+
+.wave1 {
+  animation-duration: 6s;
+  opacity: 0.9;
+}
+
+.wave2 {
+  animation-duration: 4.5s;
+  animation-direction: reverse;
+  border-color: #ff00ff;
+  box-shadow: 
+    0 0 15px #ff00ff,
+    0 0 30px #ff00ff,
+    0 0 60px rgba(255, 0, 255, 0.6);
+  opacity: 0.6;
+}
+
+.wave3 {
+  animation-duration: 3s;
+  border-color: #00ff66;
+  box-shadow: 
+    0 0 15px #00ff66,
+    0 0 30px #00ff66,
+    0 0 60px rgba(0, 255, 102, 0.6);
+  opacity: 0.4;
+}
+
+/*@keyframes waveMotion {
+  0% {
+    transform: translateX(0) rotate(0deg);
+  }
+  50% {
+    transform: translateX(-25%) rotate(5deg);
+  }
+  100% {
+    transform: translateX(-50%) rotate(0deg);
+  }
+}*/
 
 @media (max-width: 1024px) {
   .landing-blurb {
