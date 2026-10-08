@@ -1,4 +1,4 @@
-import { ChevronRight, Copy } from "lucide-react";
+import { ChevronRight, Copy, Trash2 } from "lucide-react";
 
 import type { Account } from "../../types/bank";
 import {
@@ -11,9 +11,10 @@ import { getAccountIcon } from "../../utils/icons";
 
 interface AccountDetailCardProps {
     account: Account;
+    onDelete?: (accountId: string) => void;
 }
 
-function AccountDetailCard({ account }: AccountDetailCardProps) {
+function AccountDetailCard({ account, onDelete }: AccountDetailCardProps) {
     const Icon = getAccountIcon(account.type);
     const highlight = getHighlightRow(account);
     const availableBalance = account.balance - (account.pendingTransferAmount ?? 0);
@@ -39,13 +40,14 @@ function AccountDetailCard({ account }: AccountDetailCardProps) {
                     </strong>
                 </div>
 
-                {/* <button
-                    className="account-arrow"
+                <button
+                    className="account-delete"
                     type="button"
-                    aria-label={`Open ${account.name}`}
+                    aria-label={`Delete ${account.name}`}
+                    onClick={() => onDelete?.(account.id)}
                 >
-                    <ChevronRight />
-                </button> */}
+                    <Trash2 />
+                </button>
             </div>
 
             <div className="account-details">

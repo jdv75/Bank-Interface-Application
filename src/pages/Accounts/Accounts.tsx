@@ -95,6 +95,7 @@ function SummaryPanel({ shares, total }: { shares: AccountShare[]; total: number
     );
 }
 
+
 function Accounts() {
     const [showNewAccount, setShowNewAccount] = useState(false);
     const [data, setData] = useState<AccountsData | null>(null);
@@ -127,9 +128,29 @@ function Accounts() {
     const total = getTotalBalance(data.accounts);
     const shares = getAccountShares(data.accounts, total);
 
+    async function handleDelete(accountId: string) {
+        if(!confirm("Delete this account? This cannot be undone.")) return;
+        await bankService.deleteAccount(accountId);
+        const [accounts, activity] = await Promise.all([
+            bankService.getAccounts(),
+            bankService.getRecentTransactions(5)
+        ]);
+        setData({accounts, activity});
+    }
+
     return (
         <div className="accounts-page">
-            {showNewAccount && <NewAccountForm onClose={() => setShowNewAccount(false)} />}
+            {showNewAccount && (
+                <NewAccountForm onClose={() => setShowNewAccount(false)} 
+                    onCreated={async () => {
+                        const [accounts, activity] = await Promise.all([
+                            bankService.getAccounts(),
+                            bankService.getRecentTransactions(5)
+                        ]);
+                        setData({accounts, activity});
+                    }}
+                />
+            )}
 
             <div className="accounts-header">
                 <div>
@@ -149,7 +170,7 @@ function Accounts() {
 
             <div className="accounts-grid">
                 {data.accounts.map((account) => (
-                    <AccountDetailCard key={account.id} account={account} />
+                    <AccountDetailCard key={account.id} account={account} onDelete={handleDelete}/>
                 ))}
             </div>
 
