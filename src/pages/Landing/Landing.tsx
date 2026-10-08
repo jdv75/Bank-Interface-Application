@@ -23,7 +23,7 @@ function Landing() {
                         </p>
                     
                         <nav className="landing-actions">
-                            <NavLink to="/signup" className="btn signup large">
+                            <NavLink to="/register" className="btn signup large">
                                 Get Started  <MoveRight aria-hidden="true" />
                             </NavLink>
                             <NavLink to="/login" className="btn login large">Login</NavLink>                
