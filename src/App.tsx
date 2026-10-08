@@ -11,6 +11,7 @@ import Register from "./pages/Register/Register";
 import Deposit from "./pages/Deposit/Deposit";
 import Withdraw from "./pages/Withdraw/Withdraw";
 import Transactions from "./pages/Transactions/Transactions";
+import Transfer from "./pages/Transfer/Transfer";
 
 function App() {
     return (
@@ -59,6 +60,14 @@ function App() {
                         element={
                             <DashboardLayout>
                                 <Withdraw />
+                            </DashboardLayout>
+                      }
+                    />
+                    <Route
+                        path="/transfer"
+                        element={
+                            <DashboardLayout>
+                                <Transfer />
                             </DashboardLayout>
                       }
                     />
