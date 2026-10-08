@@ -8,6 +8,9 @@ import Home from "./pages/Home/Home";
 import Landing from "./pages/Landing/Landing";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
+import Deposit from "./pages/Deposit/Deposit";
+import Withdraw from "./pages/Withdraw/Withdraw";
+import Transactions from "./pages/Transactions/Transactions";
 
 function App() {
     return (
@@ -42,6 +45,30 @@ function App() {
                                 <Accounts />
                             </DashboardLayout>
                         }
+                    />
+                    <Route
+                        path="/deposit"
+                        element={
+                            <DashboardLayout>
+                                <Deposit />
+                            </DashboardLayout>
+                      }
+                    />
+                    <Route
+                        path="/withdraw"
+                        element={
+                            <DashboardLayout>
+                                <Withdraw />
+                            </DashboardLayout>
+                      }
+                    />
+                    <Route
+                        path="/transactions"
+                        element={
+                            <DashboardLayout>
+                                <Transactions />
+                            </DashboardLayout>
+                      }
                     />
                 </Routes>
             </BrowserRouter>

@@ -1,0 +1,25 @@
+.withdraw-page {
+    width: 100%;
+    color: var(--text-primary);
+    padding: 40px 32px;
+}
+
+.withdraw-header {
+    width: 97%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.withdraw-header h1 {
+    margin: 0;
+    font-size: 45px;
+    font-weight: 700;
+}
+
+.withdraw-header p {
+    margin: 6px 0 0;
+    color: var(--text-secondary);
+    font-size: 15px;
+}
