@@ -5,6 +5,8 @@ import Accounts from "./pages/Accounts/Accounts";
 import Home from "./pages/Home/Home";
 import Landing from "./pages/Landing/Landing";
 import Transactions from "./pages/Transactions/Transactions";
+import Deposit from "./pages/Deposit/Deposit";
+import Withdraw from "./pages/Withdraw/Withdraw";
 
 function App() {
     return (
@@ -39,6 +41,18 @@ function App() {
                     element={
                         <DashboardLayout>
                             <Transactions />
+                    path="/deposit"
+                    element={
+                        <DashboardLayout>
+                            <Deposit />
+                        </DashboardLayout>
+                    }
+                />
+                <Route
+                    path="/withdraw"
+                    element={
+                        <DashboardLayout>
+                            <Withdraw />
                         </DashboardLayout>
                     }
                 />
