@@ -1,13 +1,49 @@
 import React, { useState } from "react";
-import { MoveRight } from "lucide-react";
+import { 
+    MoveRight,
+    Landmark, 
+    ArrowLeftRight,
+    ChartNoAxesCombined,
+    ShieldCheck,
+ } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import FeatureCards from "../../components/FeatureCards/FeatureCards";
 import GlowingEffect from "../../components/GlowingEffect/GlowingEffect";
 import heroMockup from "../../assets/images/demo.png";
 import "./Landing.css";
-
-// Image
 import heroImage from "../../assets/images/Landing.png";
+import { CardProps } from "../../types/landing";
+import InfoCard from "../../components/InfoCards/InfoCards";
+
+
+
+const FEATURES_DATA: CardProps[] = [
+    {
+        title: "Manage Your Accounts",
+        icon: <Landmark />,
+        tone: "blue",
+        description: "View balances, track activity, and organize your finances in one place.",
+    },
+
+    {
+        title: "Transfer Money",
+        icon: <ArrowLeftRight />,
+        tone: "purple",
+        description: "Send and receive money instantly with our fast and secure transfer service.",
+    },
+    {
+        title: "Track Your Spending",
+        icon: <ChartNoAxesCombined />,
+        tone: "green",
+        description: "Stay on top of your spending with real-time transaction history and insights.",
+    },
+    {
+        title: "Secure Your Accounts",
+        icon: <ShieldCheck />,
+        tone: "blue",
+        description: "Protect your financial information with our advanced security features.",
+    }
+];
 
 function Landing() {
     return (
@@ -41,7 +77,18 @@ function Landing() {
                 </div>
             </section>
 
-            <FeatureCards />
+            <div className="features-grid">
+                {FEATURES_DATA.map((feature) => (
+                    <InfoCard
+                        key={feature.title}
+                        icon={feature.icon}
+                        title={feature.title}
+                        description={feature.description}
+                        tone={feature.tone}
+                    />
+                ))}
+            </div>
+
         </div>
     );
 }
