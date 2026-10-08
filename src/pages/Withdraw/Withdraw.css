@@ -23,3 +23,62 @@
     color: var(--text-secondary);
     font-size: 15px;
 }
+
+.withdraw-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.55fr) minmax(320px, 1fr);
+    align-items: start;
+    gap: 20px;
+    max-width: 1400px;
+}
+
+.withdraw-information {
+    padding: 24px;
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    background: var(--bg-card);
+    text-align: center;
+}
+
+.withdraw-information img {
+    display: block;
+    width: 200px;
+    max-width: 100%;
+    margin: 0 auto 8px;
+}
+
+.withdraw-information h2 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.withdraw-information p {
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+@media (max-width: 900px) {
+    .withdraw-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .withdraw-page {
+        box-sizing: border-box;
+        padding: 16px 0 8px;
+    }
+
+    .withdraw-header {
+        width: 100%;
+        margin-bottom: 16px;
+    }
+
+    .withdraw-header h1 {
+        font-size: 30px;
+    }
+
+    .withdraw-information {
+        padding: 16px;
+    }
+}

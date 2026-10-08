@@ -88,7 +88,7 @@ function createTransactionId(transactions: Transaction[]): string {
     return `txn_${String(highestId + 1).padStart(3, "0")}`;
 }
 
-export function addTransaction(userId: string, accountId: string, transactionType: Exclude<Transaction["type"], "transfer">, createdAt: string, transactionAmount: number): void {
+export function addTransaction(accountId: string, transactionType: Exclude<Transaction["type"], "transfer">, createdAt: string, transactionAmount: number): void {
     const transaction: Transaction = {
         type: transactionType,
         amount: transactionAmount,

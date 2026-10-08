@@ -69,11 +69,6 @@
     font-size: 15px;
 }
 
-.transfer-account-field {
-    margin-bottom: 18px;
-}
-
-.transfer-select,
 .transfer-amount,
 .transfer-date input,
 .transfer-note textarea {
@@ -82,25 +77,6 @@
     background: var(--bg-card-secondary);
 }
 
-.transfer-select-wrapper {
-    position: relative;
-}
-
-.transfer-select {
-    position: relative;
-    display: flex;
-    width: 100%;
-    align-items: center;
-    gap: 12px;
-    min-height: 62px;
-    padding: 10px 14px 10px 10px;
-    color: var(--text-primary);
-    cursor: pointer;
-    font: inherit;
-    text-align: left;
-}
-
-.transfer-select:focus-within,
 .transfer-amount:focus-within,
 .transfer-date input:focus,
 .transfer-note textarea:focus {
@@ -108,7 +84,6 @@
     outline: none;
 }
 
-.transfer-select-icon,
 .transfer-summary-icon {
     display: grid;
     width: 46px;
@@ -118,79 +93,21 @@
     border-radius: 10px;
 }
 
-.transfer-select-icon.checking,
 .transfer-summary-icon.checking {
     background: var(--primary-blue);
 }
 
-.transfer-select-icon.savings,
 .transfer-summary-icon.savings {
     background: var(--success);
 }
 
-.transfer-select-icon.investment,
 .transfer-summary-icon.investment {
     background: var(--transfer);
 }
 
-.transfer-select-details {
-    display: flex;
-    min-width: 0;
-    flex: 1;
-    flex-direction: column;
-}
-
-.transfer-select-details small,
 .transfer-summary-account small {
     color: var(--text-secondary);
     font-size: 13px;
-}
-
-.transfer-select > svg {
-    color: var(--text-secondary);
-    transition: transform 0.2s ease;
-}
-
-.transfer-select > svg.open {
-    transform: rotate(180deg);
-}
-
-.transfer-select-options {
-    position: absolute;
-    z-index: 5;
-    top: calc(100% + 6px);
-    right: 0;
-    left: 0;
-    overflow: hidden;
-    border: 1px solid var(--highlight-blue);
-    border-radius: 10px;
-    background: var(--bg-card);
-    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.35);
-}
-
-.transfer-select-options button {
-    display: flex;
-    width: 100%;
-    align-items: center;
-    gap: 12px;
-    padding: 10px;
-    border: 0;
-    border-bottom: 1px solid var(--border-color);
-    background: var(--bg-card-secondary);
-    color: var(--text-primary);
-    cursor: pointer;
-    font: inherit;
-    text-align: left;
-}
-
-.transfer-select-options button:last-child {
-    border-bottom: 0;
-}
-
-.transfer-select-options button:hover,
-.transfer-select-options button.selected {
-    background: var(--bg-card);
-    box-shadow: inset 4px 0 var(--highlight-blue);
 }
 
 .transfer-amount {
@@ -466,7 +383,4 @@
         grid-template-columns: 1fr;
     }
 
-    .transfer-select > strong {
-        display: none;
-    }
 }
