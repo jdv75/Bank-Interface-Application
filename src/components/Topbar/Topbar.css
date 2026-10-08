@@ -95,6 +95,9 @@
 .profile-info {
     display: flex;
     flex-direction: column;
+    gap: 6px;
+    align-items: flex-end;
+    text-align: right;
 }
 
 .profile-name {
