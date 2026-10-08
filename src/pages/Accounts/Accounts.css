@@ -225,7 +225,8 @@
 }
 
 .account-details .available-balance strong {
-    color: var(--transfer);
+    color: var(--highlight-blue);
+    font-weight: 700;
 }
 
 .accounts-state {
