@@ -12,6 +12,10 @@ import Deposit from "./pages/Deposit/Deposit";
 import Withdraw from "./pages/Withdraw/Withdraw";
 import Transactions from "./pages/Transactions/Transactions";
 import Transfer from "./pages/Transfer/Transfer";
+import Features from "./pages/Features/Features";
+import Security from "./pages/Security/Security";
+import About from "./pages/About/About";
+import Contact from "./pages/Contact/Contact";
 
 function App() {
     return (
@@ -24,6 +28,38 @@ function App() {
                         element={
                             <LandingLayout>
                                 <Landing />
+                            </LandingLayout>
+                        }
+                    />
+                    <Route
+                        path="/features"
+                        element={
+                            <LandingLayout>
+                                <Features />
+                            </LandingLayout>
+                        }
+                    />
+                    <Route
+                        path="/security"
+                        element={
+                            <LandingLayout>
+                                <Security />
+                            </LandingLayout>
+                        }
+                    />
+                    <Route
+                        path="/about"
+                        element={
+                            <LandingLayout>
+                                <About />
+                            </LandingLayout>
+                        }
+                    />
+                    <Route
+                        path="/contact"
+                        element={
+                            <LandingLayout>
+                                <Contact />
                             </LandingLayout>
                         }
                     />

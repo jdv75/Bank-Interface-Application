@@ -1,0 +1,39 @@
+.steps {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+ 
+.step {
+  position: relative;
+  padding: 1.75rem;
+  border-radius: 14px;
+  border: 1px solid rgba(120, 160, 255, 0.1);
+  background: linear-gradient(160deg, rgba(10, 22, 52, 0.6) 0%, rgba(4, 10, 26, 0.7) 100%);
+}
+ 
+.step__number {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  margin-bottom: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, #1f6bff 0%, #1a56f0 100%);
+  box-shadow: 0 0 18px rgba(31, 94, 255, 0.45);
+}
+ 
+.step h3 {
+  color: var(--text-main);
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+ 
+.step p {
+  color: var(--text-body);
+  line-height: 1.55;
+}
