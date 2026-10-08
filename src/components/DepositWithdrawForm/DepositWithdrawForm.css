@@ -214,3 +214,58 @@
 .dw-submit:hover {
     filter: brightness(1.1);
 }
+
+@media (max-width: 560px) {
+    .dw-form {
+        box-sizing: border-box;
+        width: 100%;
+        padding: 18px 16px;
+        border-radius: 12px;
+    }
+
+    .dw-select {
+        gap: 10px;
+        min-height: 64px;
+        padding: 8px 10px;
+    }
+
+    .dw-select-icon {
+        width: 42px;
+        height: 42px;
+        flex-basis: 42px;
+    }
+
+    .dw-select-summary {
+        min-width: 0;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+
+    .dw-account-details {
+        min-width: 0;
+        overflow-wrap: anywhere;
+    }
+
+    .dw-account-details small {
+        font-size: 12px;
+    }
+
+    .dw-account-balance {
+        font-size: 14px;
+    }
+
+    .dw-amount input {
+        min-width: 0;
+    }
+
+    .dw-submit {
+        width: 100%;
+        padding: 14px 12px;
+    }
+
+    .dw-submitResult {
+        display: block;
+        padding: 12px 0 0;
+    }
+}

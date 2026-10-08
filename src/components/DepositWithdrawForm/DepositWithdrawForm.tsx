@@ -53,6 +53,7 @@ function DepositWithdrawForm({ type }: { type: TransactionType }) {
     const [submit, setSubmit] = useState(false);
     const [result, setResult] = useState("");
     const [showResult, setShowResult] = useState(false);
+    const [error, setError] = useState("");
     // const [method, setMethod] = useState<string>(config.methods[0].id);
 
 
@@ -97,7 +98,8 @@ function DepositWithdrawForm({ type }: { type: TransactionType }) {
             if (error instanceof Error) {
                 setResult("failed");
                 console.error("An error occurred:", error.message);
-                alert(`An error occurred: ${error.message}`);
+                setError(error.message);
+                // alert(`An error occurred: ${error.message}`);
             }
 
         } finally {
@@ -106,7 +108,7 @@ function DepositWithdrawForm({ type }: { type: TransactionType }) {
         }
         }, 1000);
         
-       
+        setError("");
         setAmount("");
     };
 
@@ -200,7 +202,7 @@ function DepositWithdrawForm({ type }: { type: TransactionType }) {
 
                 <span className="dw-submitResult">
                     {
-                        showResult ? result == "success" ? <strong>Transaction Successful!</strong> : <strong>Transaction Failed</strong>
+                        showResult ? result == "success" ? <strong>Transaction Successful!</strong> : <strong className="dw-error">{error}</strong>
                         : null
                     }
                 </span>
