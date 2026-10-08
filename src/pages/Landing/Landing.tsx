@@ -4,6 +4,9 @@ import { NavLink } from "react-router-dom";
 import FeatureCards from "../../components/FeatureCards/FeatureCards";
 import "./Landing.css";
 
+// Image
+import heroImage from "../../assets/images/Landing.png";
+
 function Landing() {
     return (
         <div className="landing-page">
@@ -28,7 +31,9 @@ function Landing() {
                     </div>
 
                     <div className="landing-visual">
-                        <div className="glow-effect" aria-hiden="true" />          
+                        <div className="glow-effect" aria-hiden="true" /> 
+                          {/* Image */}
+                        <img src={heroImage} alt="NeuroBank app preview" className="landing-hero-image"/>       
                     </div>
 
                 </div>
