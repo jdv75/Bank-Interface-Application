@@ -1,0 +1,138 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1774" height="887" viewBox="0 0 1774 887" fill="none">
+  <defs>
+    <linearGradient id="leftCard" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#089DF8"/>
+      <stop offset="0.28" stop-color="#0866F5"/>
+      <stop offset="0.72" stop-color="#0534D9"/>
+      <stop offset="1" stop-color="#0327B9"/>
+    </linearGradient>
+    <radialGradient id="leftSheen" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(260 250) rotate(25) scale(430 260)">
+      <stop offset="0" stop-color="#38F3FF" stop-opacity="0.36"/>
+      <stop offset="0.42" stop-color="#2CD8FF" stop-opacity="0.10"/>
+      <stop offset="1" stop-color="#2CD8FF" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="rightCard" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#08DFA8"/>
+      <stop offset="0.34" stop-color="#08C795"/>
+      <stop offset="0.75" stop-color="#009876"/>
+      <stop offset="1" stop-color="#006F61"/>
+    </linearGradient>
+    <radialGradient id="rightSheen" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1440 260) rotate(155) scale(460 280)">
+      <stop offset="0" stop-color="#60FFE1" stop-opacity="0.40"/>
+      <stop offset="0.5" stop-color="#33F5CF" stop-opacity="0.10"/>
+      <stop offset="1" stop-color="#33F5CF" stop-opacity="0"/>
+    </radialGradient>
+
+    <linearGradient id="blueAccent" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5AF4FF" stop-opacity="0.82"/>
+      <stop offset="0.55" stop-color="#57A9FF" stop-opacity="0.74"/>
+      <stop offset="1" stop-color="#A9EFFF" stop-opacity="0.92"/>
+    </linearGradient>
+    <linearGradient id="greenAccent" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#79FFE5" stop-opacity="0.85"/>
+      <stop offset="0.55" stop-color="#69E6CA" stop-opacity="0.82"/>
+      <stop offset="1" stop-color="#C6FFF1" stop-opacity="0.96"/>
+    </linearGradient>
+    <linearGradient id="arrowGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#32C9FF"/>
+      <stop offset="0.38" stop-color="#128BFF"/>
+      <stop offset="1" stop-color="#134EE9"/>
+    </linearGradient>
+    <linearGradient id="arrowHighlight" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#B3F5FF" stop-opacity="0.60"/>
+      <stop offset="0.5" stop-color="#5FEAFF" stop-opacity="0.30"/>
+      <stop offset="1" stop-color="#C6F8FF" stop-opacity="0.58"/>
+    </linearGradient>
+
+    <filter id="blueGlow" x="-40%" y="-40%" width="180%" height="180%" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feColorMatrix in="blur" type="matrix" values="0 0 0 0 0.00  0 0 0 0 0.43  0 0 0 0 1.00  0 0 0 0.75 0" result="colored"/>
+      <feMerge><feMergeNode in="colored"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="cyanGlow" x="-40%" y="-40%" width="180%" height="180%" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feColorMatrix in="blur" type="matrix" values="0 0 0 0 0.00  0 0 0 0 1.00  0 0 0 0 0.95  0 0 0 0.70 0" result="colored"/>
+      <feMerge><feMergeNode in="colored"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="softShadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="9" stdDeviation="12" flood-color="#001C62" flood-opacity="0.42"/>
+    </filter>
+  </defs>
+
+  <!-- transparent background intentionally preserved -->
+
+  <!-- LEFT CARD -->
+  <g transform="translate(405 458) rotate(9) translate(-405 -458)">
+    <rect x="118" y="258" width="590" height="404" rx="58" fill="#0645EA" opacity="0.54" filter="url(#blueGlow)"/>
+    <rect x="123" y="252" width="590" height="404" rx="58" fill="url(#leftCard)" stroke="#28E8FF" stroke-width="4"/>
+    <rect x="132" y="261" width="572" height="386" rx="50" stroke="#58DFFF" stroke-width="2" opacity="0.46"/>
+    <rect x="123" y="252" width="590" height="404" rx="58" fill="url(#leftSheen)"/>
+
+    <!-- left chip -->
+    <path d="M183 316 Q183 299 200 299 H253 Q271 299 271 317 V353 Q271 367 259 367 H257 V376 Q257 387 246 387 Q235 387 235 376 V369 H227 V378 Q227 389 216 389 Q205 389 205 378 V369 H200 Q183 369 183 352 Z" fill="url(#blueAccent)" opacity="0.90"/>
+    <path d="M184 316 Q184 300 200 300 H253 Q269 300 269 317" stroke="#A8F7FF" stroke-width="2" opacity="0.58" stroke-linecap="round"/>
+
+    <!-- long stripe -->
+    <rect x="337" y="353" width="291" height="24" rx="12" fill="#50A8FF" opacity="0.68"/>
+    <rect x="341" y="354" width="282" height="8" rx="4" fill="#7ACBFF" opacity="0.28"/>
+
+    <!-- signal bars -->
+    <rect x="536" y="318" width="17" height="31" rx="7" fill="#4D94FF" opacity="0.58"/>
+    <rect x="558" y="318" width="17" height="31" rx="7" fill="#63A9FF" opacity="0.66"/>
+    <rect x="580" y="318" width="17" height="31" rx="7" fill="#83C3FF" opacity="0.77"/>
+    <rect x="602" y="318" width="17" height="31" rx="7" fill="#B7E6FF" opacity="0.88"/>
+    <rect x="624" y="318" width="22" height="31" rx="8" fill="#E1F8FF" opacity="0.98"/>
+
+    <!-- lower-left bars -->
+    <rect x="177" y="507" width="181" height="22" rx="11" fill="#2E84FB" opacity="0.66"/>
+    <rect x="177" y="540" width="123" height="22" rx="11" fill="#2C79F1" opacity="0.62"/>
+
+    <!-- lower-right pill -->
+    <rect x="485" y="513" width="141" height="70" rx="23" fill="url(#blueAccent)" opacity="0.93"/>
+    <rect x="488" y="516" width="135" height="64" rx="20" stroke="#B5F8FF" stroke-width="2" opacity="0.42"/>
+  </g>
+
+  <!-- RIGHT CARD -->
+  <g transform="translate(1342 458) rotate(-9) translate(-1342 -458)">
+    <rect x="1058" y="258" width="590" height="404" rx="58" fill="#00B386" opacity="0.50" filter="url(#cyanGlow)"/>
+    <rect x="1054" y="252" width="590" height="404" rx="58" fill="url(#rightCard)" stroke="#2EFFE0" stroke-width="4"/>
+    <rect x="1063" y="261" width="572" height="386" rx="50" stroke="#73FFE8" stroke-width="2" opacity="0.52"/>
+    <rect x="1054" y="252" width="590" height="404" rx="58" fill="url(#rightSheen)"/>
+
+    <!-- right chip -->
+    <path d="M1115 316 Q1115 299 1132 299 H1185 Q1203 299 1203 317 V353 Q1203 367 1191 367 H1189 V376 Q1189 387 1178 387 Q1167 387 1167 376 V369 H1159 V378 Q1159 389 1148 389 Q1137 389 1137 378 V369 H1132 Q1115 369 1115 352 Z" fill="url(#greenAccent)" opacity="0.90"/>
+    <path d="M1116 316 Q1116 300 1132 300 H1185 Q1201 300 1201 317" stroke="#D0FFF4" stroke-width="2" opacity="0.56" stroke-linecap="round"/>
+
+    <!-- long stripe -->
+    <rect x="1259" y="353" width="291" height="24" rx="12" fill="#62E8CF" opacity="0.72"/>
+    <rect x="1263" y="354" width="282" height="8" rx="4" fill="#B0FFEE" opacity="0.26"/>
+
+    <!-- signal bars -->
+    <rect x="1452" y="318" width="17" height="31" rx="7" fill="#4CD6B8" opacity="0.70"/>
+    <rect x="1474" y="318" width="17" height="31" rx="7" fill="#69E4C6" opacity="0.77"/>
+    <rect x="1496" y="318" width="17" height="31" rx="7" fill="#91F0D7" opacity="0.86"/>
+    <rect x="1518" y="318" width="17" height="31" rx="7" fill="#C2FAEA" opacity="0.94"/>
+    <rect x="1540" y="318" width="22" height="31" rx="8" fill="#E4FFF7" opacity="0.98"/>
+
+    <!-- lower-left bars -->
+    <rect x="1115" y="507" width="161" height="22" rx="11" fill="#18B597" opacity="0.72"/>
+    <rect x="1115" y="540" width="116" height="22" rx="11" fill="#11AA8D" opacity="0.68"/>
+
+    <!-- lower-right pill -->
+    <rect x="1410" y="513" width="141" height="70" rx="23" fill="url(#greenAccent)" opacity="0.94"/>
+    <rect x="1413" y="516" width="135" height="64" rx="20" stroke="#E1FFF7" stroke-width="2" opacity="0.47"/>
+  </g>
+
+  <!-- SWAP ARROWS -->
+  <g filter="url(#blueGlow)">
+    <!-- upper right arrow -->
+    <path d="M773 369 H914 L889 344 Q878 333 886 321 Q895 307 911 320 L1005 397 Q1015 405 1005 415 L911 493 Q897 505 886 492 Q878 480 889 469 L914 444 H773 Q748 444 739 426 Q730 407 739 389 Q748 369 773 369 Z"
+          fill="url(#arrowGrad)" stroke="#25DAFF" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M775 376 H930" stroke="url(#arrowHighlight)" stroke-width="4" opacity="0.50" stroke-linecap="round"/>
+
+    <!-- lower left arrow -->
+    <path d="M1001 506 H860 L885 481 Q896 470 888 458 Q879 444 863 457 L769 534 Q759 542 769 552 L863 630 Q877 642 888 629 Q896 617 885 606 L860 581 H1001 Q1026 581 1035 563 Q1044 544 1035 526 Q1026 506 1001 506 Z"
+          fill="url(#arrowGrad)" stroke="#25DAFF" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M998 513 H846" stroke="url(#arrowHighlight)" stroke-width="4" opacity="0.42" stroke-linecap="round"/>
+  </g>
+</svg>
