@@ -9,7 +9,7 @@ body:has(.dashboard-layout) {
 
 .dashboard-layout {
     height: 100vh;
-    min-width: 390px;
+    min-width: 320px;
     display: grid;
     grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
     grid-template-rows: var(--topbar-height) 1fr;
