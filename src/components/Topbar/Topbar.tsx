@@ -81,7 +81,7 @@ function Topbar() {
 
                 <div className="profile-info">
                     <span className="profile-name">
-                        Juan David
+                        George
                     </span>
 
                     <span className="profile-role">
@@ -90,9 +90,9 @@ function Topbar() {
                 </div>
 
                 <div className="profile-picture">
-                    <span>JD</span>
+                    <span>GE</span>
                 </div>
-                
+
                 {/* <ChevronDown className="profile-arrow" /> */}
 
             </div>
