@@ -561,11 +561,12 @@
     }
 
     .summary-legend {
-        width: auto;
+        width: 100%;
+        max-width: 260px;
         align-self: center;
     }
 
     .summary-legend li {
-        grid-template-columns: 12px 11.5rem 7.5rem;
+        grid-template-columns: 12px minmax(0, 1fr) auto;
     }
 }
