@@ -313,7 +313,7 @@
 .auth-hero {
     padding-left: 10px;
     /* Align the text */
-    transform: translateY(-140px); 
+    /* transform: translateY(-80px);  */
 }
 
 .auth-hero-tagline {
@@ -402,9 +402,9 @@
 .auth-credit-card {
     position: absolute;
     left: 20px;
-    bottom: 60px;
-    width: 320px;
-    height: 195px;
+    bottom: 200px;
+    width: 290px;
+    height: 170px;
     border-radius: 18px;
     background: linear-gradient(135deg, #0a1a3a 0%, #12306b 60%, var(--primary-blue) 100%);
     box-shadow:

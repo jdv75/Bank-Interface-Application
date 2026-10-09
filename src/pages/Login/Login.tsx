@@ -186,7 +186,7 @@ function LoginHero() {
             </p>
 
             <div className="auth-hero-art">
-                <div className="auth-phone">
+                {/* <div className="auth-phone">
                     <div className="auth-phone-notch" />
                     <div className="auth-phone-label">Total Balance</div>
                     <div className="auth-phone-amount">$12,340.00</div>
@@ -203,7 +203,7 @@ function LoginHero() {
                         <li><span>Grocery Store</span><b className="neg">-$85.23</b></li>
                         <li><span>Transfer</span><b className="neg">-$300.00</b></li>
                     </ul>
-                </div>
+                </div> */}
 
                 <div className="auth-credit-card">
                     <div className="auth-credit-card-top">NeuroBank</div>
