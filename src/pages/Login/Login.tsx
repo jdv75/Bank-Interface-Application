@@ -205,7 +205,7 @@ function LoginHero() {
                     </ul>
                 </div> */}
 
-                <div className="auth-credit-card">
+                {/* <div className="auth-credit-card">
                     <div className="auth-credit-card-top">NeuroBank</div>
                     <div className="auth-credit-card-chip" />
                     <div className="auth-credit-card-bottom">
@@ -215,13 +215,13 @@ function LoginHero() {
                             <span className="yellow" />
                         </span>
                     </div>
-                </div>
+                </div> */}
 
-                <div className="auth-pills">
+                {/* <div className="auth-pills">
                     <AuthPill label="Track your spending" />
                     <AuthPill label="Bank with confidence" />
                     <AuthPill label="Reach your goals" />
-                </div>
+                </div> */}
             </div> 
         </div>
     );
