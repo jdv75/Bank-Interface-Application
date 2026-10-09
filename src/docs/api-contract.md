@@ -62,3 +62,31 @@ Creates an immediate or scheduled transfer.
 
 The response includes an `id`, `createdAt`, and a `status` of `"completed"` or
 `"scheduled"`.
+
+## POST /api/transactions
+
+Creates a new deposit/withdrawal transaction and sends to server.
+
+```
+{
+    {
+        "id": string,
+        "type": "deposit" | "withdrawal"
+        "amount": number,     
+        "created_at": string,      // ISO 8601 UTC, e.g. "2026-09-01T09:15:00Z"
+        "account_id": string
+    }
+}
+```
+
+### Response: 201
+
+### Errors
+| Case                                                | Status |
+|-----------------------------------------------------|--------|
+| Not logged in                                       | 401    |
+| Account belongs to another user                     | 403    |
+| Overdraft: Withdrawal amount exceeds account balance | 403    |
+| User input is non-numeric                           | 403    |
+| Amount exceeds $1,000,000                           | 403    |
+| Account doesn't exist                               | 404    |
