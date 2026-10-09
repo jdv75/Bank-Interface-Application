@@ -2,11 +2,18 @@
   padding-bottom: 5rem;
 }
  
-.contact-grid {
+/*
+  Cap the layout width (so fields don't stretch on big monitors) but keep its
+  left edge lined up with the page hero above it.
+*/
+.contact-section .contact-grid {
   display: grid;
   grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
   gap: 2rem;
   align-items: start;
+  max-width: 1120px;
+  margin-left: max(0px, calc((100% - 1600px) / 2));
+  margin-right: auto;
 }
  
 /* ---------- Contact details ---------- */
@@ -14,13 +21,15 @@
   list-style: none;
   display: grid;
   gap: 1rem;
+  margin-top: 0;
+  padding: auto;
 }
  
 .contact-item {
   display: flex;
   align-items: center;
   gap: 1.1rem;
-  padding: 1.25rem 1.5rem;
+  padding: 1.15rem 1.35rem;
   border-radius: 14px;
   border: 1px solid rgba(120, 160, 255, 0.1);
   background: linear-gradient(160deg, rgba(10, 22, 52, 0.85) 0%, rgba(4, 10, 26, 0.92) 100%);
@@ -30,8 +39,8 @@
   flex-shrink: 0;
   display: grid;
   place-items: center;
-  width: 48px;
-  height: 48px;
+  width: 46px;
+  height: 46px;
   border-radius: 12px;
   color: #6cb4ff;
   background: linear-gradient(135deg, #123a8f 0%, #0c2565 100%);
@@ -40,30 +49,45 @@
  
 .contact-item__label {
   color: var(--text-muted);
-  font-size: 0.85rem;
-  letter-spacing: 0.08em;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
 }
  
 .contact-item__value {
   color: var(--text-main);
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   font-weight: 500;
   overflow-wrap: anywhere;
 }
  
-/* ---------- Form ---------- */
+/* ---------- Form card ---------- */
 .contact-card {
+  width: 100%;
   padding: clamp(1.5rem, 3vw, 2.5rem);
   border-radius: 20px;
-  border: 1px solid rgba(80, 140, 255, 0.2);
+  border: 1px solid rgba(80, 140, 255, 0.22);
   background: linear-gradient(160deg, #0a1634 0%, #040a1a 100%);
+}
+ 
+.contact-card__title {
+  color: var(--text-main);
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-bottom: 0.35rem;
+}
+ 
+.contact-card__intro {
+  color: var(--text-muted);
+  font-size: 0.98rem;
+  margin-bottom: 1.75rem;
 }
  
 .form-row {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.25rem;
+  grid-template-columns: 1fr 1.25fr;
+  gap: 4rem;
 }
  
 .field {
@@ -72,8 +96,8 @@
  
 .field label {
   display: block;
-  color: var(--text-main);
-  font-size: 0.95rem;
+  color: #c6d2ee;
+  font-size: 0.875rem;
   font-weight: 500;
   margin-bottom: 0.45rem;
 }
@@ -85,17 +109,33 @@
   font-family: inherit;
   font-size: 1rem;
   color: var(--text-main);
-  background-color: #030a22;
+  background-color: #050d28;
   border: 1px solid rgba(120, 160, 255, 0.2);
-  border-radius: 8px;
-  padding: 0.9rem 1rem;
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
   color-scheme: dark;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+ 
+.field input,
+.field select {
+  height: 52px;
 }
  
 .field textarea {
   resize: vertical;
-  min-height: 150px;
+  min-height: 140px;
+  line-height: 1.5;
+}
+ 
+.field ::placeholder {
+  color: #5f7098;
+}
+ 
+.field input:hover,
+.field select:hover,
+.field textarea:hover {
+  border-color: rgba(120, 160, 255, 0.4);
 }
  
 .field input:focus,
@@ -103,17 +143,37 @@
 .field textarea:focus {
   outline: none;
   border-color: var(--nb-blue);
+  background-color: #06103a;
   box-shadow: 0 0 0 3px rgba(31, 94, 255, 0.25);
+}
+ 
+/* Custom chevron so the select matches the other fields */
+.field select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 2.75rem;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%238fa0c2' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.9rem center;
 }
  
 .field [aria-invalid="true"] {
   border-color: #ff6b81;
 }
  
+.field [aria-invalid="true"]:focus {
+  box-shadow: 0 0 0 3px rgba(255, 107, 129, 0.25);
+}
+ 
 .field-error {
   color: #ff8a9b;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   margin-top: 0.4rem;
+}
+ 
+.contact-card form .btn {
+  margin-top: 0.5rem;
 }
  
 .form-success {
@@ -128,15 +188,27 @@
   border: 1px solid rgba(60, 220, 160, 0.35);
 }
  
+/* ---------- Tablet: stack, and keep both blocks the same width ---------- */
 @media (max-width: 900px) {
-  .contact-grid {
+  .contact-section .contact-grid {
     grid-template-columns: 1fr;
+    max-width: 680px;
+    display: grid;
+    place-items: center;
+    justify-content: center;
+    align-items: center; 
+    padding: auto;
   }
 }
  
+/* ---------- Phone ---------- */
 @media (max-width: 560px) {
   .form-row {
     grid-template-columns: 1fr;
     gap: 0;
+  }
+ 
+  .contact-card form .btn {
+    width: 100%;
   }
 }

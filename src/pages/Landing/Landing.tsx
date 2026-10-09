@@ -15,31 +15,31 @@ import heroImage from "../../assets/images/Landing.png";
 import { CardProps } from "../../types/landing";
 import InfoCard from "../../components/InfoCards/InfoCards";
 
-
+const ICON = { size: 28, strokeWidth: 1.75 };
 
 const FEATURES_DATA: CardProps[] = [
     {
         title: "Manage Your Accounts",
-        icon: <Landmark />,
+        icon: <Landmark {...ICON} />,
         tone: "blue",
         description: "View balances, track activity, and organize your finances in one place.",
     },
 
     {
         title: "Transfer Money",
-        icon: <ArrowLeftRight />,
+        icon: <ArrowLeftRight {...ICON} />,
         tone: "purple",
         description: "Send and receive money instantly with our fast and secure transfer service.",
     },
     {
         title: "Track Your Spending",
-        icon: <ChartNoAxesCombined />,
+        icon: <ChartNoAxesCombined {...ICON} />,
         tone: "green",
         description: "Stay on top of your spending with real-time transaction history and insights.",
     },
     {
         title: "Secure Your Accounts",
-        icon: <ShieldCheck />,
+        icon: <ShieldCheck {...ICON} />,
         tone: "blue",
         description: "Protect your financial information with our advanced security features.",
     }
@@ -77,17 +77,14 @@ function Landing() {
                 </div>
             </section>
 
-            <div className="features-grid">
-                {FEATURES_DATA.map((feature) => (
-                    <InfoCard
-                        key={feature.title}
-                        icon={feature.icon}
-                        title={feature.title}
-                        description={feature.description}
-                        tone={feature.tone}
-                    />
-                ))}
-            </div>
+            <section className="landing-features" id="features">
+                <div className="landing-features__grid">
+                    {FEATURES_DATA.map((feature) => (
+                        <InfoCard key={feature.title} {...feature} />
+                    ))}
+                </div>
+            </section>
+
 
         </div>
     );
