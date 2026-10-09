@@ -29,8 +29,8 @@ function Topbar() {
     const[menuOpen, setMenuOpen] = useState(false);
 
     function handleLogout() {
-        logout();
         navigate("/", { replace: true });
+        logout();
     }
 
     const results = pages.filter((page) => page.label.toLocaleLowerCase().includes(query.toLowerCase()));
