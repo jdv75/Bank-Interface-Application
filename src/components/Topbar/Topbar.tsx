@@ -30,7 +30,7 @@ function Topbar() {
 
     function handleLogout() {
         navigate("/", { replace: true });
-        setTimeout(() => logout(), 0);
+        setTimeout(() => logout(), 100); // To exit to the landing page
     }
 
     const results = pages.filter((page) => page.label.toLocaleLowerCase().includes(query.toLowerCase()));
