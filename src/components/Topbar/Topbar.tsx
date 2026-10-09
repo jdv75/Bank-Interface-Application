@@ -30,7 +30,7 @@ function Topbar() {
 
     function handleLogout() {
         navigate("/", { replace: true });
-        logout();
+        setTimeout(() => logout(), 0);
     }
 
     const results = pages.filter((page) => page.label.toLocaleLowerCase().includes(query.toLowerCase()));
