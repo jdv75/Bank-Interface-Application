@@ -95,6 +95,11 @@ export default function Contact() {
                     </ul>
  
                     <div className="contact-card">
+                        <h2 className="contact-card__title">Send us a message</h2>
+                        <p className="contact-card__intro">
+                            Fill out the form and we will get back to you.
+                        </p>
+ 
                         {status === "sent" && (
                             <div className="form-success" role="status">
                                 <CircleCheck size={22} aria-hidden="true" />
@@ -111,6 +116,7 @@ export default function Contact() {
                                         name="name"
                                         type="text"
                                         autoComplete="name"
+                                        placeholder="Jane Doe"
                                         value={values.name}
                                         onChange={handleChange}
                                         aria-invalid={Boolean(errors.name)}
@@ -126,6 +132,7 @@ export default function Contact() {
                                         name="email"
                                         type="email"
                                         autoComplete="email"
+                                        placeholder="you@example.com"
                                         value={values.email}
                                         onChange={handleChange}
                                         aria-invalid={Boolean(errors.email)}
@@ -152,6 +159,7 @@ export default function Contact() {
                                     id="message"
                                     name="message"
                                     rows={6}
+                                    placeholder="How can we help?"
                                     value={values.message}
                                     onChange={handleChange}
                                     aria-invalid={Boolean(errors.message)}
