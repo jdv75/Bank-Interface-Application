@@ -1,6 +1,6 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-
-import { AuthProvider } from "./context/AuthContext";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import type { ReactNode } from "react";
+import { AuthProvider, useAuth } from "./context/AuthContext";
 import DashboardLayout from "./layouts/DashboardLayout";
 import LandingLayout from "./layouts/LandingLayout";
 import Accounts from "./pages/Accounts/Accounts";
@@ -16,6 +16,12 @@ import Features from "./pages/Features/Features";
 import Security from "./pages/Security/Security";
 import About from "./pages/About/About";
 import Contact from "./pages/Contact/Contact";
+
+function RequiredAuth({children} : {children: ReactNode}) {
+    const {account} = useAuth();
+    if (!account) return <Navigate to="/login" replace />;
+    return children;
+}
 
 function App() {
     return (
@@ -70,49 +76,61 @@ function App() {
                     <Route
                         path="/dashboard"
                         element={
-                            <DashboardLayout>
-                                <Home />
-                            </DashboardLayout>
+                            <RequiredAuth>
+                                <DashboardLayout>
+                                    <Home />
+                                </DashboardLayout>
+                            </RequiredAuth>
                         }
                     />
                     <Route
                         path="/accounts"
                         element={
-                            <DashboardLayout>
-                                <Accounts />
-                            </DashboardLayout>
+                            <RequiredAuth>
+                                <DashboardLayout>
+                                    <Accounts />
+                                </DashboardLayout>
+                            </RequiredAuth>
                         }
                     />
                     <Route
                         path="/deposit"
                         element={
-                            <DashboardLayout>
-                                <Deposit />
-                            </DashboardLayout>
+                            <RequiredAuth>
+                                <DashboardLayout>
+                                    <Deposit />
+                                </DashboardLayout>
+                            </RequiredAuth>   
                       }
                     />
                     <Route
                         path="/withdraw"
                         element={
-                            <DashboardLayout>
-                                <Withdraw />
-                            </DashboardLayout>
+                            <RequiredAuth>
+                                <DashboardLayout>
+                                    <Withdraw />
+                                </DashboardLayout>
+                            </RequiredAuth>  
                       }
                     />
                     <Route
                         path="/transfer"
                         element={
-                            <DashboardLayout>
-                                <Transfer />
-                            </DashboardLayout>
+                            <RequiredAuth>
+                                <DashboardLayout>
+                                    <Transfer />
+                                </DashboardLayout>
+                            </RequiredAuth>
                       }
                     />
                     <Route
                         path="/transactions"
                         element={
-                            <DashboardLayout>
-                                <Transactions />
-                            </DashboardLayout>
+                            <RequiredAuth>
+                                <DashboardLayout>
+                                    <Transactions />
+                                </DashboardLayout>
+                            </RequiredAuth>
                       }
                     />
                 </Routes>

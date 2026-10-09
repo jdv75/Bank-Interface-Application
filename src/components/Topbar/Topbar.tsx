@@ -1,6 +1,8 @@
 import "./Topbar.css";
 import { useState, type KeyboardEvent } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+import { LogOut } from "lucide-react";
 
 import { Search, ChevronDown } from "lucide-react";
 
@@ -11,7 +13,11 @@ type SearchPage = {
 
 const pages: SearchPage[] = [
     { label: "Dashboard", path: "/dashboard" },
-    { label: "Accounts", path: "/accounts" }
+    { label: "Accounts", path: "/accounts" },
+    { label: "Deposit", path: "/deposit" },
+    { label: "Withdraw", path: "/withdraw" },
+    { label: "Transfer", path: "/transfer" },
+    { label: "Transactions", path: "/transactions" }
 ]
 
 function Topbar() {
@@ -19,6 +25,13 @@ function Topbar() {
     const navigate = useNavigate();
     const [query, setQuery] = useState("");
     const [isOpen, setIsOpen] = useState(false);
+    const {logout, account} = useAuth();
+    const[menuOpen, setMenuOpen] = useState(false);
+
+    function handleLogout() {
+        navigate("/", { replace: true });
+        setTimeout(() => logout(), 100); // To exit to the landing page
+    }
 
     const results = pages.filter((page) => page.label.toLocaleLowerCase().includes(query.toLowerCase()));
 
@@ -77,24 +90,23 @@ function Topbar() {
             </div>
 
 
-            <div className="profile">
-
+            <div className="profile" onClick={() => setMenuOpen((open) => !open)}>
                 <div className="profile-info">
-                    <span className="profile-name">
-                        George
-                    </span>
-
-                    <span className="profile-role">
-                        Personal Account
-                    </span>
+                    <span className="profile-name">{account?.accountId ?? "Guest"}</span>
+                    <span className="profile-role">Personal Account</span>
                 </div>
-
                 <div className="profile-picture">
-                    <span>GE</span>
+                    <span>{(account?.accountId ?? "GE").slice(0, 2).toUpperCase()}</span>
                 </div>
-
-                {/* <ChevronDown className="profile-arrow" /> */}
-
+                <ChevronDown className="profile-arrow" />
+                {menuOpen && (
+                    <div className="profile-menu">
+                        <button type="button" onClick={handleLogout}>
+                            <LogOut size={16} />
+                            Log out
+                        </button>
+                    </div>
+                )}
             </div>
 
         </header>

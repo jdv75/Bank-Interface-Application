@@ -484,6 +484,54 @@
 }
 
 @media (max-width: 1200px) {
+    .accounts-page {
+        padding: 24px 0 12px;
+    }
+
+    .accounts-header,
+    .accounts-grid,
+    .accounts-bottom,
+    .accounts-page > .new-account-form {
+        width: 100%;
+    }
+
+    .accounts-header h1 {
+        font-size: 34px;
+    }
+
+    .accounts-grid {
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    }
+
+    .accounts-bottom {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .account-card-top,
+    .account-details {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .account-identity h3 {
+        font-size: 1.25rem;
+    }
+
+    .account-balance {
+        font-size: 1.45rem;
+    }
+
+    .account-icon {
+        width: 56px;
+        height: 56px;
+    }
+
+    .account-icon svg {
+        width: 36px;
+        height: 36px;
+    }
+
     .summary-body {
         flex-direction: column;
         gap: 16px;
@@ -514,13 +562,6 @@
 @media (max-width: 768px) {
     .accounts-page {
         padding: 16px 0 8px;
-    }
-
-    .accounts-header,
-    .accounts-grid,
-    .accounts-bottom,
-    .accounts-page > .new-account-form {
-        width: 100%;
     }
 
     .accounts-header {

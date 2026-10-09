@@ -16,6 +16,7 @@ import TransactionItem from "../../components/TransactionItem/TransactionItem";
 import { bankService, type TransactionsByType } from "../../services/bankService";
 import type { Account, Transaction, TransactionType, User } from "../../types/bank";
 import "./Home.css";
+import { useAuth } from "../../context/AuthContext";
 
 type HomeData = {
     user: User;
@@ -123,6 +124,7 @@ function RecentColumnCard({ column, transactions }: { column: RecentColumn; tran
 function Home() {
     const [showNewAccount, setShowNewAccount] = useState(false);
     const [data, setData] = useState<HomeData | null>(null);
+    const {account} = useAuth();
 
     useEffect(() => {
         let cancelled = false;
@@ -175,7 +177,7 @@ function Home() {
             <div className="home-header">
                 <div>
                     <h1>
-                        Welcome back, <span>{data.user.name}!</span>
+                        Welcome back, <span>{account?.accountId ?? "there"}!</span>
                     </h1>
                     <p>Here's an overview of your accounts and recent activity.</p>
                 </div>

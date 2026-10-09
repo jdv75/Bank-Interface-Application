@@ -68,6 +68,7 @@
 /* Profile */
 
 .profile {
+    position: relative;
     display: flex;
     align-items: center;
     gap: 12px;
@@ -120,7 +121,71 @@
     color: #6b7280;
 }
 
+.profile-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    min-width: 160px;
+    padding: 6px;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    z-index: 20;
+}
+
+.profile-menu button {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--text-primary);
+    font: inherit;
+    cursor: pointer;
+}
+
+.profile-menu button:hover {
+    background-color: var(--bg-card-secondary);
+}
+
 @media (max-width: 1200px) {
+    .topbar {
+        height: 70px;
+        gap: 10px;
+        padding: 0 12px;
+    }
+
+    .search-bar {
+        width: auto;
+        flex: 1;
+        min-width: 0;
+        max-width: none;
+        height: 42px;
+    }
+
+    .profile {
+        gap: 6px;
+    }
+
+    .profile-picture {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+
+    .profile-name {
+        font-size: 0.95rem;
+    }
+
+    .profile-role {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
     .topbar {
         height: 70px;
         gap: 10px;
