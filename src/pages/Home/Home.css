@@ -524,6 +524,65 @@
     color: var(--danger);
 }
 
+@media (max-width: 1200px) {
+    .home {
+        padding: 24px 0 12px;
+    }
+
+    .home-header h1 {
+        font-size: 34px;
+    }
+
+    .home-header p {
+        font-size: 17px;
+    }
+
+    .accounts-overview {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .quick-actions-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+
+    .recent .recent-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .recent-column + .recent-column {
+        border-left: none;
+        border-top: 2px solid #3a6494;
+    }
+
+    .dash-account-icon {
+        width: 56px;
+        height: 56px;
+    }
+
+    .dash-account-icon svg {
+        width: 32px;
+        height: 32px;
+    }
+
+    .dash-account strong {
+        font-size: 1.45rem;
+    }
+
+    .dash-account-arrow {
+        width: 44px;
+        height: 44px;
+    }
+
+    .dash-account-arrow svg {
+        width: 22px;
+        height: 22px;
+    }
+
+    .quick-action h3 {
+        font-size: 1.2rem;
+    }
+}
+
 @media (max-width: 768px) {
     .home {
         padding: 16px 0 8px;
@@ -563,10 +622,5 @@
 
     .quick-action h3 {
         font-size: 1.15rem;
-    }
-
-    .recent-column + .recent-column {
-        border-left: none;
-        border-top: 2px solid #3a6494;
     }
 }
