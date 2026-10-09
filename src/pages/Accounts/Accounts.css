@@ -533,18 +533,29 @@
     }
 
     .summary-body {
-        gap: 20px;
-        padding: 16px 20px 0;
+        flex-direction: column;
+        gap: 16px;
+        min-height: 0;
+        padding: 16px;
     }
 
     .donut {
-        width: 210px;
-        height: 210px;
+        width: 180px;
+        height: 180px;
     }
 
     .donut-hole {
-        width: 142px;
-        height: 142px;
+        width: 120px;
+        height: 120px;
+    }
+
+    .summary-legend {
+        width: 100%;
+        max-width: 260px;
+    }
+
+    .summary-legend li {
+        grid-template-columns: 12px minmax(0, 1fr) auto;
     }
 }
 
@@ -591,11 +602,12 @@
     }
 
     .summary-legend {
-        width: auto;
+        width: 100%;
+        max-width: 260px;
         align-self: center;
     }
 
     .summary-legend li {
-        grid-template-columns: 12px 11.5rem 7.5rem;
+        grid-template-columns: 12px minmax(0, 1fr) auto;
     }
 }

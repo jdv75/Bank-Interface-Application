@@ -68,6 +68,7 @@
 /* Profile */
 
 .profile {
+    position: relative;
     display: flex;
     align-items: center;
     gap: 12px;
@@ -120,12 +121,6 @@
     color: #6b7280;
 }
 
-/* New updates */
-
-.profile {
-    position: relative;
-}
-
 .profile-menu {
     position: absolute;
     top: calc(100% + 8px);
@@ -156,6 +151,40 @@
     background-color: var(--bg-card-secondary);
 }
 
+@media (max-width: 1200px) {
+    .topbar {
+        height: 70px;
+        gap: 10px;
+        padding: 0 12px;
+    }
+
+    .search-bar {
+        width: auto;
+        flex: 1;
+        min-width: 0;
+        max-width: none;
+        height: 42px;
+    }
+
+    .profile {
+        gap: 6px;
+    }
+
+    .profile-picture {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+
+    .profile-name {
+        font-size: 0.95rem;
+    }
+
+    .profile-role {
+        display: none;
+    }
+}
+
 @media (max-width: 768px) {
     .topbar {
         height: 70px;
@@ -167,7 +196,7 @@
         width: auto;
         flex: 1;
         min-width: 0;
-        max-width: 360px;
+        max-width: none;
         height: 42px;
     }
 
