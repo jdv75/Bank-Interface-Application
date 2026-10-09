@@ -66,23 +66,38 @@ function addTransferTransaction(
     sourceAccount: Account,
     destinationAccount?: Account
 ): void {
-    const detail = transfer.status === "scheduled"
-        ? `Scheduled for ${formatScheduledDate(transfer.scheduledFor!)}`
-        : `From ${getAccountLabel(sourceAccount)}`;
+    const isScheduled = transfer.status === "scheduled";
     const note = transfer.note ? ` · ${transfer.note}` : "";
+    const scheduledDetail = isScheduled
+        ? `Scheduled for ${formatScheduledDate(transfer.scheduledFor!)}`
+        : "";
 
     db.transactions.push({
-        id: transfer.id,
+        id: `${transfer.id}-out`,
         accountId: sourceAccount.id,
         type: "transfer",
         category: "internal-transfer",
         name: destinationAccount
             ? `To ${getAccountLabel(destinationAccount)}`
             : "External Transfer",
-        detail: `${detail}${note}`,
+        detail: `${isScheduled ? scheduledDetail : `To ${destinationAccount ? getAccountLabel(destinationAccount) : "external"}`}${note}`,
         amount: -transfer.amount,
         createdAt: transfer.createdAt
     });
+
+    if(destinationAccount && !isScheduled) {
+        db.transactions.push({
+            id: `${transfer.id}-in`,
+            accountId: destinationAccount.id,
+            type: "transfer",
+            category: "internal-transfer",
+            name: `From ${getAccountLabel(sourceAccount)}`,
+            detail: `From ${getAccountLabel(sourceAccount)}${note}`,
+            amount: transfer.amount,
+            createdAt: transfer.createdAt
+        });
+    }
+    
 }
 
 export const bankService = {
