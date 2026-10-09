@@ -1,36 +1,53 @@
 import { useState, type FormEvent } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Mail, Lock, Eye, EyeOff, ShieldCheck } from "lucide-react";
+
 import AuthLayout from "../../layouts/AuthLayout";
 import { useAuth } from "../../context/AuthContext";
 import { authService } from "../../services/authService";
 import { validateLogin, type FieldErrors } from "../../utils/validation";
-
-// image
 import login from "../../assets/images/Login.png";
 
 function Login() {
-    const [accountId, setAccountId] = useState("");
-    const [pin, setPin] = useState("");
-    const [showPin, setShowPin] = useState(false);
+    // 1. Router hooks first
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    // 2. Derived values from those hooks
+    const justRegistered = location.state as
+        | { registered?: boolean; accountId?: string }
+        | null;
+
+    // 3. State — initializers may safely read `justRegistered`
+    const [accountId, setAccountId] = useState(justRegistered?.accountId ?? "");
+    const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
     const [errors, setErrors] = useState<FieldErrors>({});
     const [loading, setLoading] = useState(false);
+    const [successMessage, setSuccessMessage] = useState<string | null>(
+        justRegistered?.registered
+            ? "Account created successfully. Please log in."
+            : null
+    );
 
+    // 4. Auth context
     const { setAccount } = useAuth();
-    const navigate = useNavigate();
+    
+    
 
     async function handleSubmit(e: FormEvent) {
         e.preventDefault();
+        setSuccessMessage(null);
         setErrors({});
 
-        const v = validateLogin(accountId, pin);
+        const v = validateLogin(accountId, password);
         if (v) {
             setErrors(v);
             return;
         }
 
         setLoading(true);
-        const res = await authService.login(accountId, pin);
+        const res = await authService.login(accountId, password);
         setLoading(false);
 
         if (!res.success) {
@@ -54,6 +71,12 @@ function Login() {
                 <p className="auth-subtitle">Welcome back to your account.</p>
 
                 <form className="auth-form" onSubmit={handleSubmit} noValidate>
+                    {successMessage && (
+                        <div className="auth-success" role="status">
+                            {successMessage}
+                        </div>
+                    )}
+
                     {errors.form && (
                         <div className="auth-alert" role="alert">
                             {errors.form}
@@ -79,36 +102,34 @@ function Login() {
                     </div>
 
                     <div className="auth-field">
-                        <label htmlFor="login-pin">PIN</label>
-                        <div className={`auth-field-control ${errors.pin ? "invalid" : ""}`}>
+                        <label htmlFor="login-password">Password</label>
+                        <div className={`auth-field-control ${errors.password ? "invalid" : ""}`}>
                             <Lock />
                             <input
-                                id="login-pin"
-                                type={showPin ? "text" : "password"}
-                                inputMode="numeric"
-                                maxLength={6}
+                                id="login-password"
+                                type={showPassword ? "text" : "password"}
                                 autoComplete="current-password"
-                                placeholder="6-digit PIN"
-                                value={pin}
-                                onChange={(e) =>
-                                    setPin(e.target.value.replace(/\D/g, "").slice(0, 6))
-                                }
+                                placeholder="Enter your password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
                             />
                             <button
                                 type="button"
                                 className="auth-icon-button"
-                                onClick={() => setShowPin((s) => !s)}
-                                aria-label={showPin ? "Hide PIN" : "Show PIN"}
+                                onClick={() => setShowPassword((s) => !s)}
+                                aria-label={showPassword ? "Hide password" : "Show password"}
                             >
-                                {showPin ? <EyeOff /> : <Eye />}
+                                {showPassword ? <EyeOff /> : <Eye />}
                             </button>
                         </div>
-                        {errors.pin && <span className="auth-field-error">{errors.pin}</span>}
+                        {errors.password && (
+                            <span className="auth-field-error">{errors.password}</span>
+                        )}
                     </div>
 
                     <div className="auth-row-end">
                         <Link to="/forgot-password" className="auth-link">
-                            Forgot PIN?
+                            Forgot password?
                         </Link>
                     </div>
 
@@ -116,6 +137,7 @@ function Login() {
                         {loading ? <span className="auth-spinner" /> : "Log In"}
                     </button>
 
+                    {/* 
                     <div className="auth-divider"><span>or</span></div>
 
                     <button type="button" className="auth-social-btn">
@@ -123,7 +145,7 @@ function Login() {
                     </button>
                     <button type="button" className="auth-social-btn">
                         <AppleIcon /> Continue with Apple
-                    </button>
+                    </button>*/}
 
                     <div className="auth-secure-note">
                         <ShieldCheck size={14} />
@@ -163,7 +185,7 @@ function LoginHero() {
                 financial future — all in one place.
             </p>
 
-            {/* <div className="auth-hero-art">
+            <div className="auth-hero-art">
                 <div className="auth-phone">
                     <div className="auth-phone-notch" />
                     <div className="auth-phone-label">Total Balance</div>
@@ -200,7 +222,7 @@ function LoginHero() {
                     <AuthPill label="Bank with confidence" />
                     <AuthPill label="Reach your goals" />
                 </div>
-            </div> */}
+            </div> 
         </div>
     );
 }

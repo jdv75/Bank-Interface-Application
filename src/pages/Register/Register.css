@@ -10,7 +10,7 @@
     }
 }
 
-.register-pin-rules {
+.register-password-rules {
     list-style: none;
     padding: 0;
     margin: 4px 0 0;
@@ -21,13 +21,13 @@
     color: var(--text-secondary);
 }
 
-.register-pin-rules .rule {
+.register-password-rules .rule {
     display: flex;
     align-items: center;
     gap: 8px;
 }
 
-.register-pin-rules .rule-dot {
+.register-password-rules .rule-dot {
     width: 6px;
     height: 6px;
     border-radius: 50%;
@@ -36,11 +36,11 @@
     transition: background 0.15s;
 }
 
-.register-pin-rules .rule.passed {
+.register-password-rules .rule.passed {
     color: var(--highlight-blue);
 }
 
-.register-pin-rules .rule.passed .rule-dot {
+.register-password-rules .rule.passed .rule-dot {
     background: var(--highlight-blue);
     opacity: 1;
 }

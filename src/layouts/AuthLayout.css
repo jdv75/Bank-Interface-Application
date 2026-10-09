@@ -2,6 +2,8 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    overflow-x: auto; 
+    overflow-y: auto;
     background:
         radial-gradient(1100px 550px at 15% 0%, rgba(22, 119, 255, 0.10), transparent 60%),
         radial-gradient(900px 500px at 100% 100%, rgba(22, 119, 255, 0.14), transparent 55%),
@@ -11,6 +13,8 @@
 /* --- top nav --- */
 .auth-nav {
     display: flex;
+    position: relative;
+    z-index: 100;
     align-items: center;
     justify-content: space-between;
     padding: 20px 40px;
@@ -35,6 +39,8 @@
 
 .auth-nav-right {
     display: flex;
+    position: relative;
+    z-index: 10;
     align-items: center;
     gap: 8px;
     color: var(--text-secondary);
@@ -274,6 +280,19 @@
     border: 1px solid rgba(255, 54, 95, 0.25);
     background: var(--auth-error-bg);
     color: var(--danger);
+}
+
+/* --- success banner --- */
+.auth-success {
+    padding: 0.7rem 1rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid rgba(0, 214, 154, 0.35);
+    background: var(--auth-success-bg);
+    color: var(--success);
 }
 
 /* --- spinner --- */

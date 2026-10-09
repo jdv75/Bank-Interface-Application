@@ -1,7 +1,7 @@
 export interface FieldErrors {
     accountId?: string;
-    pin?: string;
-    confirmPin?: string;
+    password?: string;
+    confirmPassword?: string;
     form?: string;
 }
 
@@ -15,32 +15,51 @@ export function validateAccountId(accountId: string): string | null {
     return null;
 }
 
-export function validatePin(pin: string): string | null {
-    const p = pin.trim();
-    if (!p) return "PIN cannot be empty.";
-    if (!/^\d{6}$/.test(p)) return "PIN must be exactly 6 digits (0-9).";
+export function validatePassword(password: string): string | null {
+    if (!password) return "Password cannot be empty.";
+    if (password.length < 8)
+        return "Password must be at least 8 characters.";
+    if (!/[A-Z]/.test(password))
+        return "Password must contain an uppercase letter.";
+    if (!/[a-z]/.test(password))
+        return "Password must contain a lowercase letter.";
+    if (!/\d/.test(password))
+        return "Password must contain a number.";
+    if (!/[^A-Za-z0-9]/.test(password))
+        return "Password must contain a special character.";
     return null;
 }
 
-export function validateLogin(accountId: string, pin: string): FieldErrors | null {
+export function validateLogin(accountId: string, password: string): FieldErrors | null {
     const errors: FieldErrors = {};
     const idErr = validateAccountId(accountId);
     if (idErr) errors.accountId = idErr;
-    const pinErr = validatePin(pin);
-    if (pinErr) errors.pin = pinErr;
+    const pwErr = validatePassword(password);
+    if (pwErr) errors.password = pwErr;
     return Object.keys(errors).length ? errors : null;
 }
 
 export function validateRegister(
     accountId: string,
-    pin: string,
-    confirmPin: string,
+    password: string,
+    confirmPassword: string,
 ): FieldErrors | null {
     const errors: FieldErrors = {};
     const idErr = validateAccountId(accountId);
     if (idErr) errors.accountId = idErr;
-    const pinErr = validatePin(pin);
-    if (pinErr) errors.pin = pinErr;
-    else if (pin !== confirmPin) errors.confirmPin = "PINs do not match.";
+
+    const pwErr = validatePassword(password);
+    if (pwErr) errors.password = pwErr;
+    else if (password !== confirmPassword)
+        errors.confirmPassword = "Passwords do not match.";
+
     return Object.keys(errors).length ? errors : null;
 }
+
+export const passwordRules: { label: string; test: (v: string) => boolean }[] = [
+    { label: "At least 8 characters",      test: (v) => v.length >= 8 },
+    { label: "One uppercase letter",        test: (v) => /[A-Z]/.test(v) },
+    { label: "One lowercase letter",        test: (v) => /[a-z]/.test(v) },
+    { label: "One number",                  test: (v) => /\d/.test(v) },
+    { label: "One special character",       test: (v) => /[^A-Za-z0-9]/.test(v) },
+];
