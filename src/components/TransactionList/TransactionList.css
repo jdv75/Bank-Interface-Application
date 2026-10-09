@@ -129,7 +129,7 @@
     color: var(--success);
 }
 
-.transaction-row[data-type="withdrawal"] .transaction-type::before {
+.transaction-row[data-type="withdraw"] .transaction-type::before {
     content: "↑";
     background-color: var(--withdrawal-bg);
     color: var(--danger);

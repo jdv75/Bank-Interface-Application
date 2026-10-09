@@ -17,7 +17,7 @@
   z-index: 10;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   background:
-    radial-gradient(cirle, 45% 160% at 100% 100%, rgba(31, 94, 255, 0.35), transparent 70%),
+    /*radial-gradient(cirle, 45% 160% at 100% 100%, rgba(31, 94, 255, 0.35), transparent 70%),*/
     linear-gradient(90deg, #01030d 0%, #030a24 60%, #04123a 100%);
 }
 
@@ -52,6 +52,35 @@
 
 /* ------ Navigation Links ------ */
 
+.header-menu {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+}
+
+/* Hamburger button: hidden on desktop */
+.menu-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  margin-left: auto;
+  color: var(--nb-text);
+  background: rgba(2, 8, 30, 0.6);
+  border: 1px solid rgba(120, 160, 255, 0.3);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.menu-toggle:hover {
+  background: rgba(31, 94, 255, 0.15);
+  border-color: var(--nb-blue);
+}
+
+
 .nav-links {
   display: flex;
   align-items: center;
@@ -69,6 +98,12 @@
   font-weight: 500;
   transition: color 0.2s ease;
 }
+
+.nav-links a:hover,
+.nav-links a.active {
+  color: var(--text-main);
+}
+
 
 /* ------ User Actions (Login/Signup) ------ */
 
@@ -124,9 +159,95 @@
   outline-offset: 3px;
 }
 
-/* ------- Responsive --------- */
+/* ---------- Small laptops: tighten spacing so everything still fits ---------- */
+@media (max-width: 1280px) {
+  .nav-links {
+    gap: 1.75rem;
+    margin-left: 1.25rem;
+    padding-left: 1.25rem;
+  }
+ 
+  .user-actions .btn {
+    padding: 0.9rem 1.4rem;
+  }
+}
 
-@media (max-width: 900px) {
+/* ---------- Tablet & phone: hamburger + dropdown panel ---------- */
+@media (max-width: 1024px) {
+  .landing-header {
+    padding: 1rem 5%;
+  }
+ 
+  .menu-toggle {
+    display: inline-flex;
+  }
+ 
+  .header-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex: none;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.5rem;
+    padding: 0.5rem 5% 1.75rem;
+    background: rgba(2, 6, 23, 0.97);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(120, 160, 255, 0.15);
+    box-shadow: 0 24px 40px rgba(0, 0, 0, 0.45);
+  }
+ 
+  .header-menu.is-open {
+    display: flex;
+  }
+ 
+  .nav-links {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    border-left: none;
+  }
+ 
+  .nav-links a {
+    padding: 1rem 0;
+    font-size: 1.1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+ 
+  /* Buttons stack and fill the width: easy to tap */
+  .user-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+ 
+  .user-actions .btn {
+    padding: 1.1rem 1.4rem;
+    font-size: 1.05rem;
+  }
+}
+ 
+@media (max-width: 520px) {
+  .logo a {
+    gap: 0.65rem;
+  }
+ 
+  .logo h2 {
+    font-size: 1.4rem;
+  }
+ 
+  .logo img {
+    width: 38px;
+    height: 38px;
+  }
+}
+
+
+/*@media (max-width: 900px) {
   .nav-links {
     display: none;
   }
@@ -151,4 +272,4 @@
     padding: 0.75rem 1.1rem;
     font-size: 0.9rem;
   }
-}
+}*/

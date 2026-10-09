@@ -182,13 +182,18 @@
     list-style: none;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
     .sidebar {
         width: 100%;
         min-height: 0;
         height: auto;
         padding: 8px 6px calc(8px + env(safe-area-inset-bottom));
-        border-top: 1px solid #142039;
+        border: 1px solid rgba(54, 91, 139, 0.55);
+        border-radius: 12px 12px 0 0;
+        background-color: rgba(2, 11, 29, 0.82);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.32);
+        -webkit-backdrop-filter: blur(14px) saturate(140%);
+        backdrop-filter: blur(14px) saturate(140%);
     }
 
     .sidebar-logo {
@@ -208,9 +213,21 @@
         padding: 0;
     }
 
-    .transaction-section,
-    .transaction-submenu {
+    .sidebar-menu > li {
+        display: flex;
+        min-width: 0;
+        flex: 1 1 0;
+    }
+
+    .sidebar-menu > .transaction-section,
+    .sidebar-menu .transaction-submenu {
         display: contents;
+    }
+
+    .transaction-submenu li {
+        display: flex;
+        min-width: 0;
+        flex: 1 1 0;
     }
 
     .transaction-title {
@@ -225,6 +242,8 @@
 
     .menu-item,
     .transaction-submenu li a {
+        min-width: 0;
+        flex: 1 1 0;
         flex-direction: column;
         justify-content: center;
         gap: 4px;
@@ -237,6 +256,14 @@
         text-align: center;
     }
 
+    .menu-item span,
+    .transaction-submenu li a span {
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
     .menu-item svg,
     .transaction-submenu li a svg {
         width: 22px;
@@ -245,5 +272,13 @@
 
     .transaction-submenu.collapsed {
         display: contents;
+    }
+}
+
+@media (max-width: 480px) {
+    .menu-item,
+    .transaction-submenu li a {
+        padding-inline: 1px;
+        font-size: 0;
     }
 }

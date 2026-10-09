@@ -483,9 +483,9 @@
     background: rgba(255, 54, 95, 0.12);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
     .accounts-page {
-        padding: 16px 0 8px;
+        padding: 24px 0 12px;
     }
 
     .accounts-header,
@@ -493,6 +493,75 @@
     .accounts-bottom,
     .accounts-page > .new-account-form {
         width: 100%;
+    }
+
+    .accounts-header h1 {
+        font-size: 34px;
+    }
+
+    .accounts-grid {
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    }
+
+    .accounts-bottom {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .account-card-top,
+    .account-details {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .account-identity h3 {
+        font-size: 1.25rem;
+    }
+
+    .account-balance {
+        font-size: 1.45rem;
+    }
+
+    .account-icon {
+        width: 56px;
+        height: 56px;
+    }
+
+    .account-icon svg {
+        width: 36px;
+        height: 36px;
+    }
+
+    .summary-body {
+        flex-direction: column;
+        gap: 16px;
+        min-height: 0;
+        padding: 16px;
+    }
+
+    .donut {
+        width: 180px;
+        height: 180px;
+    }
+
+    .donut-hole {
+        width: 120px;
+        height: 120px;
+    }
+
+    .summary-legend {
+        width: 100%;
+        max-width: 260px;
+    }
+
+    .summary-legend li {
+        grid-template-columns: 12px minmax(0, 1fr) auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .accounts-page {
+        padding: 16px 0 8px;
     }
 
     .accounts-header {
@@ -533,11 +602,12 @@
     }
 
     .summary-legend {
-        width: auto;
+        width: 100%;
+        max-width: 260px;
         align-self: center;
     }
 
     .summary-legend li {
-        grid-template-columns: 12px 11.5rem 7.5rem;
+        grid-template-columns: 12px minmax(0, 1fr) auto;
     }
 }

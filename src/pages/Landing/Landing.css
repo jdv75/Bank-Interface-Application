@@ -14,6 +14,7 @@ body {
   color: var(--text-main);
   line-height: 1.6;
   overflow-x: hidden;
+  margin: 0;
 }
 
 .landing-background {
@@ -164,8 +165,8 @@ body {
 }
 
 .large {
-  padding: 0.8rem 2.2rem;
-  font-size: 1rem;
+  padding: 1.3rem 3rem;
+  font-size: 1.25rem;
 }
 
 .landing-visual {
@@ -173,23 +174,50 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  min-width: 0;
 }
 
 .glow-effect {
   position: absolute;
-  inset: 10%;
   background: radial-gradient(circle, rgba(37, 99, 235, 0.35), transparent 70%);
-  pointer-events: none;
+  inset: 0 -10% 0 -5%;
+  filter: blur(60px);
   z-index: 0;
+  pointer-events: none;
+}
+
+/* Layer 2: bright "floor" glow the devices appear to sit on */
+.landing-visual::after {
+  content: "";
+  position: absolute;
+  left: 5%;
+  right: -10%;
+  bottom: 2%;
+  height: 90px;
+  background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(80, 150, 255, 0.75), transparent 70%);
+  filter: blur(28px);
+  z-index: 0;
+  pointer-events: none;
 }
 
 .landing-hero-image {
-  width: 100%;
-  max-width: 800px; /* Width of the image */
+  /*width: 100%;
+  max-width: 800px; /* Width of the image 
   height: auto;
   object-fit: contain;
   position: relative;
+  z-index: 1;*/
+  position: relative;
   z-index: 1;
+  display: block;
+  /* Let the laptop bleed off the right edge like the reference */
+  width: 112%;
+  max-width: none;
+  height: auto;
+  /* Layer 4: blue rim light hugging the device edges (needs a transparent PNG) */
+  filter:
+    drop-shadow(0 0 12px rgba(56, 130, 255, 0.55))
+    drop-shadow(0 20px 50px rgba(37, 99, 235, 0.45));
 }
 
 .features-grid {
@@ -201,6 +229,120 @@ body {
   padding: 2rem 6% 4rem 6%;
   position: relative;
   z-index: 5;
+}
+
+.landing-features {
+  padding: 2rem 6% 4rem;
+  position: relative;
+  z-index: 5;
+}
+ 
+.landing-features__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+
+/* ---------- Tablet & below: single centered column ---------- */
+@media (max-width: 1024px) {
+  .landing-hero {
+    padding: 3rem 6% 2rem;
+  }
+ 
+  .landing-container {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 3rem;
+  }
+ 
+  .tagline {
+    font-size: clamp(0.75rem, 1.6vw, 0.95rem);
+  }
+ 
+  .title {
+    font-size: clamp(3rem, 8vw, 4.75rem);
+  }
+ 
+  .slogan {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+  }
+ 
+  .description {
+    font-size: clamp(1.05rem, 2.2vw, 1.3rem);
+    margin-left: auto;
+    margin-right: auto;
+  }
+ 
+  .landing-actions {
+    justify-content: center;
+  }
+ 
+  .landing-hero-image {
+    width: 100%;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+}
+ 
+/* ---------- Phones ---------- */
+@media (max-width: 560px) {
+  .landing-hero {
+    padding: 2.25rem 5% 1.5rem;
+  }
+ 
+  .landing-container {
+    gap: 2rem;
+  }
+ 
+  .tagline {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    margin-bottom: 1rem;
+  }
+ 
+  .title {
+    font-size: 2.75rem;
+  }
+ 
+  .slogan {
+    font-size: 2.25rem;
+    margin-bottom: 1.25rem;
+  }
+ 
+  .description {
+    margin-bottom: 2rem;
+  }
+ 
+  .landing-actions {
+    flex-direction: column;
+    gap: 1rem;
+  }
+ 
+  .btn.large {
+    padding: 1.1rem 1.5rem;
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 1100px) {
+  .landing-features__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+}
+ 
+@media (max-width: 600px) {
+  .landing-features {
+    padding: 1rem 5% 3rem;
+  }
+ 
+  .landing-features__grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
 }
 
 /*.wave-container {
@@ -261,7 +403,7 @@ body {
   100% {
     transform: translateX(-50%) rotate(0deg);
   }
-}*/
+}
 
 @media (max-width: 1024px) {
   .landing-blurb {
@@ -279,7 +421,7 @@ body {
   }
 
   .landing-hero-image {
-    display: none; /* Simplify graphic hierarchy for smaller viewpoints */
+    display: none; /* Simplify graphic hierarchy for smaller viewpoints 
   }
 }
 
@@ -291,5 +433,5 @@ body {
   .title {
     font-size: 3rem;
   }
-}
+}*/
 

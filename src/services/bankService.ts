@@ -13,6 +13,17 @@ import { mockRequest } from "./mockApi";
 
 export type TransactionsByType = Record<TransactionType, Transaction[]>;
 
+export type TransactionHistoryOptions = {
+    page?: number;
+    pageSize?: number;
+    type?: TransactionType;
+};
+
+export type TransactionHistoryPage = {
+    transactions: Transaction[];
+    total: number;
+};
+
 const scheduledTransfers: TransferResult[] = [];
 
 function sortByDateDesc(items: Transaction[]): Transaction[] {
@@ -33,6 +44,60 @@ function getAvailableBalance(account: Account): number {
 
 function getTransferId(): string {
     return `transfer-${Date.now()}`;
+}
+
+function getAccountLabel(account: Account): string {
+    return account.name.replace(/\s+Account$/, "");
+}
+
+function formatScheduledDate(date: string): string {
+    const [year, month, day] = date.split("-").map(Number);
+
+    return new Intl.DateTimeFormat("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+        timeZone: "UTC"
+    }).format(new Date(Date.UTC(year, month - 1, day)));
+}
+
+function addTransferTransaction(
+    transfer: TransferResult,
+    sourceAccount: Account,
+    destinationAccount?: Account
+): void {
+    const isScheduled = transfer.status === "scheduled";
+    const note = transfer.note ? ` · ${transfer.note}` : "";
+    const scheduledDetail = isScheduled
+        ? `Scheduled for ${formatScheduledDate(transfer.scheduledFor!)}`
+        : "";
+
+    db.transactions.push({
+        id: `${transfer.id}-out`,
+        accountId: sourceAccount.id,
+        type: "transfer",
+        category: "internal-transfer",
+        name: destinationAccount
+            ? `To ${getAccountLabel(destinationAccount)}`
+            : "External Transfer",
+        detail: `${isScheduled ? scheduledDetail : `To ${destinationAccount ? getAccountLabel(destinationAccount) : "external"}`}${note}`,
+        amount: -transfer.amount,
+        createdAt: transfer.createdAt
+    });
+
+    if(destinationAccount && !isScheduled) {
+        db.transactions.push({
+            id: `${transfer.id}-in`,
+            accountId: destinationAccount.id,
+            type: "transfer",
+            category: "internal-transfer",
+            name: `From ${getAccountLabel(sourceAccount)}`,
+            detail: `From ${getAccountLabel(sourceAccount)}${note}`,
+            amount: transfer.amount,
+            createdAt: transfer.createdAt
+        });
+    }
+    
 }
 
 export const bankService = {
@@ -127,6 +192,8 @@ export const bankService = {
             }
         }
 
+        addTransferTransaction(transfer, sourceAccount, destinationAccount);
+
         return mockRequest(transfer);
     },
 
@@ -145,6 +212,21 @@ export const bankService = {
             deposit: pickFirst("deposit"),
             withdraw: pickFirst("withdraw"),
             transfer: pickFirst("transfer")
+        });
+    },
+
+    getTransactionHistory({
+        page = 1,
+        pageSize = 20,
+        type
+    }: TransactionHistoryOptions = {}): Promise<TransactionHistoryPage> {
+        const transactions = sortByDateDesc(db.transactions)
+            .filter((transaction) => !type || transaction.type === type);
+        const start = (page - 1) * pageSize;
+
+        return mockRequest({
+            transactions: transactions.slice(start, start + pageSize),
+            total: transactions.length
         });
     }
 };

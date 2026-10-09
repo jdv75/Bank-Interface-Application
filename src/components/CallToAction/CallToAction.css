@@ -36,3 +36,87 @@
   flex-wrap: wrap;
   gap: 1rem;
 }
+
+.cta__actions .btn {
+  min-width: 230px; /* both buttons the same width, so they look like a pair */
+}
+ 
+.cta__arrow {
+  transition: transform 0.2s ease;
+}
+ 
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;  
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1;
+  text-decoration: none;
+  padding: 1rem 1.9rem;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background-color 0.2s ease, box-shadow color 0.2s ease, border-color 0.2s ease;
+}
+
+.btn-primary {
+  color: var(--text-main);
+  background-color: var(--highlight-blue);
+  border-color: var(--nb-blue);
+}
+
+.btn-primary:hover {
+  background-color: var(--nb-blue-hover);
+  border-color: var(--nb-blue-hover);
+  box-shadow: 0 0 18px rgba(31, 94, 255, 0.5);
+}
+
+.btn-outline {
+  color: var(--text-main);
+  background-color: rgba(2, 8, 30, 0.6);
+  border-color: var(--nb-blue);
+}
+
+.btn-outline:hover {
+  background: rgba(31, 94, 255, 0.15);
+}
+
+.cta__actions .btn-primary:hover .cta__arrow {
+  transform: translateX(4px);
+}
+ 
+.cta__actions .btn-outline:hover {
+  border-color: var(--nb-blue-hover);
+  box-shadow: 0 0 18px rgba(31, 94, 255, 0.3);
+}
+ 
+.cta__actions .btn:active {
+  transform: translateY(1px);
+}
+ 
+.cta__actions .btn:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+ 
+/* Phones: stack the buttons full width, easy to tap */
+@media (max-width: 560px) {
+  .cta__actions {
+    flex-direction: column;
+    align-items: stretch;
+    max-width: 360px;
+    margin: 0 auto;
+  }
+ 
+  .cta__actions .btn {
+    min-width: 0;
+  }
+}
+ 
+@media (prefers-reduced-motion: reduce) {
+  .cta__arrow {
+    transition: none;
+  }
+}
