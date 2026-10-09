@@ -3,20 +3,19 @@ import { useSearchParams } from "react-router-dom";
 import Pagination from "../../components/Pagination/Pagination";
 import TransactionList from "../../components/TransactionList/TransactionList";
 import { useTransactions } from "../../hooks/useTransactions";
-import { MOCK_ACCOUNT_ID } from "../../services/transactionService";
-import type { Transaction } from "../../types/transaction";
+import type { TransactionType } from "../../types/bank";
 import "./Transactions.css";
 
 const PAGE_SIZE = 10;
 
-type TypeFilter = Transaction["type"] | "";
+type TypeFilter = TransactionType | "";
 
 function Transactions() {
     const [searchParams, setSearchParams] = useSearchParams();
     const [type, setType] = useState<TypeFilter>("");
     const page = Math.max(1, Number(searchParams.get("page")) || 1);
 
-    const { transactions, total, pageCount } = useTransactions(MOCK_ACCOUNT_ID, {
+    const { transactions, total, pageCount } = useTransactions({
         page,
         pageSize: PAGE_SIZE,
         type: type || undefined
@@ -50,15 +49,14 @@ function Transactions() {
                 >
                     <option value="">All Types</option>
                     <option value="deposit">Deposits</option>
-                    <option value="withdrawal">Withdrawals</option>
+                    <option value="withdraw">Withdrawals</option>
                     <option value="transfer">Transfers</option>
                 </select>
             </div>
 
-            <TransactionList
-                title="All Transactions"
-                accountId={MOCK_ACCOUNT_ID}
-                transactions={transactions}
+                <TransactionList
+                    title="All Transactions"
+                    transactions={transactions}
                 headerAction={
                     total > 0 && (
                         <span className="transactions-count">

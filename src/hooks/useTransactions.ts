@@ -1,20 +1,23 @@
 import { useEffect, useState } from "react";
-import { getTransactions, type TransactionPage } from "../services/transactionService";
-import type { Transaction } from "../types/transaction";
+import {
+    bankService,
+    type TransactionHistoryPage
+} from "../services/bankService";
+import type { TransactionType } from "../types/bank";
 
 type UseTransactionsOptions = {
     pageSize: number;
     page?: number;
-    type?: Transaction["type"];
+    type?: TransactionType;
 };
 
-export function useTransactions(accountId: string, { pageSize, page = 1, type }: UseTransactionsOptions) {
-    const [result, setResult] = useState<TransactionPage>({ transactions: [], total: 0 });
+export function useTransactions({ pageSize, page = 1, type }: UseTransactionsOptions) {
+    const [result, setResult] = useState<TransactionHistoryPage>({ transactions: [], total: 0 });
 
     useEffect(() => {
         let cancelled = false;
 
-        getTransactions(accountId, { page, pageSize, type }).then((nextResult) => {
+        bankService.getTransactionHistory({ page, pageSize, type }).then((nextResult) => {
             if (!cancelled) {
                 setResult(nextResult);
             }
@@ -23,7 +26,7 @@ export function useTransactions(accountId: string, { pageSize, page = 1, type }:
         return () => {
             cancelled = true;
         };
-    }, [accountId, page, pageSize, type]);
+    }, [page, pageSize, type]);
 
     return {
         transactions: result.transactions,

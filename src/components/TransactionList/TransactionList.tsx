@@ -1,24 +1,29 @@
 import type { ReactNode } from "react";
-import type { Transaction } from "../../types/transaction";
-import { groupTransactionsByDate } from "../../utils/groupTransactionsByDate";
+import type { Transaction } from "../../types/bank";
 import { formatCurrency } from "../../utils/format";
 import "./TransactionList.css";
 
 type Props = {
     title: string;
-    accountId: string;
     transactions: Transaction[];
     headerAction?: ReactNode;
 };
 
-function isIncoming(transaction: Transaction, accountId: string): boolean {
-    if (transaction.type === "transfer") {
-        return transaction.to_account_id === accountId;
+function groupTransactionsByDate(transactions: Transaction[]): Map<string, Transaction[]> {
+    const transactionsByDate = new Map<string, Transaction[]>();
+
+    for (const transaction of transactions) {
+        const date = new Date(transaction.createdAt).toLocaleDateString();
+        const dayTransactions = transactionsByDate.get(date) ?? [];
+
+        dayTransactions.push(transaction);
+        transactionsByDate.set(date, dayTransactions);
     }
-    return transaction.type === "deposit";
+
+    return transactionsByDate;
 }
 
-function TransactionList({ title, accountId, transactions, headerAction }: Props) {
+function TransactionList({ title, transactions, headerAction }: Props) {
     const transactionsByDate = groupTransactionsByDate(transactions);
 
     return (
@@ -37,7 +42,7 @@ function TransactionList({ title, accountId, transactions, headerAction }: Props
                     <div key={date} className="transaction-day">
                         <div className="transaction-date">{date}</div>
                         {dayTransactions.map((transaction) => {
-                            const incoming = isIncoming(transaction, accountId);
+                            const incoming = transaction.amount > 0;
 
                             return (
                                 <div
@@ -48,19 +53,15 @@ function TransactionList({ title, accountId, transactions, headerAction }: Props
                                 >
                                     <div className="transaction-type">
                                         <span>
-                                            {transaction.type}
-                                            {transaction.type === "transfer" && (
-                                                <span className="transaction-detail">
-                                                    {incoming
-                                                        ? ` from ${transaction.account_id}`
-                                                        : ` to ${transaction.to_account_id}`}
-                                                </span>
-                                            )}
+                                            {transaction.name}
+                                            <span className="transaction-detail">
+                                                {` · ${transaction.detail}`}
+                                            </span>
                                         </span>
                                     </div>
                                     <div className="transaction-amount">
                                         {incoming ? "+" : "−"}
-                                        {formatCurrency(transaction.amount)}
+                                        {formatCurrency(Math.abs(transaction.amount))}
                                     </div>
                                 </div>
                             );

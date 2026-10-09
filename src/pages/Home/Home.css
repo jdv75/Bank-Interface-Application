@@ -21,7 +21,7 @@
 }
 
 .home-header p {
-    margin-top: -4px;
+    margin: 8px 0 0;
     color: var(--text-secondary);
     font-size: 20px;
 }
@@ -522,6 +522,18 @@
 
 .transaction > .negative {
     color: var(--danger);
+}
+
+@media (max-width: 1200px) {
+    .quick-actions-grid,
+    .recent .recent-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .recent-column + .recent-column {
+        border-top: 2px solid #3a6494;
+        border-left: none;
+    }
 }
 
 @media (max-width: 768px) {
