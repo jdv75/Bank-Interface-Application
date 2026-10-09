@@ -6,6 +6,7 @@ import AuthLayout from "../../layouts/AuthLayout";
 import { useAuth } from "../../context/AuthContext";
 import { authService } from "../../services/authService";
 import { validateLogin, type FieldErrors } from "../../utils/validation";
+import login from "../../assets/images/Login.png";
 
 function Login() {
     // 1. Router hooks first
@@ -166,11 +167,18 @@ function LoginHero() {
                 <span>MODERN</span>
             </div>
 
-            <h2 className="auth-hero-title">
-                Banking<br />
-                for a smarter<br />
-                <span className="accent">tomorrow.</span>
-            </h2>
+            <div className="auth-hero-title-wrap">
+                <h2 className="auth-hero-title">
+                    Banking<br />
+                    for a smarter<br />
+                    <span className="accent">tomorrow.</span>
+                </h2>
+                <img
+                    src={login}
+                    alt="NeuroBank login preview"
+                    className="auth-hero-image"
+                />
+            </div>
 
             <p className="auth-hero-sub">
                 Manage your money, track your goals, and take control of your
@@ -214,7 +222,7 @@ function LoginHero() {
                     <AuthPill label="Bank with confidence" />
                     <AuthPill label="Reach your goals" />
                 </div>
-            </div>
+            </div> 
         </div>
     );
 }

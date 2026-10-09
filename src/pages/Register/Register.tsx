@@ -12,6 +12,7 @@ import {
 } from "../../utils/validation";
 import { AuthPill, GoogleIcon, AppleIcon } from "../Login/Login";
 import "./Register.css";
+import register from "../../assets/images/SignUp.png";
 
 function Register() {
     const [accountId, setAccountId] = useState("");
@@ -210,36 +211,43 @@ function RegisterHero() {
                 <span>SMART</span>
             </div>
 
-            <h2 className="auth-hero-title">
-                A smarter way<br />
-                to manage<br />
-                <span className="accent">your money.</span>
-            </h2>
+            <div className="auth-hero-title-wrap register-hero-wrap">
+                <h2 className="auth-hero-title">
+                    A smarter way<br />
+                    to manage<br />
+                    <span className="accent">your money.</span>
+                </h2>
+                <img
+                    src={register}
+                    alt="NeuroBank sign up preview"
+                    className="auth-hero-image register-hero-image"
+                />
+            </div>
 
             <p className="auth-hero-sub">
                 Open an account in minutes and get access to powerful tools to
                 help you save, spend, and grow.
             </p>
-
+        
             <div className="auth-hero-art">
-                <div className="auth-credit-card">
-                    <div className="auth-credit-card-top">NeuroBank</div>
-                    <div className="auth-credit-card-chip" />
-                    <div className="auth-credit-card-bottom">
-                        <span className="auth-credit-card-number">•••• 0224</span>
-                        <span className="auth-mc">
-                            <span className="red" />
-                            <span className="yellow" />
-                        </span>
+                    <div className="auth-credit-card">
+                        <div className="auth-credit-card-top">NeuroBank</div>
+                        <div className="auth-credit-card-chip" />
+                        <div className="auth-credit-card-bottom">
+                            <span className="auth-credit-card-number">•••• 0224</span>
+                            <span className="auth-mc">
+                                <span className="red" />
+                                <span className="yellow" />
+                            </span>
+                        </div>
                     </div>
-                </div>
 
-                <div className="auth-pills">
-                    <AuthPill label="Track your spending" />
-                    <AuthPill label="Bank with confidence" />
-                    <AuthPill label="Reach your goals" />
-                </div>
-            </div>
+                    <div className="auth-pills">
+                        <AuthPill label="Track your spending" />
+                        <AuthPill label="Bank with confidence" />
+                        <AuthPill label="Reach your goals" />
+                    </div>
+            </div> 
         </div>
     );
 }
