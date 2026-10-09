@@ -1,6 +1,13 @@
 .contact-section {
   padding-bottom: 5rem;
 }
+
+.contact-section,
+.contact-section *,
+.contact-section *::before,
+.contact-section *::after {
+  box-sizing: border-box;
+}
  
 /*
   Cap the layout width (so fields don't stretch on big monitors) but keep its
@@ -10,6 +17,7 @@
   display: grid;
   grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
   gap: 2rem;
+  width: 100%;
   align-items: start;
   max-width: 1120px;
   margin-left: max(0px, calc((100% - 1600px) / 2));
@@ -22,13 +30,15 @@
   display: grid;
   gap: 1rem;
   margin-top: 0;
-  padding: auto;
+  min-width: 0;
+  padding: 0;
 }
  
 .contact-item {
   display: flex;
   align-items: center;
   gap: 1.1rem;
+  min-width: 0;
   padding: 1.15rem 1.35rem;
   border-radius: 14px;
   border: 1px solid rgba(120, 160, 255, 0.1);
@@ -60,10 +70,15 @@
   font-weight: 500;
   overflow-wrap: anywhere;
 }
+
+.contact-item > div {
+  min-width: 0;
+}
  
 /* ---------- Form card ---------- */
 .contact-card {
   width: 100%;
+  min-width: 0;
   padding: clamp(1.5rem, 3vw, 2.5rem);
   border-radius: 20px;
   border: 1px solid rgba(80, 140, 255, 0.22);
@@ -86,11 +101,12 @@
  
 .form-row {
   display: grid;
-  grid-template-columns: 1fr 1.25fr;
-  gap: 4rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
 }
- 
+
 .field {
+  min-width: 0;
   margin-bottom: 1.25rem;
 }
  
@@ -105,7 +121,9 @@
 .field input,
 .field select,
 .field textarea {
+  display: block;
   width: 100%;
+  max-width: 100%;
   font-family: inherit;
   font-size: 1rem;
   color: var(--text-main);
@@ -193,16 +211,27 @@
   .contact-section .contact-grid {
     grid-template-columns: 1fr;
     max-width: 680px;
-    display: grid;
-    place-items: center;
-    justify-content: center;
-    align-items: center; 
-    padding: auto;
+    margin-inline: auto;
+  }
+
+  .contact-info,
+  .contact-card {
+    width: 100%;
   }
 }
  
 /* ---------- Phone ---------- */
 @media (max-width: 560px) {
+  .contact-section {
+    padding-right: 1rem;
+    padding-left: 1rem;
+  }
+
+  .contact-card {
+    padding: 1.5rem;
+    border-radius: 16px;
+  }
+
   .form-row {
     grid-template-columns: 1fr;
     gap: 0;
