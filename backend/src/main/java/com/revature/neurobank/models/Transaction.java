@@ -14,21 +14,20 @@ public class Transaction {
     @Column 
     private LocalDateTime date;
 
-    @Column 
+    @Column
+    @Enumerated(EnumType.STRING)
     private TransactionType transactionType;
 
     @Column 
     private Double amount;
 
-    @Column 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "accountId")
-    private Integer originAccountId;
+    @JoinColumn(name = "origin_account_id")
+    private Account originAccountId;
 
-    @Column 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "accountId")
-    private Integer destinationAccountId;
+    @JoinColumn(name = "destination_account_id")
+    private Account destinationAccountId;
 
 
 
