@@ -23,15 +23,13 @@ public class Account {
     @Column 
     private Double balance;
 
-    @Column 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "username")
-    private String username;
+    private User username;
 
-    @Column 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "routingNum")
-    private Long bankRoutingNum;
+    private Bank bankRoutingNum;
 
     @Column
     private AccountType accountType;

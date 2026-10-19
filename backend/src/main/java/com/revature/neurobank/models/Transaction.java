@@ -20,15 +20,13 @@ public class Transaction {
     @Column 
     private Double amount;
 
-    @Column 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "accountId")
-    private Integer originAccountId;
+    private Account originAccountId;
 
-    @Column 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "accountId")
-    private Integer destinationAccountId;
+    private Account destinationAccountId;
 
 
 
