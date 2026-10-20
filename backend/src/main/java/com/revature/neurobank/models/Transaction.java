@@ -34,6 +34,9 @@ public class Transaction {
     // SETTERS...
 
 
+    public Transaction() {
+    }
+
     public Transaction(Integer transactionId, LocalDateTime date, TransactionType transactionType, Double amount, Account originAccountId, Account destinationAccountId) {
         this.transactionId = transactionId;
         this.date = date;
