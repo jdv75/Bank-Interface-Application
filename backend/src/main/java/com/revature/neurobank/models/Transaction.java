@@ -21,11 +21,11 @@ public class Transaction {
     private Double amount;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "accountId")
+    @JoinColumn(name = "originaccountId")
     private Account originAccountId;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "accountId")
+    @JoinColumn(name = "destinationaccountId")
     private Account destinationAccountId;
 
 
