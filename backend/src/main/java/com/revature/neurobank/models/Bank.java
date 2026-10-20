@@ -10,4 +10,22 @@ public class Bank {
 
     @Column 
     private String bankName;
+
+    public Integer getRoutingNumber() {
+        return routingNumber;
+    }
+
+    public void setRoutingNumber(Integer routingNumber) {
+        this.routingNumber = routingNumber;
+    }
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
+    }
+
+    
 }
