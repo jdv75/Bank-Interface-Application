@@ -16,7 +16,7 @@ public class TransactionService {
         this.transactionDAO = transactionDAO;
     }
 
-//    public Transaction insertTransaction(Transaction transaction) {
-//
-//    }
+    public Transaction insertTransaction(Transaction transaction) {
+
+    }
 }
