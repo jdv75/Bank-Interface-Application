@@ -32,6 +32,7 @@ public class Account {
     private Bank bankRoutingNum;
 
     @Column
+    @Enumerated(EnumType.STRING)
     private AccountType accountType;
 
 }
