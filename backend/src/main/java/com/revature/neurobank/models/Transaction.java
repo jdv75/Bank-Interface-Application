@@ -76,5 +76,17 @@ public class Transaction {
     public void setDestinationAccountId(Account destinationAccountId) {
         this.destinationAccountId = destinationAccountId;
     }
-    
+
+    public Transaction() {
+        
+    }
+
+    public Transaction(Integer transactionId, LocalDateTime date, TransactionType transactionType, Double amount, Account originAccountId, Account destinationAccountId) {
+        this.transactionId = transactionId;
+        this.date = date;
+        this.transactionType = transactionType;
+        this.amount = amount;
+        this.originAccountId = originAccountId;
+        this.destinationAccountId = destinationAccountId;
+    }
 }
