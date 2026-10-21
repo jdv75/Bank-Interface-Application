@@ -17,6 +17,6 @@ public class TransactionService {
     }
 
     public Transaction insertTransaction(Transaction transaction) {
-
+        return transaction;
     }
 }
