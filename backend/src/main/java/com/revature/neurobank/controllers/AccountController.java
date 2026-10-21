@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 
 @RestController 
 @RequestMapping("/api/accounts")
+@CrossOrigin(origins = "http://localhost:5173")
 public class AccountController {
 
     private final AccountService accountService;
@@ -38,7 +39,7 @@ public class AccountController {
         return accountService.createAccount(username, request);
     }
 
-    @PostMapping("/{accountId}")
+    @DeleteMapping("/{accountId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteAccount(@PathVariable Integer accountId, @RequestHeader("X-Username") String username) {
         accountService.deleteAccount(username, accountId);
