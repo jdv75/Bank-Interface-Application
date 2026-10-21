@@ -29,10 +29,57 @@ public class Transaction {
     @JoinColumn(name = "destination_account_id")
     private Account destinationAccountId;
 
+    public Integer getTransactionId() {
+        return transactionId;
+    }
 
+    public void setTransactionId(Integer transactionId) {
+        this.transactionId = transactionId;
+    }
 
-    // SETTERS...
+    public LocalDateTime getDate() {
+        return date;
+    }
 
+    public void setDate(LocalDateTime date) {
+        this.date = date;
+    }
+
+    public TransactionType getTransactionType() {
+        return transactionType;
+    }
+
+    public void setTransactionType(TransactionType transactionType) {
+        this.transactionType = transactionType;
+    }
+
+    public Double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Double amount) {
+        this.amount = amount;
+    }
+
+    public Account getOriginAccountId() {
+        return originAccountId;
+    }
+
+    public void setOriginAccountId(Account originAccountId) {
+        this.originAccountId = originAccountId;
+    }
+
+    public Account getDestinationAccountId() {
+        return destinationAccountId;
+    }
+
+    public void setDestinationAccountId(Account destinationAccountId) {
+        this.destinationAccountId = destinationAccountId;
+    }
+
+    public Transaction() {
+        
+    }
 
 
     public Transaction(Integer transactionId, LocalDateTime date, TransactionType transactionType, Double amount, Account originAccountId) {
