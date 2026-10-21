@@ -81,6 +81,15 @@ public class Transaction {
         
     }
 
+
+    public Transaction(Integer transactionId, LocalDateTime date, TransactionType transactionType, Double amount, Account originAccountId) {
+        this.transactionId = transactionId;
+        this.date = date;
+        this.transactionType = transactionType;
+        this.amount = amount;
+        this.originAccountId = originAccountId;
+    }
+
     public Transaction(Integer transactionId, LocalDateTime date, TransactionType transactionType, Double amount, Account originAccountId, Account destinationAccountId) {
         this.transactionId = transactionId;
         this.date = date;
