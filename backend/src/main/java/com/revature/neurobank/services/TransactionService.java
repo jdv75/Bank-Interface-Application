@@ -27,34 +27,34 @@ public class TransactionService {
 
 
     @Transactional
-    public Transaction insertTransaction(Transaction transaction) {
+    public Transaction insertTransaction(String username, Transaction transaction) {
 
         Integer originAccountId = transaction.getOriginAccountId().getAccountId();
         Double amount = transaction.getAmount();
         TransactionType type = transaction.getTransactionType();
 
+        // Verify account exists
+        Account account = accountDAO.findByIdForUpdate(originAccountId)
+                .orElseThrow(() -> new AccountNotFoundException("Account not found"));
+        if (!account.getUsername().getUsername().equals(username)) {
+            throw new AccountNotFoundException("Account not found");
+        }
         switch (type) {
-            case DEPOSIT -> deposit(originAccountId, amount);
-            case WITHDRAW -> withdraw(originAccountId, amount);
+            case DEPOSIT -> deposit(account, amount);
+            case WITHDRAW -> withdraw(account, amount);
         }
 
         return transactionDAO.save(transaction);
     }
 
-    public void withdraw(Integer accountId, Double amount) {
-        Account account = accountDAO.findByIdForUpdate(accountId)
-                .orElseThrow(() -> new AccountNotFoundException("Account not found"));
-
+    public void withdraw(Account account, Double amount) {
         if (account.getBalance() < amount) {
             throw new InsufficientFundsException("Insufficient funds");
         }
 
         account.setBalance(account.getBalance() - amount);
     }
-
-    public void deposit(Integer accountId, Double amount) {
-        Account account = accountDAO.findByIdForUpdate(accountId)
-                .orElseThrow(() -> new AccountNotFoundException("Account not found"));
+    public void deposit(Account account, Double amount) {
         account.setBalance(account.getBalance() + amount);
     }
 }
