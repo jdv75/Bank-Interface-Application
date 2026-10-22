@@ -55,7 +55,7 @@ function Login() {
             return;
         }
 
-        setAccount(res.data);
+        setAccount(res.data.account);
         navigate("/dashboard");
     }
 
