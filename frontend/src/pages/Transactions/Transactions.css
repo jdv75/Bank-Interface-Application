@@ -28,7 +28,24 @@
 
 .transaction-filters {
     display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
     gap: 12px;
+}
+
+.transaction-account-filter {
+    flex: 0 1 380px;
+    min-width: 0;
+}
+
+.transactions-status {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+.transactions-status.error {
+    color: #ff6b6b;
 }
 
 /* Native <select> restyled: funnel icon on the left, chevron on the right */

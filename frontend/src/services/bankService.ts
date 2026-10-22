@@ -15,6 +15,7 @@ import { apiFetch } from "./apiClient";
 export type TransactionsByType = Record<TransactionType, Transaction[]>;
 
 export type TransactionHistoryOptions = {
+    accountId: string;
     page?: number;
     pageSize?: number;
     type?: TransactionType;
@@ -198,17 +199,22 @@ export const bankService = {
     },
 
     getTransactionHistory({
+        accountId,
         page = 1,
         pageSize = 20,
         type
-    }: TransactionHistoryOptions = {}): Promise<TransactionHistoryPage> {
-        const transactions = sortByDateDesc(db.transactions)
-            .filter((transaction) => !type || transaction.type === type);
-        const start = (page - 1) * pageSize;
-
-        return mockRequest({
-            transactions: transactions.slice(start, start + pageSize),
-            total: transactions.length
+    }: TransactionHistoryOptions): Promise<TransactionHistoryPage> {
+        const params = new URLSearchParams({
+            page: String(page),
+            page_size: String(pageSize)
         });
+
+        if (type) {
+            params.set("type", type);
+        }
+
+        return apiFetch<TransactionHistoryPage>(
+            `/api/accounts/${encodeURIComponent(accountId)}/transactions?${params}`
+        );
     }
 };
