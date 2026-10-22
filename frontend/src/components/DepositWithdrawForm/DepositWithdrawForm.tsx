@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { bankService } from "../../services/bankService";
+import type { Account } from "../../types/bank";
 import type { FormEvent } from "react";
 import "./DepositWithdrawForm.css";
 import AccountSelect from "../AccountSelect/AccountSelect";
-import { getAccounts, deposit, withdraw, addTransaction } from "../../services/transactionService";
+import { getAccounts, addTransaction } from "../../services/transactionService";
+import {toLocalDateTime} from "../../utils/format";
 
 export type TransactionType = "deposit" | "withdrawal";
 
@@ -41,8 +44,9 @@ const CONFIG = {
 } as const;
 
 function DepositWithdrawForm({ type }: { type: TransactionType }) {
-    const accounts = getAccounts();
-    const [accountId, setAccountId] = useState(accounts[0]?.id ?? "");
+
+    const [accounts, setAccounts] = useState<Account[]>([]);
+    const [accountId, setAccountId] = useState("");
     const config = CONFIG[type];
     const [amount, setAmount] = useState("");
     const [submit, setSubmit] = useState(false);
@@ -51,8 +55,21 @@ function DepositWithdrawForm({ type }: { type: TransactionType }) {
     const [error, setError] = useState("");
     // const [method, setMethod] = useState<string>(config.methods[0].id);
 
+    const loadAccounts = async () => {
+        const list = await bankService.getAccounts();
+        setAccounts(list);
+        setAccountId((prev) => prev || String(list[0]?.id ?? ""));
+    };
 
-    const handleSubmit = (e: FormEvent) => {
+    useEffect(() => {
+        loadAccounts().catch((e) => {
+            setResult("failed");
+            setError("Could not load accounts: " + (e instanceof Error ? e.message : "Unknown error"));
+            setShowResult(true);
+        });
+    }, []);
+
+    const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         if (submit) {
             return;
@@ -60,7 +77,8 @@ function DepositWithdrawForm({ type }: { type: TransactionType }) {
         
         setSubmit(true);
         setShowResult(false);
-        setTimeout(() => { // delay to show off loading state
+        setError("");
+        //setTimeout(() => { // delay to show off loading state
             try {
             
             const parsedAmount = Number.parseFloat(amount);
@@ -80,31 +98,30 @@ function DepositWithdrawForm({ type }: { type: TransactionType }) {
             }
             
 
-            if (type === "deposit") {
-                deposit(accountId, parsedAmount);
-            } else {
-                withdraw(accountId, parsedAmount);
-            }
+            // if (type === "deposit") {
+            //     deposit(accountId, parsedAmount);
+            // } else {
+            //     withdraw(accountId, parsedAmount);
+            // }
 
-            const timestamp = new Date();
-            addTransaction(accountId, type, timestamp.toISOString(), Number(parsedAmount.toFixed(2)));
+            await addTransaction({
+                date: toLocalDateTime(),
+                type,
+                amount: Number(parsedAmount.toFixed(2)),
+                accountId,
+            });
             setResult("success");
+            setAmount("");
+            await loadAccounts().catch((e) => console.error("Could not refresh accounts:", e));
         } catch (error) {
-            if (error instanceof Error) {
-                setResult("failed");
-                console.error("An error occurred:", error.message);
-                setError("Transaction Failed: " + error.message);
-                // alert(`An error occurred: ${error.message}`);
-            }
-
+            const message = error instanceof Error ? error.message : "Unknown error";
+            setResult("failed");
+            console.error("An error occurred:", message);
+            setError("Transaction Failed: " + message);
         } finally {
             setShowResult(true);
             setSubmit(false);
         }
-        }, 1000);
-        
-        setError("");
-        setAmount("");
     };
 
     return (
