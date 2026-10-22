@@ -24,45 +24,61 @@ public class AuthController {
         this.jwtService = jwtService;
     }
 
-    public record RegisterRequest(String accountId, String password) {}
+    public record RegisterRequest(
+        String accountId,
+        String password,
+        String fName,
+        String lName,
+        String email,
+        String phone
+    ) {}
     public record LoginRequest(String accountId, String password) {}
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegisterRequest req) {
-        String id = req.accountId() == null ? "" : req.accountId().trim().toLowerCase();
+public ResponseEntity<?> register(@RequestBody RegisterRequest req) {
+    String id = req.accountId() == null ? "" : req.accountId().trim().toLowerCase();
 
-        // Basic validation (matches frontend rules)
-        if (id.length() < 4 || id.length() > 20 || !id.matches("^[a-zA-Z0-9_]+$")) {
-            return ResponseEntity.badRequest().body(Map.of(
-                "code", "VALIDATION_ERROR",
-                "message", "Account ID must be 4-20 letters, numbers, or underscores.",
-                "field", "accountId"
-            ));
-        }
-
-        if (req.password() == null || req.password().length() < 8) {
-            return ResponseEntity.badRequest().body(Map.of(
-                "code", "VALIDATION_ERROR",
-                "message", "Password must be at least 8 characters.",
-                "field", "password"
-            ));
-        }
-
-        if (users.existsByUsername(id)) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of(
-                "code", "VALIDATION_ERROR",
-                "message", "That account ID is already taken.",
-                "field", "accountId"
-            ));
-        }
-
-        User u = new User();
-        u.setUsername(id);
-        u.setPassword(encoder.encode(req.password()));
-        users.save(u);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("accountId", u.getUsername()));
+    // Existing validation
+    if (id.length() < 4 || id.length() > 20 || !id.matches("^[a-zA-Z0-9_]+$")) {
+        return ResponseEntity.badRequest().body(Map.of(
+            "code", "VALIDATION_ERROR",
+            "message", "Username must be 4-20 letters, numbers, or underscores.",
+            "field", "accountId"
+        ));
     }
+
+    if (req.password() == null || req.password().length() < 8) {
+        return ResponseEntity.badRequest().body(Map.of(
+            "code", "VALIDATION_ERROR",
+            "message", "Password must be at least 8 characters.",
+            "field", "password"
+        ));
+    }
+
+    if (users.existsByUsername(id)) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of(
+            "code", "VALIDATION_ERROR",
+            "message", "That username is already taken.",
+            "field", "accountId"
+        ));
+    }
+
+    User u = new User();
+    u.setUsername(id);
+    u.setPassword(encoder.encode(req.password()));
+
+    // NEW: Personal info
+    if (req.fName() != null) u.setfName(req.fName().trim());
+    if (req.lName() != null) u.setlName(req.lName().trim());
+    if (req.email() != null) u.setEmail(req.email().trim().toLowerCase());
+    if (req.phone() != null) u.setPhone(req.phone().trim());
+
+    users.save(u);
+
+    return ResponseEntity.status(HttpStatus.CREATED).body(Map.of(
+        "accountId", u.getUsername()
+    ));
+}
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest req) {
@@ -72,7 +88,7 @@ public class AuthController {
         if (userOpt.isEmpty() || !encoder.matches(req.password(), userOpt.get().getPassword())) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of(
                 "code", "INVALID_CREDENTIALS",
-                "message", "Incorrect account ID or password."
+                "message", "Incorrect username or password."
             ));
         }
 
@@ -91,7 +107,13 @@ public class AuthController {
                 .getContext().getAuthentication().getName();
 
         return users.findByUsername(username)
-                .<ResponseEntity<?>>map(u -> ResponseEntity.ok(Map.of("accountId", u.getUsername())))
+                .<ResponseEntity<?>>map(u -> ResponseEntity.ok(Map.of(
+                    "accountId", u.getUsername(),
+                    "fName", u.getfName() == null ? "" : u.getfName(),
+                    "lName", u.getlName() == null ? "" : u.getlName(),
+                    "email", u.getEmail() == null ? "" : u.getEmail(),
+                    "phone", u.getPhone() == null ? "" : u.getPhone()
+                )))
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
     }
 }
