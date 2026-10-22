@@ -31,5 +31,18 @@ export async function api<T>(path: string, init: RequestInit = {}): Promise<T> {
         throw error;
     }
 
+    if (res.status === 204) {
+        return undefined as T;
+    }
+
     return res.json() as Promise<T>;
 }
+
+/**
+ * Compatibility alias for bankService.ts (Juan's API layer).
+ * Delegates to the JWT-aware `api()` function so protected
+ * endpoints receive `Authorization: Bearer <token>`.
+ * The `X-Username` header is no longer required — the backend
+ * reads the username from the JWT via SecurityContextHolder.
+ */
+export const apiFetch = api;

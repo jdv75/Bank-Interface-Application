@@ -9,6 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 @RestController 
 @RequestMapping("/api/accounts")
+@CrossOrigin(origins = "http://localhost:5173")
 public class AccountController {
 
     private final AccountService accountService;
@@ -39,7 +40,7 @@ public class AccountController {
         return accountService.createAccount(getCurrentUsername(), request);
     }
 
-    @PostMapping("/{accountId}")
+    @DeleteMapping("/{accountId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteAccount(@PathVariable Integer accountId) {
         accountService.deleteAccount(getCurrentUsername(), accountId);

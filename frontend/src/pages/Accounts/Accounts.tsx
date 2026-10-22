@@ -95,33 +95,60 @@ function SummaryPanel({ shares, total }: { shares: AccountShare[]; total: number
     );
 }
 
+async function fetchAccountsData(): Promise<AccountsData> {
+    const [accounts, activity] = await Promise.all([
+        bankService.getAccounts(),
+        bankService.getRecentTransactions(5)
+    ]);
+    return { accounts, activity };
+}
+
+function getErrorMessage(err: unknown, fallback: string): string {
+    return err instanceof Error ? err.message : fallback;
+}
+
 
 function Accounts() {
     const [showNewAccount, setShowNewAccount] = useState(false);
     const [data, setData] = useState<AccountsData | null>(null);
+    const [loadError, setLoadError] = useState<string | null>(null);
+    const [actionError, setActionError] = useState<string | null>(null);
+
+    async function reloadData() {
+        try {
+            setData(await fetchAccountsData());
+            setLoadError(null);
+        } catch (err) {
+            setLoadError(getErrorMessage(err, "Could not load your accounts"));
+        }
+    }
 
     useEffect(() => {
         let cancelled = false;
 
-        async function loadData() {
-            const [accounts, activity] = await Promise.all([
-                bankService.getAccounts(),
-                bankService.getRecentTransactions(5)
-            ]);
-
-            if (!cancelled) {
-                setData({ accounts, activity });
-            }
-        }
-
-        loadData();
+        fetchAccountsData().then((result) => {
+            if (!cancelled) setData(result);
+        }).catch((err) => {
+            if(!cancelled) setLoadError(getErrorMessage(err, "Could not load your accounts"));
+        });
 
         return () => {
             cancelled = true;
         };
     }, []);
 
-    if (!data) {
+    if (loadError && !data) {
+        return (
+            <div className="accounts-page">
+                <p className="accounts-error" role="alert">{loadError}</p>
+                <button className="new-account-button" type="button" onClick={reloadData}>
+                    Try again
+                </button>
+            </div>
+        );
+    }
+
+    if(!data) {
         return <div className="accounts-page">Loading…</div>;
     }
 
@@ -130,25 +157,22 @@ function Accounts() {
 
     async function handleDelete(accountId: string) {
         if(!confirm("Delete this account? This cannot be undone.")) return;
-        await bankService.deleteAccount(accountId);
-        const [accounts, activity] = await Promise.all([
-            bankService.getAccounts(),
-            bankService.getRecentTransactions(5)
-        ]);
-        setData({accounts, activity});
+
+        setActionError(null);
+        try {
+            await bankService.deleteAccount(accountId);
+            await reloadData();
+        } catch (err) {
+            setActionError(getErrorMessage(err, "Could not delete the account."));
+        }
     }
 
     return (
         <div className="accounts-page">
             {showNewAccount && (
-                <NewAccountForm onClose={() => setShowNewAccount(false)} 
-                    onCreated={async () => {
-                        const [accounts, activity] = await Promise.all([
-                            bankService.getAccounts(),
-                            bankService.getRecentTransactions(5)
-                        ]);
-                        setData({accounts, activity});
-                    }}
+                <NewAccountForm 
+                    onClose={() => setShowNewAccount(false)} 
+                    onCreated={reloadData}  
                 />
             )}
 
@@ -168,11 +192,20 @@ function Accounts() {
                 </button>
             </div>
 
-            <div className="accounts-grid">
-                {data.accounts.map((account) => (
-                    <AccountDetailCard key={account.id} account={account} onDelete={handleDelete}/>
-                ))}
-            </div>
+            {actionError && <p className="accounts-error" role="alert">{actionError}</p>}
+
+            {data.accounts.length === 0 ? (
+                <p className="accounts-empty">
+                    You don't have any accounts yet. Open one to get started.
+                </p>
+            ) : (
+                <div className="accounts-grid">
+                    {data.accounts.map((account) => (
+                        <AccountDetailCard key={account.id} account={account} onDelete={handleDelete}/>
+                    ))}
+                </div>
+            )}
+            
 
             <div className="accounts-bottom">
                 <ActivityPanel activity={data.activity} />
