@@ -55,7 +55,8 @@ function Login() {
             return;
         }
 
-        setAccount(res.data.account);
+        const me = await authService.me();
+        setAccount(me ?? res.data.account);
         navigate("/dashboard");
     }
 

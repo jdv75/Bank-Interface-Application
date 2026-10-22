@@ -177,7 +177,7 @@ function Home() {
             <div className="home-header">
                 <div>
                     <h1>
-                        Welcome back, <span>{account?.accountId ?? "there"}!</span>
+                        Welcome back, <span>{account?.fName || account?.accountId || "there"}!</span>
                     </h1>
                     <p>Here's an overview of your accounts and recent activity.</p>
                 </div>
