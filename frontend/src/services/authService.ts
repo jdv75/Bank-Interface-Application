@@ -2,6 +2,10 @@ import { api, setToken, clearToken, getToken } from "./apiClient";
 
 export interface Account {
     accountId: string;
+    fName?: string;
+    lName?: string;
+    email?: string;
+    phone?: string;
     balance?: number;
     createdAt?: string;
 }
@@ -36,7 +40,15 @@ export const authService = {
         }
     },
 
-    async register(accountId: string, password: string, confirmPassword: string): Promise<AuthResponse<Account>> {
+    async register(
+        accountId: string,
+        password: string,
+        confirmPassword: string,
+        fName: string,
+        lName: string,
+        email: string,
+        phone: string
+    ): Promise<AuthResponse<Account>> {
         if (password !== confirmPassword) {
             return {
                 success: false,
@@ -47,7 +59,14 @@ export const authService = {
         try {
             const res = await api<Account>("/api/auth/register", {
                 method: "POST",
-                body: JSON.stringify({ accountId, password }),
+                body: JSON.stringify({
+                    accountId,
+                    password,
+                    fName,
+                    lName,
+                    email,
+                    phone
+                }),
             });
             return { success: true, data: res };
         } catch (e: any) {

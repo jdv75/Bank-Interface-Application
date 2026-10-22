@@ -2,16 +2,20 @@ export interface FieldErrors {
     accountId?: string;
     password?: string;
     confirmPassword?: string;
+    fName?: string;
+    lName?: string;
+    email?: string;
+    phone?: string;
     form?: string;
 }
 
 export function validateAccountId(accountId: string): string | null {
     const id = accountId.trim();
-    if (!id) return "Account ID cannot be empty.";
+    if (!id) return "Username cannot be empty.";
     if (id.length < 4 || id.length > 20)
-        return "Account ID must be between 4 and 20 characters.";
+        return "Username must be between 4 and 20 characters.";
     if (!/^[a-zA-Z0-9_]+$/.test(id))
-        return "Account ID may only contain letters, numbers, and underscores.";
+        return "Username may only contain letters, numbers, and underscores.";
     return null;
 }
 
@@ -43,6 +47,10 @@ export function validateRegister(
     accountId: string,
     password: string,
     confirmPassword: string,
+    fName: string = "",
+    lName: string = "",
+    email: string = "",
+    phone: string = ""
 ): FieldErrors | null {
     const errors: FieldErrors = {};
     const idErr = validateAccountId(accountId);
@@ -52,6 +60,19 @@ export function validateRegister(
     if (pwErr) errors.password = pwErr;
     else if (password !== confirmPassword)
         errors.confirmPassword = "Passwords do not match.";
+
+    if (!fName.trim()) errors.fName = "First name is required.";
+    if (!lName.trim()) errors.lName = "Last name is required.";
+
+    if (!email.trim()) {
+        errors.email = "Email is required.";
+    } else if (!/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(email.trim())) {
+        errors.email = "Please enter a valid email address.";
+    }
+
+    if (phone.trim() && !/^\+?[\d\s()-]{7,20}$/.test(phone.trim())) {
+        errors.phone = "Please enter a valid phone number.";
+    }
 
     return Object.keys(errors).length ? errors : null;
 }
