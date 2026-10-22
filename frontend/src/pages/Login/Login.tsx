@@ -55,7 +55,7 @@ function Login() {
             return;
         }
 
-        setAccount(res.data);
+        setAccount(res.data.account);
         navigate("/dashboard");
     }
 
@@ -84,7 +84,7 @@ function Login() {
                     )}
 
                     <div className="auth-field">
-                        <label htmlFor="login-accountId">Account ID</label>
+                        <label htmlFor="login-accountId">Username</label>
                         <div className={`auth-field-control ${errors.accountId ? "invalid" : ""}`}>
                             <Mail />
                             <input

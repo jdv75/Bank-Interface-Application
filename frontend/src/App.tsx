@@ -18,8 +18,16 @@ import About from "./pages/About/About";
 import Contact from "./pages/Contact/Contact";
 
 function RequiredAuth({children} : {children: ReactNode}) {
-    const {account} = useAuth();
-    if (!account) return <Navigate to="/login" replace />;
+    const {account, loading} = useAuth();
+    
+    // Wait for the /api/auth/me check to finish before deciding
+    if (loading) {
+        return <div style={{ padding: 40, color: "white" }}>Loading...</div>;
+    }
+    if (!account) {
+        return <Navigate to="/login" replace />;
+    }
+    
     return children;
 }
 
