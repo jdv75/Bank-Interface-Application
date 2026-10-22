@@ -30,3 +30,10 @@ export function maskAccount(last4: string): string {
 export function formatPercent(value: number): string {
     return `${value.toFixed(2)}%`;
 }
+
+// Format date to LocalDateTime for spring model
+export function toLocalDateTime(d: Date = new Date()): string {
+    const pad = (n: number) => String(n).padStart(2, "0");
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}` +
+        `T${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+}

@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Mail, Lock, Eye, EyeOff, ShieldCheck } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff, ShieldCheck, User, Phone } from "lucide-react";
 
 import AuthLayout from "../../layouts/AuthLayout";
 //import { useAuth } from "../../context/AuthContext"; outdated (sends to login page on success)
@@ -18,6 +18,10 @@ function Register() {
     const [accountId, setAccountId] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [fName, setFName] = useState("");
+    const [lName, setLName] = useState("");
+    const [email, setEmail] = useState("");
+    const [phone, setPhone] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirm, setShowConfirm] = useState(false);
     const [agree, setAgree] = useState(false);
@@ -31,7 +35,7 @@ function Register() {
         e.preventDefault();
         setErrors({});
 
-        const v = validateRegister(accountId, password, confirmPassword);
+        const v = validateRegister(accountId, password, confirmPassword, fName, lName, email, phone);
         if (v) {
             setErrors(v);
             return;
@@ -45,7 +49,7 @@ function Register() {
         }
 
         setLoading(true);
-        const res = await authService.register(accountId, password, confirmPassword);
+        const res = await authService.register(accountId, password, confirmPassword, fName, lName, email, phone);
         setLoading(false);
 
         if (!res.success) {
@@ -81,15 +85,83 @@ function Register() {
                         </div>
                     )}
 
+                    <div className="register-two-col">
+                        <div className="auth-field">
+                            <label htmlFor="reg-fName">First Name</label>
+                            <div className={`auth-field-control ${errors.fName ? "invalid" : ""}`}>
+                                <User />
+                                <input
+                                    id="reg-fName"
+                                    type="text"
+                                    autoComplete="given-name"
+                                    placeholder="Jane"
+                                    value={fName}
+                                    onChange={(e) => setFName(e.target.value)}
+                                />
+                            </div>
+                            {errors.fName && <span className="auth-field-error">{errors.fName}</span>}
+                        </div>
+
+                        <div className="auth-field">
+                            <label htmlFor="reg-lName">Last Name</label>
+                            <div className={`auth-field-control ${errors.lName ? "invalid" : ""}`}>
+                                <User />
+                                <input
+                                    id="reg-lName"
+                                    type="text"
+                                    autoComplete="family-name"
+                                    placeholder="Doe"
+                                    value={lName}
+                                    onChange={(e) => setLName(e.target.value)}
+                                />
+                            </div>
+                            {errors.lName && <span className="auth-field-error">{errors.lName}</span>}
+                        </div>
+                    </div>
+
+                    <div className="register-two-col">
+                        <div className="auth-field">
+                            <label htmlFor="reg-email">Email</label>
+                            <div className={`auth-field-control ${errors.email ? "invalid" : ""}`}>
+                                <Mail />
+                                <input
+                                    id="reg-email"
+                                    type="email"
+                                    autoComplete="email"
+                                    placeholder="you@example.com"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                />
+                            </div>
+                            {errors.email && <span className="auth-field-error">{errors.email}</span>}
+                        </div>
+
+                        <div className="auth-field">
+                            <label htmlFor="reg-phone">Phone (Optional)</label>
+                            <div className={`auth-field-control ${errors.phone ? "invalid" : ""}`}>
+                                <Phone />
+                                <input
+                                    id="reg-phone"
+                                    type="tel"
+                                    autoComplete="tel"
+                                    placeholder="+1 (555) 123-4567"
+                                    value={phone}
+                                    onChange={(e) => setPhone(e.target.value)}
+                                />
+                            </div>
+                            {errors.phone && <span className="auth-field-error">{errors.phone}</span>}
+                        </div>
+                    </div>
+
                     <div className="auth-field">
-                        <label htmlFor="reg-accountId">Account ID</label>
+                        <label htmlFor="reg-accountId">Username</label>
                         <div className={`auth-field-control ${errors.accountId ? "invalid" : ""}`}>
-                            <Mail />
+                            <User />
                             <input
                                 id="reg-accountId"
                                 type="text"
                                 autoComplete="username"
-                                placeholder="Pick an account ID"
+                                placeholder="Create your Username"
                                 value={accountId}
                                 onChange={(e) => setAccountId(e.target.value)}
                             />

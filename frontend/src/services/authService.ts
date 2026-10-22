@@ -1,108 +1,99 @@
+import { api, setToken, clearToken, getToken } from "./apiClient";
+
 export interface Account {
     accountId: string;
-    balance: number;
-    createdAt: string;
+    fName?: string;
+    lName?: string;
+    email?: string;
+    phone?: string;
+    balance?: number;
+    createdAt?: string;
 }
 
 export interface AuthError {
     code: "INVALID_CREDENTIALS" | "VALIDATION_ERROR" | "SERVER_ERROR";
     message: string;
-    field?: keyof Account | "password" | "confirmPassword";
+    field?: "accountId" | "password" | "confirmPassword";
 }
 
 export type AuthResponse<T> =
     | { success: true; data: T }
     | { success: false; error: AuthError };
 
-interface StoredAccount {
-    account: Account;
-    password: string;   // was: pin
-}
-
-const accounts = new Map<string, StoredAccount>();
-
-accounts.set("demo", {
-    account: {
-        accountId: "demo",
-        balance: 1500,
-        createdAt: new Date().toISOString(),
-    },
-    password: "Password1!",   // was: "123456" when it was a pin
-});
-
-const SESSION_KEY = "neurobank.session";
-
-function delay<T>(value: T, ms = 400): Promise<T> {
-    return new Promise((resolve) => setTimeout(() => resolve(value), ms));
-}
-
 export const authService = {
-    async login(accountId: string, password: string): Promise<AuthResponse<Account>> {
-        const key = accountId.trim().toLowerCase();
-        const rec = accounts.get(key);
-
-        if (!rec || rec.password !== password) {
-            return delay({
+    async login(accountId: string, password: string): Promise<AuthResponse<{ account: Account; token: string }>> {
+        try {
+            const res = await api<{ token: string; account: Account }>("/api/auth/login", {
+                method: "POST",
+                body: JSON.stringify({ accountId, password }),
+            });
+            setToken(res.token);
+            return { success: true, data: res };
+        } catch (e: any) {
+            return {
                 success: false,
                 error: {
-                    code: "INVALID_CREDENTIALS",
-                    message: "Incorrect account ID or password.",
+                    code: e.code ?? "SERVER_ERROR",
+                    message: e.message ?? "Login failed.",
                 },
-            });
+            };
         }
-
-        localStorage.setItem(SESSION_KEY, key);
-        return delay({ success: true, data: rec.account });
     },
 
     async register(
         accountId: string,
         password: string,
         confirmPassword: string,
+        fName: string,
+        lName: string,
+        email: string,
+        phone: string
     ): Promise<AuthResponse<Account>> {
-        const key = accountId.trim().toLowerCase();
-
         if (password !== confirmPassword) {
-            return delay({
+            return {
                 success: false,
-                error: {
-                    code: "VALIDATION_ERROR",
-                    message: "Passwords do not match.",
-                    field: "confirmPassword",
-                },
-            });
+                error: { code: "VALIDATION_ERROR", message: "Passwords do not match.", field: "confirmPassword" },
+            };
         }
 
-        if (accounts.has(key)) {
-            return delay({
+        try {
+            const res = await api<Account>("/api/auth/register", {
+                method: "POST",
+                body: JSON.stringify({
+                    accountId,
+                    password,
+                    fName,
+                    lName,
+                    email,
+                    phone
+                }),
+            });
+            return { success: true, data: res };
+        } catch (e: any) {
+            return {
                 success: false,
                 error: {
-                    code: "VALIDATION_ERROR",
-                    message: "That account ID is already taken.",
-                    field: "accountId",
+                    code: e.code ?? "SERVER_ERROR",
+                    message: e.message ?? "Registration failed.",
+                    field: e.field,
                 },
-            });
+            };
         }
+    },
 
-        const account: Account = {
-            accountId: key,
-            balance: 0,
-            createdAt: new Date().toISOString(),
-        };
-        accounts.set(key, { account, password });
-        localStorage.setItem(SESSION_KEY, key);
-        return delay({ success: true, data: account });
+    async me(): Promise<Account | null> {
+        if (!getToken()) return null;
+        try {
+            return await api<Account>("/api/auth/me");
+        } catch {
+            clearToken();
+            return null;
+        }
     },
 
     logout(): void {
-        localStorage.removeItem(SESSION_KEY);
-    },
-
-    currentAccountId(): string | null {
-        return localStorage.getItem(SESSION_KEY);
-    },
-
-    getAccount(accountId: string): Account | null {
-        return accounts.get(accountId)?.account ?? null;
+        clearToken();
     },
 };
+
+export const TOKEN_KEY = "neurobank.token";
