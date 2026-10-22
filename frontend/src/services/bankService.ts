@@ -10,6 +10,7 @@ import type {
 } from "../types/bank";
 import { db } from "./bankStore";
 import { mockRequest } from "./mockApi";
+import { apiFetch } from "./apiClient";
 
 export type TransactionsByType = Record<TransactionType, Transaction[]>;
 
@@ -108,37 +109,18 @@ export const bankService = {
     },
 
     getAccounts(): Promise<Account[]> {
-        const accounts = db.accounts.map((account) => ({
-            ...account,
-            pendingTransferAmount: getPendingTransferAmount(account.id)
-        }));
-
-        return mockRequest(accounts);
+        return apiFetch<Account[]>("/api/accounts");
     },
 
     deleteAccount(accountId: string): Promise<void> {
-        const index = db.accounts.findIndex((account) => account.id === accountId);
-        if(index === -1) {
-            return Promise.reject(new Error ("Account was not found."));
-        }
-        db.accounts.splice(index, 1);
-        db.transactions = db.transactions.filter(
-            (Transaction) => Transaction.accountId !== accountId
-        );
-        return mockRequest(undefined);
+        return apiFetch<void>(`/api/accounts/${accountId}`, { method: "DELETE"});
     },
 
-    createAccount(input: {name: string; type: AccountType;}) : Promise<Account> {
-        const account: Account = {
-            id: `acc-${Date.now()}`,
-            name: input.name.trim(),
-            type: input.type,
-            last4: String(Math.floor(1000 + Math.random() * 9000)),
-            balance: 0
-        };
-
-        db.accounts.push(account);
-        return mockRequest(account);
+    createAccount(input: {type: AccountType; pin: string }) : Promise<Account> {
+        return apiFetch<Account>("/api/accounts", {
+            method: "POST",
+            body: JSON.stringify(input)
+        });
     },
 
     getScheduledTransfers(): Promise<TransferResult[]> {
