@@ -9,7 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 @RestController 
 @RequestMapping("/api/accounts")
-@CrossOrigin(origins = "http://localhost:5173")
+// @CrossOrigin(origins = "http://localhost:5173") Not necessary since this is handled in spring security
 public class AccountController {
 
     private final AccountService accountService;
