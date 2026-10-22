@@ -156,12 +156,12 @@ function Register() {
                     <div className="auth-field">
                         <label htmlFor="reg-accountId">Username</label>
                         <div className={`auth-field-control ${errors.accountId ? "invalid" : ""}`}>
-                            <Mail />
+                            <User />
                             <input
                                 id="reg-accountId"
                                 type="text"
                                 autoComplete="username"
-                                placeholder="Pick an account ID"
+                                placeholder="Create your Username"
                                 value={accountId}
                                 onChange={(e) => setAccountId(e.target.value)}
                             />
