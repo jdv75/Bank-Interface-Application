@@ -1,12 +1,11 @@
 package com.revature.neurobank.controllers;
 import org.springframework.web.bind.annotation.*;
-
 import com.revature.neurobank.services.*;
 import java.util.*;
 import com.revature.neurobank.dto.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.HttpStatus;
-
+import org.springframework.security.core.context.SecurityContextHolder;
 
 @RestController 
 @RequestMapping("/api/accounts")
@@ -20,30 +19,30 @@ public class AccountController {
         this.accountService = accountService;
     }
 
-    // GET REQUESTS
+    // Helper to get the logged-in user from the JWT
+    private String getCurrentUsername() {
+        return SecurityContextHolder.getContext().getAuthentication().getName();
+    }
 
     @GetMapping 
-    public List<AccountResponse> getAccounts(@RequestHeader("X-Username") String username) {
-        return accountService.getAccountsForUser(username);
+    public List<AccountResponse> getAccounts() {
+        return accountService.getAccountsForUser(getCurrentUsername());
     }
 
     @GetMapping("/{accountId}")
-    public AccountResponse getAccount(@PathVariable Integer accountId, @RequestHeader("X-Username") String username) {
-        return accountService.getAccount(username, accountId);
+    public AccountResponse getAccount(@PathVariable Integer accountId) {
+        return accountService.getAccount(getCurrentUsername(), accountId);
     }
 
-    // POST REQUESTS
     @PostMapping 
     @ResponseStatus(HttpStatus.CREATED)
-    public AccountResponse createAccount(@RequestBody CreateAccountRequest request, @RequestHeader("X-Username") String username) {
-        return accountService.createAccount(username, request);
+    public AccountResponse createAccount(@RequestBody CreateAccountRequest request) {
+        return accountService.createAccount(getCurrentUsername(), request);
     }
 
     @DeleteMapping("/{accountId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteAccount(@PathVariable Integer accountId, @RequestHeader("X-Username") String username) {
-        accountService.deleteAccount(username, accountId);
+    public void deleteAccount(@PathVariable Integer accountId) {
+        accountService.deleteAccount(getCurrentUsername(), accountId);
     }
-
-
 }
