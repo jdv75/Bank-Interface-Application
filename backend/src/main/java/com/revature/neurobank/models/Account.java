@@ -1,7 +1,6 @@
 package com.revature.neurobank.models;
 import jakarta.persistence.*;
 
-
 @Entity
 @Table(name = "accounts")
 public class Account {
