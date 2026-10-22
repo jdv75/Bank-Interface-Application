@@ -106,3 +106,5 @@ export const authService = {
         return accounts.get(accountId)?.account ?? null;
     },
 };
+
+export const TOKEN_KEY = "neurobank.token";
