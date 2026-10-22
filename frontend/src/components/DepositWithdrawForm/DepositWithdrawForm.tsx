@@ -55,16 +55,18 @@ function DepositWithdrawForm({ type }: { type: TransactionType }) {
     const [error, setError] = useState("");
     // const [method, setMethod] = useState<string>(config.methods[0].id);
 
+    const loadAccounts = async () => {
+        const list = await bankService.getAccounts();
+        setAccounts(list);
+        setAccountId((prev) => prev || String(list[0]?.id ?? ""));
+    };
+
     useEffect(() => {
-        let cancelled = false;
-        bankService.getAccounts()
-            .then((list) => {
-                if (cancelled) return;
-                setAccounts(list);
-                setAccountId((prev) => prev || String(list[0]?.id ?? ""));
-            })
-            .catch((e) => !cancelled && setError(e.message));
-        return () => { cancelled = true; };
+        loadAccounts().catch((e) => {
+            setResult("failed");
+            setError("Could not load accounts: " + (e instanceof Error ? e.message : "Unknown error"));
+            setShowResult(true);
+        });
     }, []);
 
     const handleSubmit = async (e: FormEvent) => {
@@ -75,6 +77,7 @@ function DepositWithdrawForm({ type }: { type: TransactionType }) {
         
         setSubmit(true);
         setShowResult(false);
+        setError("");
         //setTimeout(() => { // delay to show off loading state
             try {
             
@@ -109,21 +112,16 @@ function DepositWithdrawForm({ type }: { type: TransactionType }) {
             });
             setResult("success");
             setAmount("");
+            await loadAccounts().catch((e) => console.error("Could not refresh accounts:", e));
         } catch (error) {
-            if (error instanceof Error) {
-                setResult("failed");
-                console.error("An error occurred:", error.message);
-                setError("Transaction Failed: " + error.message);
-                // alert(`An error occurred: ${error.message}`);
-            }
-
+            const message = error instanceof Error ? error.message : "Unknown error";
+            setResult("failed");
+            console.error("An error occurred:", message);
+            setError("Transaction Failed: " + message);
         } finally {
             setShowResult(true);
             setSubmit(false);
         }
-        
-        setError("");
-        setAmount("");
     };
 
     return (
