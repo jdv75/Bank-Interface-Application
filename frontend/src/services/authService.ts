@@ -95,3 +95,5 @@ export const authService = {
         clearToken();
     },
 };
+
+export const TOKEN_KEY = "neurobank.token";
