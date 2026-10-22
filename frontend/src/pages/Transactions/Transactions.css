@@ -38,6 +38,17 @@
     min-width: 0;
 }
 
+/* AccountSelect has a bottom margin for form layouts. Remove it here so both
+   filters line up on the same bottom edge. */
+.transaction-account-filter .account-select-field {
+    margin-bottom: 0;
+}
+
+/* Match the account picker's height (62px) */
+.transaction-filters .transaction-type-filter {
+    height: 62px;
+}
+
 .transactions-status {
     margin: 0;
     color: var(--text-secondary);

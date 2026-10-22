@@ -2,17 +2,11 @@ INSERT INTO bank (routing_number, bank_name)
 VALUES (123456789, 'NeuroBank')
 ON CONFLICT (routing_number) DO NOTHING;
 
--- Demo user for testing. Log in with: demo / Password1!
--- The password is a BCrypt hash of "Password1!" (login compares hashes, not plain text).
--- It meets the frontend password rules: 8+ chars, upper, lower, number, special character.
 INSERT INTO users (username, password, f_name, l_name, email, phone)
 VALUES ('demo', '$2a$10$0OwRH1xdCR1lthS3D5IpVeW6YQtVHe3MV4v7jooRHp1VsYmH9FkIW',
         'Demo', 'User', 'demo@neurobank.com', '5555550100')
 ON CONFLICT (username) DO NOTHING;
 
--- Demo accounts. IDs come from the same sequence Hibernate uses, so they never collide
--- with accounts created in the app: checking 100000000, savings 100000005, investment 100000010
--- Balances match the transactions below.
 INSERT INTO accounts (account_id, pin, balance, username, routing_num, account_type)
 SELECT nextval('account_sequence'), '1234', seed.balance, 'demo', 123456789, seed.account_type
 FROM (VALUES (1, 'CHECKING', 7700.00),
@@ -21,9 +15,6 @@ FROM (VALUES (1, 'CHECKING', 7700.00),
 WHERE NOT EXISTS (SELECT 1 FROM accounts WHERE username = 'demo')
 ORDER BY seed.sort_order;
 
--- Demo transaction history (14 on checking, so the Transactions page has 2 pages at 10 per page)
--- Deposits and withdrawals use origin_account_id only, like TransactionService.insertTransaction.
--- Transfers use both: origin = sender, destination = receiver.
 INSERT INTO transactions (date, transaction_type, amount, origin_account_id, destination_account_id)
 SELECT seed.date::timestamp, seed.transaction_type, seed.amount, origin.account_id, destination.account_id
 FROM (VALUES

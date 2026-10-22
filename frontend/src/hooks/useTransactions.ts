@@ -20,7 +20,6 @@ export function useTransactions({ accountId, pageSize, page = 1, type }: UseTran
     const [error, setError] = useState("");
 
     useEffect(() => {
-        // Nothing to load until an account is selected
         if (!accountId) {
             setResult(EMPTY_PAGE);
             return;
