@@ -17,14 +17,11 @@ public class TransactionService {
     private final TransactionDAO transactionDAO;
     private final AccountDAO accountDAO;
 
-
-
     @Autowired
     public TransactionService(TransactionDAO transactionDAO, AccountDAO accountDAO) {
         this.transactionDAO = transactionDAO;
         this.accountDAO = accountDAO;
     }
-
 
     @Transactional
     public Transaction insertTransaction(Transaction transaction) {
@@ -41,6 +38,7 @@ public class TransactionService {
         return transactionDAO.save(transaction);
     }
 
+    @Transactional
     public void withdraw(Integer accountId, Double amount) {
         Account account = accountDAO.findByIdForUpdate(accountId)
                 .orElseThrow(() -> new AccountNotFoundException("Account not found"));
@@ -52,6 +50,7 @@ public class TransactionService {
         account.setBalance(account.getBalance() - amount);
     }
 
+    @Transactional
     public void deposit(Integer accountId, Double amount) {
         Account account = accountDAO.findByIdForUpdate(accountId)
                 .orElseThrow(() -> new AccountNotFoundException("Account not found"));
