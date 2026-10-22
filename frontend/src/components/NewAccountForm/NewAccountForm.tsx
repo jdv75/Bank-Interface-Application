@@ -11,17 +11,28 @@ type NewAccountFormProps = {
 
 function NewAccountForm({ onClose, onCreated }: NewAccountFormProps) {
     const [accountType, setAccountType] = useState("Checking");
-    const [accountName, setAccountName] = useState("");
+    // const [accountName, setAccountName] = useState("");
     const [pin, setPin] = useState("");
+    const [error, setError] = useState<string | null>(null);
+    const [submitting, setSubmitting] = useState(false);
 
     async function handleSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
-        await bankService.createAccount({
-            name: accountName,
-            type: accountType.toLowerCase() as AccountType
-        });
-        onCreated?.();
-        onClose();
+        setError(null);
+        setSubmitting(true);
+
+        try {
+            await bankService.createAccount({
+                type: accountType.toLowerCase() as AccountType,
+                pin
+            });
+            onCreated?.();
+            onClose();
+        } catch (err) {
+            setError(err instanceof Error ? err.message : "Could not create the account.");
+        } finally {
+            setSubmitting(false);
+        }
     }
 
     return (
@@ -49,7 +60,7 @@ function NewAccountForm({ onClose, onCreated }: NewAccountFormProps) {
                 </div>
             </div>
 
-            <label>
+            {/* <label>
                 Account name
                 <input
                     type="text"
@@ -58,7 +69,7 @@ function NewAccountForm({ onClose, onCreated }: NewAccountFormProps) {
                     placeholder="Everyday checking"
                     required
                 />
-            </label>
+            </label> */}
 
             <label>
                 PIN
@@ -76,11 +87,15 @@ function NewAccountForm({ onClose, onCreated }: NewAccountFormProps) {
                 />
             </label>
 
+            {error && <p className="new-account-form-error" role="alert">{error}</p>}
+
             <div className="new-account-form-actions">
                 <button type="button" className="cancel" onClick={onClose}>
                     Cancel
                 </button>
-                <button type="submit">Create account</button>
+                <button type="submit" disabled={submitting}>
+                    {submitting ? "Creating..." : "Create account"}
+                </button>
             </div>
         </form>
     );

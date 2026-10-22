@@ -110,6 +110,12 @@
     background-color: #2a2158;
 }
 
+.new-account-form-error {
+    margin: 0;
+    color: #ff5c5c;
+    font-size: 0.875rem;
+}
+
 @media (max-width: 768px) {
     .new-account-form > label,
     .new-account-form > .account-type-picker,
