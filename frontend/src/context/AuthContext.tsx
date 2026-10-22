@@ -9,6 +9,7 @@ import { authService, type Account } from "../services/authService";
 
 interface AuthContextValue {
     account: Account | null;
+    loading: boolean;
     setAccount: (account: Account | null) => void;
     logout: () => void;
 }
@@ -16,19 +17,14 @@ interface AuthContextValue {
 const AuthContext = createContext<AuthContextValue | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-    const [account, setAccount] = useState<Account | null>(() => {
-        const id = authService.currentAccountId();
-        return id ? authService.getAccount(id) : null;
-    });
+    const [account, setAccount] = useState<Account | null>(null);
+    const [loading, setLoading] = useState(true);
 
-    // keep the in-memory account fresh across tabs (nice-to-have)
     useEffect(() => {
-        const onStorage = () => {
-            const id = authService.currentAccountId();
-            setAccount(id ? authService.getAccount(id) : null);
-        };
-        window.addEventListener("storage", onStorage);
-        return () => window.removeEventListener("storage", onStorage);
+        authService.me().then((acct) => {
+            setAccount(acct);
+            setLoading(false);
+        });
     }, []);
 
     function logout() {
@@ -37,7 +33,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     return (
-        <AuthContext.Provider value={{ account, setAccount, logout }}>
+        <AuthContext.Provider value={{ account, loading, setAccount, logout }}>
             {children}
         </AuthContext.Provider>
     );
