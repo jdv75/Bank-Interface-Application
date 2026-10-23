@@ -36,4 +36,13 @@ public record TransferRequestDTO(
 
     @FutureOrPresent
     LocalDate scheduledFor
-) {}
+) {
+    public TransferRequestDTO {
+        if (transactionNote != null) {
+            transactionNote = transactionNote.trim();
+            if (transactionNote.isEmpty()) {
+                transactionNote = null;
+            }
+        }
+    }
+}

@@ -10,6 +10,7 @@ import com.revature.neurobank.exceptions.InsufficientFundsException;
 import com.revature.neurobank.exceptions.InvalidTransferException;
 import com.revature.neurobank.models.Account;
 import com.revature.neurobank.models.Transaction;
+import com.revature.neurobank.models.TransactionStatus;
 import com.revature.neurobank.models.TransactionType;
 import com.revature.neurobank.repositories.AccountDAO;
 import com.revature.neurobank.repositories.TransactionDAO;
@@ -17,20 +18,34 @@ import com.revature.neurobank.repositories.TransactionDAO;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class TransactionService {
+    private static final BigDecimal MAX_TRANSFER_AMOUNT = new BigDecimal("1000000");
+
     private final TransactionDAO transactionDAO;
     private final AccountDAO accountDAO;
+    private final ZoneId applicationTimeZone;
 
     @Autowired
-    public TransactionService(TransactionDAO transactionDAO, AccountDAO accountDAO) {
+    public TransactionService(
+        TransactionDAO transactionDAO,
+        AccountDAO accountDAO,
+
+        @Value("${APP_TIME_ZONE:America/Los_Angeles}")
+        String applicationTimeZone
+    ) {
         this.transactionDAO = transactionDAO;
         this.accountDAO = accountDAO;
+        this.applicationTimeZone = ZoneId.of(applicationTimeZone);
     }
 
     @Transactional
@@ -49,6 +64,9 @@ public class TransactionService {
         switch (type) {
             case DEPOSIT -> deposit(account, amount);
             case WITHDRAW -> withdraw(account, amount);
+            case TRANSFER -> throw new InvalidTransferException(
+                "Transfers must be submitted through the transfer endpoint."
+            );
         }
 
         return transactionDAO.save(transaction);
@@ -70,6 +88,22 @@ public class TransactionService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = InsufficientFundsException.class)
     public TransferResponseDTO transfer(String username, TransferRequestDTO requestDTO) {
+        double amount = requestDTO.amount();
+        if (!Double.isFinite(amount)) {
+            throw new InvalidTransferException("Transfer amount must be a finite number.");
+        }
+
+        BigDecimal decimalAmount = BigDecimal.valueOf(amount);
+        if (decimalAmount.stripTrailingZeros().scale() > 2) {
+            throw new InvalidTransferException(
+                "Transfer amount cannot have more than two decimal places."
+            );
+        }
+
+        if (decimalAmount.compareTo(MAX_TRANSFER_AMOUNT) >= 0) {
+            throw new InvalidTransferException("Transfer amount must be less than $1,000,000.");
+        }
+
         Account source = this.accountDAO.findByIdForUpdate(requestDTO.originAccountId())
             .orElseThrow(() -> 
                 new AccountNotFoundException("Source account not found.")
@@ -77,6 +111,10 @@ public class TransactionService {
 
         if (!source.getUsername().getUsername().equals(username)) {
             throw new AccountNotFoundException("Source account not found.");
+        }
+
+        if (source.getBalance() < amount) {
+            throw new InsufficientFundsException("Insufficient funds for a transfer.");
         }
 
         return switch(requestDTO.destination()) {
@@ -127,11 +165,17 @@ public class TransactionService {
 
     private TransferResponseDTO sharedTransfer(Account source, Account destination, TransferRequestDTO requestDTO) {
         double amount = requestDTO.amount();
+        LocalDate scheduledFor = requestDTO.scheduledFor();
+        LocalDate today = LocalDate.now(applicationTimeZone);
 
-        this.withdraw(source, amount);
-        this.deposit(destination, amount);
+        boolean scheduled = scheduledFor != null && scheduledFor.isAfter(today);
 
-        LocalDateTime createdAt = LocalDateTime.now();
+        if (!scheduled) {
+            this.withdraw(source, amount);
+            this.deposit(destination, amount);
+        }
+
+        Instant createdAt = Instant.now();
 
         Transaction transferTransaction = new Transaction(
             null,
@@ -141,13 +185,23 @@ public class TransactionService {
             source,
             destination
         );
+        transferTransaction.setNote(requestDTO.transactionNote());
+        transferTransaction.setScheduledFor(scheduledFor);
+        transferTransaction.setStatus(
+            scheduled ? TransactionStatus.SCHEDULED : TransactionStatus.COMPLETED
+        );
 
         Transaction saved = this.transactionDAO.save(transferTransaction);
 
         return new TransferResponseDTO(
             saved.getTransactionId(),
             saved.getDate(),
-            "completed"
+            saved.getStatus(),
+            source.getAccountId(),
+            requestDTO.destination(),
+            saved.getAmount(),
+            saved.getNote(),
+            saved.getScheduledFor()
         );
     }
 }
