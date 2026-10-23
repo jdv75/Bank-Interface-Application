@@ -220,11 +220,22 @@ public class TransactionService {
 
         boolean scheduled = scheduledFor != null && scheduledFor.isAfter(today);
 
-        if (source.getBalance() < amount) {
-            throw new InsufficientFundsException("Insufficient funds for a transfer.");
-        }
+        if (scheduled) {
+            Double pendingTransferAmount = this.transactionDAO
+                .sumScheduledOutgoingAmount(source.getAccountId());
+            double availableBalance = source.getBalance()
+                - (pendingTransferAmount == null ? 0.0 : pendingTransferAmount);
 
-        if (!scheduled) {
+            if (availableBalance < amount) {
+                throw new InsufficientFundsException(
+                    "Transfer amount exceeds the available balance after scheduled transfers."
+                );
+            }
+        } else {
+            if (source.getBalance() < amount) {
+                throw new InsufficientFundsException("Insufficient funds for a transfer.");
+            }
+
             this.withdraw(source, amount);
             this.deposit(destination, amount);
         }
