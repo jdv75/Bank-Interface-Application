@@ -3,12 +3,16 @@ package com.revature.neurobank.repositories;
 import com.revature.neurobank.models.Transaction;
 import com.revature.neurobank.models.TransactionType;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
+import jakarta.persistence.LockModeType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -64,5 +68,22 @@ public interface TransactionDAO extends JpaRepository<Transaction, Integer> {
               AND t.status = com.revature.neurobank.models.TransactionStatus.SCHEDULED
             """)
     Double sumScheduledOutgoingAmount(@Param("accountId") Integer accountId);
+
+    @Query("""
+            SELECT t.transactionId
+            FROM Transaction t
+            WHERE t.transactionType = com.revature.neurobank.models.TransactionType.TRANSFER
+              AND t.status = com.revature.neurobank.models.TransactionStatus.SCHEDULED
+              AND t.scheduledFor IS NOT NULL
+              AND t.scheduledFor <= :currentDate
+            ORDER BY t.scheduledFor ASC, t.transactionId ASC
+            """)
+    List<Integer> findDueScheduledTransferIds(
+            @Param("currentDate") LocalDate currentDate,
+            Pageable pageable);
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("SELECT t FROM Transaction t WHERE t.transactionId = :transactionId")
+    Optional<Transaction> findByIdForUpdate(@Param("transactionId") Integer transactionId);
 
 }
