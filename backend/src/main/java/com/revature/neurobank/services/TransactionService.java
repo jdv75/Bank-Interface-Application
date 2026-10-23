@@ -27,6 +27,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -112,6 +113,70 @@ public class TransactionService {
             case ExternalTransferDestinationDTO external ->
                 transferExternal(username, external, requestDTO);
         };
+    }
+
+    @Transactional(readOnly = true)
+    public List<Integer> findDueScheduledTransferIds(int batchSize) {
+        return this.transactionDAO.findDueScheduledTransferIds(
+            LocalDate.now(applicationTimeZone),
+            PageRequest.of(0, batchSize)
+        );
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void executeScheduledTransfer(Integer transactionId) {
+        Transaction transfer = this.transactionDAO.findByIdForUpdate(transactionId)
+            .orElse(null);
+
+        if (transfer == null
+            || transfer.getStatus() != TransactionStatus.SCHEDULED
+            || transfer.getTransactionType() != TransactionType.TRANSFER
+            || transfer.getScheduledFor() == null
+            || transfer.getScheduledFor().isAfter(LocalDate.now(applicationTimeZone))) {
+            return;
+        }
+
+        Account sourceReference = transfer.getOriginAccountId();
+        Account destinationReference = transfer.getDestinationAccountId();
+        Double amount = transfer.getAmount();
+
+        if (sourceReference == null
+            || destinationReference == null
+            || sourceReference.getAccountId() == null
+            || destinationReference.getAccountId() == null
+            || sourceReference.getAccountId().equals(destinationReference.getAccountId())
+            || amount == null
+            || !Double.isFinite(amount)
+            || amount <= 0) {
+
+            transfer.setStatus(TransactionStatus.FAILED);
+            return;
+        }
+
+        Integer sourceAccountId = sourceReference.getAccountId();
+        Integer destinationAccountId = destinationReference.getAccountId();
+        List<Account> lockedAccounts = this.accountDAO.findAllByAccountIdInForUpdate(
+            List.of(sourceAccountId, destinationAccountId)
+        );
+
+        Account source = findLockedAccount(lockedAccounts, sourceAccountId).orElse(null);
+        Account destination = findLockedAccount(lockedAccounts, destinationAccountId).orElse(null);
+
+        if (source == null
+            || destination == null
+            || source.getBalance() == null
+            || !Double.isFinite(source.getBalance())
+            || destination.getBalance() == null
+            || !Double.isFinite(destination.getBalance())
+            || source.getBalance() < amount) {
+                
+            transfer.setStatus(TransactionStatus.FAILED);
+            return;
+        }
+
+        source.setBalance(source.getBalance() - amount);
+        destination.setBalance(destination.getBalance() + amount);
+        transfer.setStatus(TransactionStatus.COMPLETED);
     }
 
     private TransferResponseDTO transferInternal(
