@@ -17,8 +17,30 @@ public interface AccountDAO extends JpaRepository<Account, Integer> {
     Optional<Account> findByAccountIdAndUsername_Username(Integer accountId, String username);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Query("select a from Account a where a.id = :id")
+    @Query("select a from Account a where a.accountId = :id")
     Optional<Account> findByIdForUpdate(@Param("id") Integer id);
 
-    Optional<Account> findByAccountIdAndBank_RoutingNumber(Integer accountId, Integer routingNumber);
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("""
+        select a from Account a
+        where a.accountId = :sourceAccountId
+           or (a.accountId = :destinationAccountId
+               and a.bankRoutingNum.routingNumber = :routingNumber)
+        order by a.accountId
+        """)
+    List<Account> findExternalTransferAccountsForUpdate(
+        @Param("sourceAccountId") Integer sourceAccountId,
+        @Param("destinationAccountId") Integer destinationAccountId,
+        @Param("routingNumber") Integer routingNumber
+    );
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("""
+        select a from Account a
+        where a.accountId in :accountIds
+        order by a.accountId
+        """)
+    List<Account> findAllByAccountIdInForUpdate(
+        @Param("accountIds") Collection<Integer> accountIds
+    );
 }

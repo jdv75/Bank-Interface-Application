@@ -22,6 +22,8 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -104,55 +106,67 @@ public class TransactionService {
             throw new InvalidTransferException("Transfer amount must be less than $1,000,000.");
         }
 
-        Account source = this.accountDAO.findByIdForUpdate(requestDTO.originAccountId())
-            .orElseThrow(() -> 
-                new AccountNotFoundException("Source account not found.")
-            );
-
-        if (!source.getUsername().getUsername().equals(username)) {
-            throw new AccountNotFoundException("Source account not found.");
-        }
-
-        if (source.getBalance() < amount) {
-            throw new InsufficientFundsException("Insufficient funds for a transfer.");
-        }
-
         return switch(requestDTO.destination()) {
-            case InternalTransferDestinationDTO internal -> transferInternal(source, internal, requestDTO);
-            case ExternalTransferDestinationDTO external -> transferExternal(source, external, requestDTO);
+            case InternalTransferDestinationDTO internal ->
+                transferInternal(username, internal, requestDTO);
+            case ExternalTransferDestinationDTO external ->
+                transferExternal(username, external, requestDTO);
         };
     }
 
-    private TransferResponseDTO transferInternal(Account source,
+    private TransferResponseDTO transferInternal(
+        String username,
         InternalTransferDestinationDTO destinationDTO,
         TransferRequestDTO requestDTO) {
 
-        Account destination = this.accountDAO.findByIdForUpdate(destinationDTO.destinationAccountId())
-            .orElseThrow(() ->
-                new AccountNotFoundException("Destination account for internal transfer not found.")
+        Integer sourceAccountId = requestDTO.originAccountId();
+        Integer destinationAccountId = destinationDTO.destinationAccountId();
+
+        if (sourceAccountId.equals(destinationAccountId)) {
+            throw new InvalidTransferException(
+                "Source account ID and destination account ID must be different."
+            );
+        }
+
+        List<Account> lockedAccounts = this.accountDAO.findAllByAccountIdInForUpdate(
+            List.of(sourceAccountId, destinationAccountId)
         );
+
+        Account source = getLockedSourceAccount(lockedAccounts, sourceAccountId, username);
+        Account destination = getLockedDestinationAccount(lockedAccounts, destinationAccountId);
 
         if (!source.getUsername().getUsername().equals(destination.getUsername().getUsername())) {
             throw new InvalidTransferException(
                 "Source account and destination account must be the same for an internal transfer");
         }
 
-        if (source.getAccountId().equals(destination.getAccountId())) {
-            throw new InvalidTransferException(
-                "Source account ID and destination account ID must be different.");
-        }
-
         return this.sharedTransfer(source, destination, requestDTO);
     }
 
-    private TransferResponseDTO transferExternal(Account source,
+    private TransferResponseDTO transferExternal(
+        String username,
         ExternalTransferDestinationDTO destinationDTO,
         TransferRequestDTO requestDTO) {
 
-        Account destination = this.accountDAO.findByAccountIdAndBank_RoutingNumber(
-            destinationDTO.destinationAccountId(),
-            destinationDTO.routingNumber()).orElseThrow(() ->
-                new AccountNotFoundException("Destination account for external transfer not found.")
+        Integer sourceAccountId = requestDTO.originAccountId();
+        Integer destinationAccountId = destinationDTO.destinationAccountId();
+
+        if (sourceAccountId.equals(destinationAccountId)) {
+            throw new InvalidTransferException(
+                "Source account ID and destination account ID must be different."
+            );
+        }
+
+        List<Account> lockedAccounts = this.accountDAO.findExternalTransferAccountsForUpdate(
+            sourceAccountId,
+            destinationAccountId,
+            destinationDTO.routingNumber()
+        );
+
+        Account source = getLockedSourceAccount(lockedAccounts, sourceAccountId, username);
+        Account destination = getLockedDestinationAccount(
+            lockedAccounts,
+            destinationAccountId
         );
 
         if (destination.getUsername().getUsername().equals(source.getUsername().getUsername())) {
@@ -163,12 +177,52 @@ public class TransactionService {
         return this.sharedTransfer(source, destination, requestDTO);
     }
 
+    private Account getLockedSourceAccount(
+        List<Account> lockedAccounts,
+        Integer sourceAccountId,
+        String username
+    ) {
+        Account source = findLockedAccount(lockedAccounts, sourceAccountId)
+            .orElseThrow(() -> 
+                new AccountNotFoundException("Source account not found.")
+            );
+
+        if (!source.getUsername().getUsername().equals(username)) {
+            throw new AccountNotFoundException("Source account not found.");
+        }
+
+        return source;
+    }
+
+    private Account getLockedDestinationAccount(
+        List<Account> lockedAccounts,
+        Integer destinationAccountId
+    ) {
+        return findLockedAccount(lockedAccounts, destinationAccountId)
+            .orElseThrow(() -> 
+                new AccountNotFoundException("Destination account for external transfer not found.")
+            );
+    }
+
+    private Optional<Account> findLockedAccount(
+        List<Account> lockedAccounts,
+        Integer accountId
+    ) {
+        return lockedAccounts.stream()
+            .filter(account -> account.getAccountId().equals(accountId))
+            .findFirst();
+    }
+
     private TransferResponseDTO sharedTransfer(Account source, Account destination, TransferRequestDTO requestDTO) {
         double amount = requestDTO.amount();
         LocalDate scheduledFor = requestDTO.scheduledFor();
         LocalDate today = LocalDate.now(applicationTimeZone);
 
         boolean scheduled = scheduledFor != null && scheduledFor.isAfter(today);
+
+        if (source.getBalance() < amount) {
+            throw new InsufficientFundsException("Insufficient funds for a transfer.");
+        }
 
         if (!scheduled) {
             this.withdraw(source, amount);
