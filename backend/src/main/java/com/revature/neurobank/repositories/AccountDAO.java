@@ -20,4 +20,5 @@ public interface AccountDAO extends JpaRepository<Account, Integer> {
     @Query("select a from Account a where a.id = :id")
     Optional<Account> findByIdForUpdate(@Param("id") Integer id);
 
+    Optional<Account> findByAccountIdAndBank_RoutingNumber(Integer accountId, Integer routingNumber);
 }
