@@ -1,11 +1,11 @@
 package com.revature.neurobank.services;
 
+import com.revature.neurobank.dto.TransactionHistoryDTO;
+import com.revature.neurobank.dto.TransactionHistoryPageDTO;
 import com.revature.neurobank.exceptions.AccountNotFoundException;
 import com.revature.neurobank.exceptions.InvalidAccountRequestException;
 import com.revature.neurobank.models.Account;
 import com.revature.neurobank.models.Transaction;
-import com.revature.neurobank.models.TransactionHistoryDTO;
-import com.revature.neurobank.models.TransactionHistoryPageDTO;
 import com.revature.neurobank.models.TransactionType;
 import com.revature.neurobank.repositories.AccountDAO;
 import com.revature.neurobank.repositories.TransactionDAO;

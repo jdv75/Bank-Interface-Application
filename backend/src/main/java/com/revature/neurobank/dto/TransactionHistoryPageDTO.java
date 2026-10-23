@@ -1,4 +1,4 @@
-package com.revature.neurobank.models;
+package com.revature.neurobank.dto;
 
 import java.util.List;
 
