@@ -103,13 +103,13 @@ function Transfer() {
 
 		try {
 			const transfer = await bankService.createTransfer({
-				fromAccountId,
+				originAccountId: Number(fromAccountId),
 				destination: {
 					type: "internal",
-					accountId: toAccountId,
+					destinationAccountId: Number(toAccountId),
 				},
 				amount: Number(amount),
-				note: note.trim() || undefined,
+				transactionNote: note.trim() || undefined,
 				scheduledFor: isScheduled ? scheduledFor : undefined,
 			});
 
