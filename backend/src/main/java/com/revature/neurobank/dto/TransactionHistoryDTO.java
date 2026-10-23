@@ -1,4 +1,8 @@
-package com.revature.neurobank.models;
+package com.revature.neurobank.dto;
+
+import java.time.LocalDate;
+
+import com.revature.neurobank.models.TransactionStatus;
 
 public class TransactionHistoryDTO {
 
@@ -10,12 +14,16 @@ public class TransactionHistoryDTO {
     private String detail;
     private double amount;
     private String createdAt;
+    private TransactionStatus status;
+    private String note;
+    private LocalDate scheduledFor;
 
     public TransactionHistoryDTO() {
     }
 
     public TransactionHistoryDTO(String id, String accountId, String type, String category,
-                                 String name, String detail, double amount, String createdAt) {
+                                 String name, String detail, double amount, String createdAt,
+                                 TransactionStatus status, String note, LocalDate scheduledFor) {
         this.id = id;
         this.accountId = accountId;
         this.type = type;
@@ -24,6 +32,9 @@ public class TransactionHistoryDTO {
         this.detail = detail;
         this.amount = amount;
         this.createdAt = createdAt;
+        this.status = status;
+        this.note = note;
+        this.scheduledFor = scheduledFor;
     }
 
     public String getId() {
@@ -90,6 +101,30 @@ public class TransactionHistoryDTO {
         this.createdAt = createdAt;
     }
 
+    public TransactionStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(TransactionStatus status) {
+        this.status = status;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public LocalDate getScheduledFor() {
+        return scheduledFor;
+    }
+
+    public void setScheduledFor(LocalDate scheduledFor) {
+        this.scheduledFor = scheduledFor;
+    }
+
     @Override
     public String toString() {
         return "TransactionHistoryDTO{" +
@@ -101,6 +136,9 @@ public class TransactionHistoryDTO {
                 ", detail='" + detail + '\'' +
                 ", amount=" + amount +
                 ", createdAt='" + createdAt + '\'' +
+                ", status=" + status +
+                ", note='" + note + '\'' +
+                ", scheduledFor=" + scheduledFor +
                 '}';
     }
 }

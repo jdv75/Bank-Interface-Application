@@ -15,27 +15,46 @@ FROM (VALUES (1, 'CHECKING', 7700.00),
 WHERE NOT EXISTS (SELECT 1 FROM accounts WHERE username = 'demo')
 ORDER BY seed.sort_order;
 
-INSERT INTO transactions (date, transaction_type, amount, origin_account_id, destination_account_id)
-SELECT seed.date::timestamp, seed.transaction_type, seed.amount, origin.account_id, destination.account_id
+INSERT INTO transactions (
+    date,
+    transaction_type,
+    amount,
+    origin_account_id,
+    destination_account_id,
+    status,
+    note,
+    scheduled_for
+)
+SELECT seed.date::timestamptz,
+       seed.transaction_type,
+       seed.amount,
+       origin.account_id,
+       destination.account_id,
+       seed.status,
+       seed.note,
+       seed.scheduled_for::date
 FROM (VALUES
-        ('2026-09-01 09:00:00', 'DEPOSIT',  2500.00, 'CHECKING',   NULL),
-        ('2026-09-01 09:30:00', 'DEPOSIT',  5000.00, 'INVESTMENT', NULL),
-        ('2026-09-02 10:15:00', 'DEPOSIT',  1000.00, 'SAVINGS',    NULL),
-        ('2026-09-03 18:42:00', 'WITHDRAW',   60.00, 'CHECKING',   NULL),
-        ('2026-09-05 08:00:00', 'TRANSFER',  500.00, 'CHECKING',   'SAVINGS'),
-        ('2026-09-10 12:30:00', 'WITHDRAW',  120.00, 'CHECKING',   NULL),
-        ('2026-09-15 09:00:00', 'DEPOSIT',  2500.00, 'CHECKING',   NULL),
-        ('2026-09-20 20:11:00', 'WITHDRAW',   40.00, 'CHECKING',   NULL),
-        ('2026-09-25 14:20:00', 'TRANSFER', 1000.00, 'CHECKING',   'INVESTMENT'),
-        ('2026-10-01 09:00:00', 'DEPOSIT',  2500.00, 'CHECKING',   NULL),
-        ('2026-10-05 08:00:00', 'TRANSFER',  500.00, 'CHECKING',   'SAVINGS'),
-        ('2026-10-05 16:45:00', 'WITHDRAW',  200.00, 'CHECKING',   NULL),
-        ('2026-10-10 11:00:00', 'WITHDRAW',  200.00, 'SAVINGS',    NULL),
-        ('2026-10-12 07:30:00', 'WITHDRAW',   80.00, 'CHECKING',   NULL),
-        ('2026-10-15 09:00:00', 'DEPOSIT',  2500.00, 'CHECKING',   NULL),
-        ('2026-10-18 19:05:00', 'WITHDRAW',  100.00, 'CHECKING',   NULL),
-        ('2026-10-20 10:00:00', 'TRANSFER',  300.00, 'SAVINGS',    'CHECKING')
-     ) AS seed(date, transaction_type, amount, origin_type, destination_type)
+        ('2026-09-01T09:00:00Z', 'DEPOSIT',  2500.00, 'CHECKING',   NULL,         'COMPLETED', NULL,                    NULL),
+        ('2026-09-01T09:30:00Z', 'DEPOSIT',  5000.00, 'INVESTMENT', NULL,         'COMPLETED', NULL,                    NULL),
+        ('2026-09-02T10:15:00Z', 'DEPOSIT',  1000.00, 'SAVINGS',    NULL,         'COMPLETED', NULL,                    NULL),
+        ('2026-09-03T18:42:00Z', 'WITHDRAW',   60.00, 'CHECKING',   NULL,         'COMPLETED', NULL,                    NULL),
+        ('2026-09-05T08:00:00Z', 'TRANSFER',  500.00, 'CHECKING',   'SAVINGS',    'COMPLETED', NULL,                    NULL),
+        ('2026-09-10T12:30:00Z', 'WITHDRAW',  120.00, 'CHECKING',   NULL,         'COMPLETED', NULL,                    NULL),
+        ('2026-09-15T09:00:00Z', 'DEPOSIT',  2500.00, 'CHECKING',   NULL,         'COMPLETED', NULL,                    NULL),
+        ('2026-09-20T20:11:00Z', 'WITHDRAW',   40.00, 'CHECKING',   NULL,         'COMPLETED', NULL,                    NULL),
+        ('2026-09-25T14:20:00Z', 'TRANSFER', 1000.00, 'CHECKING',   'INVESTMENT', 'COMPLETED', NULL,                    NULL),
+        ('2026-10-01T09:00:00Z', 'DEPOSIT',  2500.00, 'CHECKING',   NULL,         'COMPLETED', NULL,                    NULL),
+        ('2026-10-05T08:00:00Z', 'TRANSFER',  500.00, 'CHECKING',   'SAVINGS',    'COMPLETED', NULL,                    NULL),
+        ('2026-10-05T16:45:00Z', 'WITHDRAW',  200.00, 'CHECKING',   NULL,         'COMPLETED', NULL,                    NULL),
+        ('2026-10-10T11:00:00Z', 'WITHDRAW',  200.00, 'SAVINGS',    NULL,         'COMPLETED', NULL,                    NULL),
+        ('2026-10-12T07:30:00Z', 'WITHDRAW',   80.00, 'CHECKING',   NULL,         'COMPLETED', NULL,                    NULL),
+        ('2026-10-15T09:00:00Z', 'DEPOSIT',  2500.00, 'CHECKING',   NULL,         'COMPLETED', NULL,                    NULL),
+        ('2026-10-18T19:05:00Z', 'WITHDRAW',  100.00, 'CHECKING',   NULL,         'COMPLETED', NULL,                    NULL),
+        ('2026-10-20T10:00:00Z', 'TRANSFER',  300.00, 'SAVINGS',    'CHECKING',   'COMPLETED', NULL,                    NULL),
+        ('2026-10-21T15:00:00Z', 'TRANSFER', 9000.00, 'CHECKING',   'SAVINGS',    'FAILED',    'Insufficient funds',    '2026-10-22'),
+        ('2026-10-22T15:00:00Z', 'TRANSFER',  125.00, 'CHECKING',   'SAVINGS',    'SCHEDULED', 'Upcoming transfer',    '2026-10-30')
+     ) AS seed(date, transaction_type, amount, origin_type, destination_type,
+               status, note, scheduled_for)
 JOIN accounts origin
     ON origin.username = 'demo' AND origin.account_type = seed.origin_type
 LEFT JOIN accounts destination

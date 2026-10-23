@@ -1,11 +1,12 @@
 package com.revature.neurobank.services;
 
+import com.revature.neurobank.dto.TransactionHistoryDTO;
+import com.revature.neurobank.dto.TransactionHistoryPageDTO;
 import com.revature.neurobank.exceptions.AccountNotFoundException;
 import com.revature.neurobank.exceptions.InvalidAccountRequestException;
 import com.revature.neurobank.models.Account;
 import com.revature.neurobank.models.Transaction;
-import com.revature.neurobank.models.TransactionHistoryDTO;
-import com.revature.neurobank.models.TransactionHistoryPageDTO;
+import com.revature.neurobank.models.TransactionStatus;
 import com.revature.neurobank.models.TransactionType;
 import com.revature.neurobank.repositories.AccountDAO;
 import com.revature.neurobank.repositories.TransactionDAO;
@@ -16,13 +17,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class TransactionHistoryService {
 
     private static final int MAX_PAGE_SIZE = 100;
+    private static final DateTimeFormatter SCHEDULED_DATE_FORMAT =
+            DateTimeFormatter.ofPattern("MMM d, uuuu", Locale.US);
 
     private final TransactionDAO transactionDAO;
     private final AccountDAO accountDAO;
@@ -71,7 +75,7 @@ public class TransactionHistoryService {
 
     private TransactionHistoryDTO toHistoryDTO(Transaction t, Integer viewedAccountId) {
         double amount = (t.getAmount() == null) ? 0.0 : t.getAmount();
-        String createdAt = (t.getDate() == null) ? null : t.getDate().toInstant(ZoneOffset.UTC).toString();
+        String createdAt = (t.getDate() == null) ? null : t.getDate().toString();
 
         String category;
         String name;
@@ -100,7 +104,7 @@ public class TransactionHistoryService {
                 }
                 category = "internal-transfer";
                 name = (incoming ? "From " : "To ") + otherLabel;
-                detail = incoming ? "Transfer from " + otherLabel : "Transfer to " + otherLabel;
+                detail = getTransferDetail(t, incoming, otherLabel);
             }
         }
 
@@ -112,7 +116,31 @@ public class TransactionHistoryService {
                 name,
                 detail,
                 amount,
-                createdAt);
+                createdAt,
+                t.getStatus(),
+                t.getNote(),
+                t.getScheduledFor());
+    }
+
+    private String getTransferDetail(Transaction transaction, boolean incoming, String otherLabel) {
+        String detail;
+
+        if (transaction.getStatus() == TransactionStatus.SCHEDULED) {
+            detail = "Scheduled for "
+                    + transaction.getScheduledFor().format(SCHEDULED_DATE_FORMAT);
+        } else if (transaction.getStatus() == TransactionStatus.FAILED) {
+            detail = "Transfer failed";
+        } else {
+            detail = incoming
+                    ? "Transfer from " + otherLabel
+                    : "Transfer to " + otherLabel;
+        }
+
+        if (transaction.getNote() != null) {
+            detail += " · " + transaction.getNote();
+        }
+
+        return detail;
     }
 
     private String getAccountLabel(Account account) {

@@ -1,5 +1,6 @@
 export type AccountType = "checking" | "savings" | "investment";
 export type TransactionType = "deposit" | "withdraw" | "transfer";
+export type TransactionStatus = "scheduled" | "completed" | "failed";
 
 export type TransactionCategory = 
     | "payroll" 
@@ -27,35 +28,40 @@ export interface Account {
     name: string;
     last4: string;
     balance: number;
-    routingNumber?: string;
+    routingNumber: string | null;
     interestRate?: number;
     ytdReturn?: number;
-    pendingTransferAmount?: number;
+    pendingTransferAmount: number;
 }
 
 export type TransferDestination =
     | {
         type: "internal";
-        accountId: string;
+        destinationAccountId: number;
     }
     | {
         type: "external";
-        accountNumber: string;
-        routingNumber: string;
+        destinationAccountId: number;
+        routingNumber: number;
     };
 
 export interface CreateTransferRequest {
-    fromAccountId: string;
+    originAccountId: number;
     destination: TransferDestination;
     amount: number;
-    note?: string;
+    transactionNote?: string;
     scheduledFor?: string;
 }
 
-export interface TransferResult extends CreateTransferRequest {
-    id: string;
-    status: "completed" | "scheduled";
+export interface TransferResult {
+    transactionId: number;
     createdAt: string;
+    status: TransactionStatus;
+    originAccountId: number;
+    destination: TransferDestination;
+    amount: number;
+    transactionNote: string | null;
+    scheduledFor: string | null;
 }
 
 export interface Transaction {
@@ -67,6 +73,9 @@ export interface Transaction {
     detail: string;
     amount: number;
     createdAt: string;
+    status: TransactionStatus;
+    note: string | null;
+    scheduledFor: string | null;
 }
 
 export interface ApiError {

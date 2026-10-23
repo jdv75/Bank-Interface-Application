@@ -1,6 +1,6 @@
 package com.revature.neurobank.controllers;
 
-import com.revature.neurobank.models.TransactionHistoryPageDTO;
+import com.revature.neurobank.dto.TransactionHistoryPageDTO;
 import com.revature.neurobank.services.TransactionHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

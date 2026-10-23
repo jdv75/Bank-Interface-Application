@@ -1,4 +1,4 @@
-import { CalendarDays, CheckCircle2, Send } from "lucide-react";
+import { ArrowLeftRight, CalendarDays, CheckCircle2, Landmark, Send } from "lucide-react";
 import { useEffect, useState, type FormEvent } from "react";
 
 import AccountSelect from "../../components/AccountSelect/AccountSelect";
@@ -10,6 +10,7 @@ import transferImage from "../../assets/images/Transfer.svg";
 import "./Transfer.css";
 
 const quickAmounts = [50, 100, 250, 500];
+type TransferMode = "internal" | "external";
 
 function getTomorrow(): string {
 	const date = new Date();
@@ -24,8 +25,11 @@ function getAvailableBalance(account: Account): number {
 
 function Transfer() {
 	const [accounts, setAccounts] = useState<Account[]>([]);
+	const [transferMode, setTransferMode] = useState<TransferMode>("internal");
 	const [fromAccountId, setFromAccountId] = useState("");
 	const [toAccountId, setToAccountId] = useState("");
+	const [externalAccountId, setExternalAccountId] = useState("");
+	const [externalRoutingNumber, setExternalRoutingNumber] = useState("");
 	const [amount, setAmount] = useState("");
 	const [note, setNote] = useState("");
 	const [isScheduled, setIsScheduled] = useState(false);
@@ -69,8 +73,30 @@ function Transfer() {
 	function validateForm(): string {
 		const transferAmount = Number(amount);
 
-		if (!fromAccount || !toAccount) {
-			return "Choose an account to transfer from and to.";
+		if (!fromAccount) {
+			return "Choose an account to transfer from.";
+		}
+
+		if (transferMode === "internal" && !toAccount) {
+			return "Choose an account to transfer to.";
+		}
+
+		if (transferMode === "external") {
+			const destinationAccountId = Number(externalAccountId);
+			const routingNumber = Number(externalRoutingNumber);
+
+			if (!/^\d+$/.test(externalAccountId)
+				|| !Number.isSafeInteger(destinationAccountId)
+				|| destinationAccountId <= 0
+				|| destinationAccountId > 2_147_483_647) {
+				return "Enter a valid recipient account number.";
+			}
+
+			if (!/^\d{9}$/.test(externalRoutingNumber)
+				|| !Number.isSafeInteger(routingNumber)
+				|| routingNumber <= 0) {
+				return "Enter a valid 9-digit routing number.";
+			}
 		}
 
 		if (!/^\d+(\.\d{1,2})?$/.test(amount) || transferAmount <= 0) {
@@ -102,14 +128,22 @@ function Transfer() {
 		setIsSubmitting(true);
 
 		try {
+			const destination = transferMode === "internal"
+				? {
+					type: "internal" as const,
+					destinationAccountId: Number(toAccountId),
+				}
+				: {
+					type: "external" as const,
+					destinationAccountId: Number(externalAccountId),
+					routingNumber: Number(externalRoutingNumber),
+				};
+
 			const transfer = await bankService.createTransfer({
-				fromAccountId,
-				destination: {
-					type: "internal",
-					accountId: toAccountId,
-				},
+				originAccountId: Number(fromAccountId),
+				destination,
 				amount: Number(amount),
-				note: note.trim() || undefined,
+				transactionNote: note.trim() || undefined,
 				scheduledFor: isScheduled ? scheduledFor : undefined,
 			});
 
@@ -131,9 +165,15 @@ function Transfer() {
 		setNote("");
 		setIsScheduled(false);
 		setScheduledFor("");
+		setExternalAccountId("");
+		setExternalRoutingNumber("");
 		setError("");
 		setResult(null);
 	}
+
+	const destinationLabel = transferMode === "internal"
+		? toAccount?.name
+		: `External account ending in ${externalAccountId.slice(-4)}`;
 
 	if (accounts.length === 0) {
 		return <main className="transfer-page">Loading…</main>;
@@ -149,7 +189,7 @@ function Transfer() {
 
 			<div className="transfer-header">
 				<h1>Transfer Funds</h1>
-				<p>Send money between your accounts quickly and securely.</p>
+				<p>Move money between your accounts or send it to someone else.</p>
 			</div>
 
 			<div className="transfer-layout">
@@ -164,7 +204,7 @@ function Transfer() {
 							</p>
 							<h2>{formatCurrency(result.amount)}</h2>
 							<span>
-								{fromAccount?.name} to {toAccount?.name}
+								{fromAccount?.name} to {destinationLabel}
 							</span>
 							<button type="button" onClick={startAnotherTransfer}>
 								Make another transfer
@@ -173,6 +213,39 @@ function Transfer() {
 					) : (
 						<form onSubmit={handleSubmit}>
 							<h2>Transfer Details</h2>
+
+							<div className="transfer-mode" role="group" aria-label="Transfer type">
+								<button
+									type="button"
+									className={transferMode === "internal" ? "selected" : ""}
+									aria-pressed={transferMode === "internal"}
+									onClick={() => {
+										setTransferMode("internal");
+										setError("");
+									}}
+								>
+									<ArrowLeftRight />
+									<span>
+										<strong>Internal</strong>
+										<small>Between your accounts</small>
+									</span>
+								</button>
+								<button
+									type="button"
+									className={transferMode === "external" ? "selected" : ""}
+									aria-pressed={transferMode === "external"}
+									onClick={() => {
+										setTransferMode("external");
+										setError("");
+									}}
+								>
+									<Landmark />
+									<span>
+										<strong>External</strong>
+										<small>To another user</small>
+									</span>
+								</button>
+							</div>
 
 							<AccountSelect
 								label="From Account"
@@ -184,14 +257,48 @@ function Transfer() {
 								hideBalanceOnMobile
 							/>
 
-							<AccountSelect
-								label="To Account"
-								id="transfer-to-account"
-								accounts={destinationAccounts}
-								accountId={toAccountId}
-								onChange={setToAccountId}
-								hideBalanceOnMobile
-							/>
+
+							{transferMode === "internal" ? (
+								<AccountSelect
+									label="To Account"
+									id="transfer-to-account"
+									accounts={destinationAccounts}
+									accountId={toAccountId}
+									onChange={setToAccountId}
+									hideBalanceOnMobile
+								/>
+							) : (
+								<div className="transfer-external-fields">
+									<label className="transfer-field" htmlFor="transfer-external-account">
+										Recipient Account Number
+										<input
+											id="transfer-external-account"
+											inputMode="numeric"
+											autoComplete="off"
+											maxLength={10}
+											value={externalAccountId}
+											placeholder="Enter account number"
+											onChange={(event) => setExternalAccountId(
+												event.target.value.replace(/\D/g, "")
+											)}
+										/>
+									</label>
+									<label className="transfer-field" htmlFor="transfer-routing-number">
+										Routing Number
+										<input
+											id="transfer-routing-number"
+											inputMode="numeric"
+											autoComplete="off"
+											maxLength={9}
+											value={externalRoutingNumber}
+											placeholder="9-digit routing number"
+											onChange={(event) => setExternalRoutingNumber(
+												event.target.value.replace(/\D/g, "")
+											)}
+										/>
+									</label>
+								</div>
+							)}
 
 							<label className="transfer-label" htmlFor="transfer-amount">
 								Transfer Amount
@@ -298,10 +405,15 @@ function Transfer() {
 						<div className="transfer-graphic" aria-hidden="true">
 							<img src={transferImage} alt="" />
 						</div>
-						<h2>Transfer Between Your Accounts</h2>
+						<h2>
+							{transferMode === "internal"
+								? "Transfer Between Your Accounts"
+								: "Send to Someone Else"}
+						</h2>
 						<p>
-							Move money easily between your NeuroBank accounts. Transfers are
-							typically instant and there are no fees.
+							{transferMode === "internal"
+								? "Move money easily between your NeuroBank accounts. Transfers are typically instant and there are no fees."
+								: "Enter the recipient's account and routing numbers."}
 						</p>
 					</section>
 

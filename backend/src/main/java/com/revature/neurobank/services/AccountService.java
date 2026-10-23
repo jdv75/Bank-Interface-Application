@@ -1,6 +1,7 @@
 package com.revature.neurobank.services;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import com.revature.neurobank.exceptions.*;
 import com.revature.neurobank.models.*;
@@ -21,12 +22,19 @@ public class AccountService {
     private final AccountDAO accountDAO;
     private final UserDAO userDAO;
     private final BankDAO bankDAO;
+    private final TransactionDAO transactionDAO;
 
     @Autowired 
-    public AccountService(AccountDAO accountDAO, UserDAO userDAO, BankDAO bankDAO) {
+    public AccountService(
+        AccountDAO accountDAO,
+        UserDAO userDAO,
+        BankDAO bankDAO,
+        TransactionDAO transactionDAO
+    ) {
         this.accountDAO = accountDAO;
         this.userDAO = userDAO;
         this.bankDAO = bankDAO;
+        this.transactionDAO = transactionDAO;
     }
 
     public Account findOwnedAccount(String username, Integer accountId) {
@@ -36,13 +44,30 @@ public class AccountService {
 
     // Convert accounts into AccountResponse
     public List<AccountResponse> getAccountsForUser(String username) {
-        return accountDAO.findByUsername_Username(username)
+        List<Account> accounts = accountDAO.findByUsername_Username(username);
+        if (accounts.isEmpty()) {
+            return List.of();
+        }
+
+        List<Integer> accountIds = accounts.stream()
+                .map(Account::getAccountId)
+                .toList();
+
+        Map<Integer, Double> pendingTotals = transactionDAO
+                .findScheduledOutgoingTotals(accountIds)
                 .stream()
-                .map(this::toResponse)
+                .collect(Collectors.toMap(
+                        TransactionDAO.ScheduledOutgoingTotal::getAccountId,
+                        TransactionDAO.ScheduledOutgoingTotal::getTotal));
+
+        return accounts.stream()
+                .map(account -> toResponse(
+                        account,
+                        pendingTotals.getOrDefault(account.getAccountId(), 0.0)))
                 .toList();
     }
 
-    private AccountResponse toResponse(Account account) {
+    private AccountResponse toResponse(Account account, double pendingTransferAmount) {
         String id = String.valueOf(account.getAccountId());
         String type = account.getAccountType().name().toLowerCase();
         String name = type.substring(0, 1).toUpperCase() + type.substring(1) + " Account";
@@ -50,12 +75,21 @@ public class AccountService {
         String routingNumber = account.getBankRoutingNum() == null?  null : String.valueOf(account.getBankRoutingNum().getRoutingNumber());
         double balance = account.getBalance() == null ? 0.0 : account.getBalance();
 
-        return new AccountResponse(id, type, name, last4, balance, routingNumber);
+        return new AccountResponse(
+                id,
+                type,
+                name,
+                last4,
+                balance,
+                routingNumber,
+                pendingTransferAmount);
         
     }
 
     public AccountResponse getAccount(String username, Integer accountId) {
-        return toResponse(findOwnedAccount(username, accountId));
+        Account account = findOwnedAccount(username, accountId);
+        Double pendingTransferAmount = transactionDAO.sumScheduledOutgoingAmount(accountId);
+        return toResponse(account, pendingTransferAmount == null ? 0.0 : pendingTransferAmount);
     }
 
     @Transactional 
@@ -84,7 +118,7 @@ public class AccountService {
         account.setBankRoutingNum(bank);
         account.setAccountType(type);
 
-        return toResponse(accountDAO.save(account));
+        return toResponse(accountDAO.save(account), 0.0);
     }
 
 
