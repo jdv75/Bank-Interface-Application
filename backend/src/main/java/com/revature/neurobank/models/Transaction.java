@@ -1,6 +1,7 @@
 package com.revature.neurobank.models;
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import java.time.Instant;
+import java.time.LocalDate;
 
 @Entity 
 @Table(name = "transactions")
@@ -12,7 +13,7 @@ public class Transaction {
     private Integer transactionId;
 
     @Column 
-    private LocalDateTime date;
+    private Instant date;
 
     @Column
     @Enumerated(EnumType.STRING)
@@ -29,6 +30,16 @@ public class Transaction {
     @JoinColumn(name = "destination_account_id")
     private Account destinationAccountId;
 
+    @Column(length = 50)
+    private String note;
+
+    @Column(name = "scheduled_for")
+    private LocalDate scheduledFor;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private TransactionStatus status = TransactionStatus.COMPLETED;
+
     public Integer getTransactionId() {
         return transactionId;
     }
@@ -37,11 +48,11 @@ public class Transaction {
         this.transactionId = transactionId;
     }
 
-    public LocalDateTime getDate() {
+    public Instant getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(Instant date) {
         this.date = date;
     }
 
@@ -77,12 +88,36 @@ public class Transaction {
         this.destinationAccountId = destinationAccountId;
     }
 
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public LocalDate getScheduledFor() {
+        return scheduledFor;
+    }
+
+    public void setScheduledFor(LocalDate scheduledFor) {
+        this.scheduledFor = scheduledFor;
+    }
+
+    public TransactionStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(TransactionStatus status) {
+        this.status = status;
+    }
+
     public Transaction() {
         
     }
 
 
-    public Transaction(Integer transactionId, LocalDateTime date, TransactionType transactionType, Double amount, Account originAccountId) {
+    public Transaction(Integer transactionId, Instant date, TransactionType transactionType, Double amount, Account originAccountId) {
         this.transactionId = transactionId;
         this.date = date;
         this.transactionType = transactionType;
@@ -90,12 +125,46 @@ public class Transaction {
         this.originAccountId = originAccountId;
     }
 
-    public Transaction(Integer transactionId, LocalDateTime date, TransactionType transactionType, Double amount, Account originAccountId, Account destinationAccountId) {
+    public Transaction(Integer transactionId, Instant date, TransactionType transactionType, Double amount, Account originAccountId, Account destinationAccountId) {
         this.transactionId = transactionId;
         this.date = date;
         this.transactionType = transactionType;
         this.amount = amount;
         this.originAccountId = originAccountId;
         this.destinationAccountId = destinationAccountId;
+    }
+
+    @PrePersist
+    @PreUpdate
+    private void validateState() {
+        if (status == null) {
+            throw new IllegalStateException("Transaction status is required.");
+        }
+
+        if (note != null && note.length() > 50) {
+            throw new IllegalStateException("Transaction note cannot exceed 50 characters.");
+        }
+
+        if (status == TransactionStatus.SCHEDULED) {
+            if (transactionType != TransactionType.TRANSFER) {
+                throw new IllegalStateException("Only transfers can be scheduled.");
+            }
+            if (scheduledFor == null) {
+                throw new IllegalStateException("A scheduled transfer requires a scheduled date.");
+            }
+        }
+
+        if (transactionType != TransactionType.TRANSFER) {
+            if (status != TransactionStatus.COMPLETED) {
+                throw new IllegalStateException("Deposits and withdrawals must be completed.");
+            }
+            if (scheduledFor != null) {
+                throw new IllegalStateException("Only transfers can have a scheduled date.");
+            }
+        }
+
+        if (status == TransactionStatus.FAILED && transactionType != TransactionType.TRANSFER) {
+            throw new IllegalStateException("Only transfers can fail during scheduled execution.");
+        }
     }
 }
