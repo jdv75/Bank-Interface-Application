@@ -61,9 +61,57 @@
     font-size: 20px;
 }
 
+.transfer-mode {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.transfer-mode button {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    background: var(--bg-card-secondary);
+    color: var(--text-primary);
+    cursor: pointer;
+    text-align: left;
+}
+
+.transfer-mode button:hover,
+.transfer-mode button.selected {
+    border-color: var(--highlight-blue);
+}
+
+.transfer-mode button.selected {
+    background: color-mix(in srgb, var(--primary-blue) 22%, var(--bg-card-secondary));
+}
+
+.transfer-mode button > svg {
+    width: 22px;
+    height: 22px;
+    flex: 0 0 22px;
+    color: var(--highlight-blue);
+}
+
+.transfer-mode button span {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+}
+
+.transfer-mode button small {
+    margin-top: 2px;
+    color: var(--text-secondary);
+}
+
 .transfer-label,
 .transfer-date,
 .transfer-note,
+.transfer-field,
 .transfer-timing legend {
     display: block;
     margin-bottom: 8px;
@@ -73,7 +121,8 @@
 
 .transfer-amount,
 .transfer-date input,
-.transfer-note textarea {
+.transfer-note textarea,
+.transfer-field input {
     border: 1px solid var(--border-color);
     border-radius: 10px;
     background: var(--bg-card-secondary);
@@ -81,7 +130,8 @@
 
 .transfer-amount:focus-within,
 .transfer-date input:focus,
-.transfer-note textarea:focus {
+.transfer-note textarea:focus,
+.transfer-field input:focus {
     border-color: var(--highlight-blue);
     outline: none;
 }
@@ -110,6 +160,27 @@
 .transfer-summary-account small {
     color: var(--text-secondary);
     font-size: 13px;
+}
+
+.transfer-external-fields {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.transfer-field {
+    margin: 0;
+}
+
+.transfer-field input {
+    display: block;
+    width: 100%;
+    margin-top: 8px;
+    padding: 14px 12px;
+    box-sizing: border-box;
+    color: var(--text-primary);
+    font: inherit;
 }
 
 .transfer-amount {
@@ -384,6 +455,7 @@
     }
 
     .transfer-timing,
+    .transfer-external-fields,
     .transfer-side-panel {
         grid-template-columns: 1fr;
     }
@@ -391,6 +463,10 @@
 }
 
 @media (max-width: 480px) {
+    .transfer-mode {
+        grid-template-columns: 1fr;
+    }
+
     .transfer-quick-amounts {
         grid-template-columns: 1fr;
     }
