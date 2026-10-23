@@ -101,6 +101,9 @@
     left: 15%;
     right: 15%;
     width: 650px;
+    filter:
+    drop-shadow(0 0 12px rgba(56, 130, 255, 0.55))
+    drop-shadow(0 20px 50px rgba(37, 99, 235, 0.45));
 }
 
 .register-hero-wrap .auth-hero-title {
