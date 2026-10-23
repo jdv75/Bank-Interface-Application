@@ -15,6 +15,7 @@ import { apiFetch } from "./apiClient";
 export type TransactionsByType = Record<TransactionType, Transaction[]>;
 
 export type TransactionHistoryOptions = {
+    accountId: string;
     page?: number;
     pageSize?: number;
     type?: TransactionType;
@@ -31,6 +32,28 @@ function sortByDateDesc(items: Transaction[]): Transaction[] {
     return [...items].sort(
         (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     );
+}
+
+async function getRecentForUser(accounts: Account[], limit: number, type?: TransactionType): Promise<Transaction[]> {
+    const pages = await Promise.all(
+        accounts.map((account) =>
+            bankService
+                .getTransactionHistory({ accountId: account.id, page: 1, pageSize: limit, type })
+                .then((page) => page.transactions)
+                // One account failing shouldn't blank the whole dashboard
+                .catch(() => [] as Transaction[])
+        )
+    );
+
+    const byId = new Map<string, Transaction>();
+    for (const transaction of pages.flat()) {
+        const existing = byId.get(transaction.id);
+        if (!existing || transaction.amount < 0) {
+            byId.set(transaction.id, transaction);
+        }
+    }
+
+    return sortByDateDesc([...byId.values()]).slice(0, limit);
 }
 
 function getPendingTransferAmount(accountId: string): number {
@@ -179,36 +202,40 @@ export const bankService = {
         return mockRequest(transfer);
     },
 
-    getRecentTransactions(limit = 5): Promise<Transaction[]> {
-        return mockRequest(sortByDateDesc(db.transactions).slice(0, limit));
+    async getRecentTransactions(limit = 5): Promise<Transaction[]> {
+        const accounts = await bankService.getAccounts();
+        return getRecentForUser(accounts, limit);
     },
 
-    getTransactionsByType(limitPerType = 4): Promise<TransactionsByType> {
-        const sorted = sortByDateDesc(db.transactions);
+    async getTransactionsByType(limitPerType = 4): Promise<TransactionsByType> {
+        const accounts = await bankService.getAccounts();
 
-        function pickFirst(type: TransactionType): Transaction[] {
-            return sorted.filter((item) => item.type === type).slice(0, limitPerType);
-        }
+        const [deposit, withdraw, transfer] = await Promise.all([
+            getRecentForUser(accounts, limitPerType, "deposit"),
+            getRecentForUser(accounts, limitPerType, "withdraw"),
+            getRecentForUser(accounts, limitPerType, "transfer")
+        ]);
 
-        return mockRequest({
-            deposit: pickFirst("deposit"),
-            withdraw: pickFirst("withdraw"),
-            transfer: pickFirst("transfer")
-        });
+        return { deposit, withdraw, transfer };
     },
 
     getTransactionHistory({
+        accountId,
         page = 1,
         pageSize = 20,
         type
-    }: TransactionHistoryOptions = {}): Promise<TransactionHistoryPage> {
-        const transactions = sortByDateDesc(db.transactions)
-            .filter((transaction) => !type || transaction.type === type);
-        const start = (page - 1) * pageSize;
-
-        return mockRequest({
-            transactions: transactions.slice(start, start + pageSize),
-            total: transactions.length
+    }: TransactionHistoryOptions): Promise<TransactionHistoryPage> {
+        const params = new URLSearchParams({
+            page: String(page),
+            page_size: String(pageSize)
         });
+
+        if (type) {
+            params.set("type", type);
+        }
+
+        return apiFetch<TransactionHistoryPage>(
+            `/api/accounts/${encodeURIComponent(accountId)}/transactions?${params}`
+        );
     }
 };
