@@ -16,7 +16,9 @@ public interface TransactionDAO extends JpaRepository<Transaction, Integer> {
             SELECT t FROM Transaction t
             LEFT JOIN t.originAccountId o
             LEFT JOIN t.destinationAccountId d
-            WHERE o.accountId = :accountId OR d.accountId = :accountId
+            WHERE o.accountId = :accountId
+               OR (d.accountId = :accountId
+                   AND t.status = com.revature.neurobank.models.TransactionStatus.COMPLETED)
             """)
     Page<Transaction> findHistory(@Param("accountId") Integer accountId, Pageable pageable);
 
@@ -24,7 +26,9 @@ public interface TransactionDAO extends JpaRepository<Transaction, Integer> {
             SELECT t FROM Transaction t
             LEFT JOIN t.originAccountId o
             LEFT JOIN t.destinationAccountId d
-            WHERE (o.accountId = :accountId OR d.accountId = :accountId)
+            WHERE (o.accountId = :accountId
+               OR (d.accountId = :accountId
+                   AND t.status = com.revature.neurobank.models.TransactionStatus.COMPLETED))
               AND t.transactionType = :type
             """)
     Page<Transaction> findHistoryByType(@Param("accountId") Integer accountId,
