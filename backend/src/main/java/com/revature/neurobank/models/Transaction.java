@@ -1,4 +1,5 @@
 package com.revature.neurobank.models;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -12,7 +13,8 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer transactionId;
 
-    @Column 
+    @Column
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Instant date;
 
     @Column
