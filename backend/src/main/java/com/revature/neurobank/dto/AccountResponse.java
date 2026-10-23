@@ -6,7 +6,8 @@ public record AccountResponse (
     String name,
     String last4,
     double balance,
-    String routingNumber
+    String routingNumber,
+    double pendingTransferAmount
 ) {}
 
 
