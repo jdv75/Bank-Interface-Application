@@ -1,10 +1,7 @@
 package com.revature.neurobank;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-
-@SpringBootTest
-class NeuroBankApplicationTests {
+class NeuroBankApplicationTests extends PostgresIntegrationTest {
 
 	@Test
 	void contextLoads() {
