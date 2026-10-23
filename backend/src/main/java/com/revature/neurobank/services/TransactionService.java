@@ -72,6 +72,7 @@ public class TransactionService {
             );
         }
 
+        transaction.setDate(Instant.now());
         return transactionDAO.save(transaction);
     }
 
