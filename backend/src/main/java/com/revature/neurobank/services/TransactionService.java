@@ -42,7 +42,7 @@ public class TransactionService {
         TransactionDAO transactionDAO,
         AccountDAO accountDAO,
 
-        @Value("${APP_TIME_ZONE:America/Los_Angeles}")
+        @Value("${app.time-zone}")
         String applicationTimeZone
     ) {
         this.transactionDAO = transactionDAO;
